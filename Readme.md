@@ -1,7 +1,7 @@
 # Личный проект «YetiCave»
 
 * Студент: [Максим Пручкин](https://up.htmlacademy.ru/php/14/user/614625).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Парфенов] (https://htmlacademy.ru/profile/id926645).
 
 ---
 

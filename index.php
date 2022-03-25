@@ -4,12 +4,12 @@ $is_auth = rand(0, 1);
 $user_name = 'Максим'; // укажите здесь ваше имя
 $categories = ['Доски и лыжи','Крепления','Ботинки','Одежда','Инструменты','Разное'];
 $lots = [
-    ["nameproduct" => "2014 Rossignol District Snowboard","category" => "Доски и лыжи","price" => 10999,"urlimg" => "img/lot-1.jpg"],
-    ["nameproduct" => "DC Ply Mens 2016/2017 Snowboard","category" => "Доски и лыжи","price" => 159999,"urlimg" => "img/lot-2.jpg"],
-    ["nameproduct" => "Крепления Union Contact Pro 2015 года размер L/XL","category" => "Крепления","price" => 8000,"urlimg" => "img/lot-3.jpg"],
-    ["nameproduct" => "Ботинки для сноуборда DC Mutiny Charocal","category" => "Ботинки","price" => 10999,"urlimg" => "img/lot-4.jpg"],
-    ["nameproduct" => "Куртка для сноуборда DC Mutiny Charocal","category" => "Одежда","price" => 7500,"urlimg" => "img/lot-5.jpg"],
-    ["nameproduct" => "Маска Oakley Canopy","category" => "Разное","price" => 5400,"urlimg" => "img/lot-6.jpg"]
+    ["name" => "2014 Rossignol District Snowboard","category" => "Доски и лыжи","price" => 10999,"img" => "img/lot-1.jpg"],
+    ["name" => "DC Ply Mens 2016/2017 Snowboard","category" => "Доски и лыжи","price" => 159999,"img" => "img/lot-2.jpg"],
+    ["name" => "Крепления Union Contact Pro 2015 года размер L/XL","category" => "Крепления","price" => 8000,"img" => "img/lot-3.jpg"],
+    ["name" => "Ботинки для сноуборда DC Mutiny Charocal","category" => "Ботинки","price" => 10999,"img" => "img/lot-4.jpg"],
+    ["name" => "Куртка для сноуборда DC Mutiny Charocal","category" => "Одежда","price" => 7500,"img" => "img/lot-5.jpg"],
+    ["name" => "Маска Oakley Canopy","category" => "Разное","price" => 5400,"img" => "img/lot-6.jpg"]
 ];
 ?>
 <!DOCTYPE html>
@@ -80,11 +80,11 @@ $lots = [
             <?php foreach ($lots as $lot) :?>
             <li class="lots__item lot">
                 <div class="lot__image">
-                    <img src="<?=$lot['urlimg']?>" width="350" height="260" alt="">
+                    <img src="<?=$lot['img']?>" width="350" height="260" alt="">
                 </div>
                 <div class="lot__info">
                     <span class="lot__category"><?=$lot['category']?></span>
-                    <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?=$lot['nameproduct']?></a></h3>
+                    <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?=$lot['name']?></a></h3>
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>

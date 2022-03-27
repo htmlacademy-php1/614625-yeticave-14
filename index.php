@@ -11,7 +11,21 @@ $lots = [
     ["name" => "Куртка для сноуборда DC Mutiny Charocal","category" => "Одежда","price" => 7500,"img" => "img/lot-5.jpg"],
     ["name" => "Маска Oakley Canopy","category" => "Разное","price" => 5400,"img" => "img/lot-6.jpg"]
 ];
+/**
+ * Функция округляет число и добавляет знак рубля
+ * @param int $price число
+ * @return string цена с добавлением знака ₽
+ */
+function formatNumber(int $price) :string
+{
+    if ($price<1000){
+        return ceil($price) . ' ₽';
+    }
+    $price = ceil($price);
+    return number_format($price, 0, null, ' ') . ' ₽';
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -88,7 +102,7 @@ $lots = [
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?=$lot['price']?><b class="rub">р</b></span>
+                            <span class="lot__cost"><?=formatNumber($lot['price'])?></span>
                         </div>
                         <div class="lot__timer timer">
                             12:23

@@ -143,4 +143,16 @@ function include_template($name, array $data = []) {
     return $result;
 }
 
-
+/**
+ * Функция округляет число и добавляет знак рубля
+ * @param int $price число
+ * @return string цена с добавлением знака ₽
+ */
+function formatNumber(int $price) :string
+{
+    if ($price<1000){
+        return ceil($price) . ' ₽';
+    }
+    $price = ceil($price);
+    return number_format($price, 0, null, ' ') . ' ₽';
+}

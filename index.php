@@ -29,11 +29,24 @@ function formatNumber(int $price) :string
     return number_format($price, 0, null, ' ') . ' ₽';
 }
 
-function get_dt_range(string $datalife) :string
+/**
+ * функция возвращает «ЧЧ: ММ», где первый элемент — целое количество часов до даты, а второй — остаток в минутах.
+ * @param string $datalife
+ * @return string
+ */
+function get_dt_range(string $datalife) :array
 {
-    return $datalife;
+    //текущая дата/время  2019-10-10 14:30
+
+    //return $diff;
+    return 'string';
 }
-echo get_dt_range('2019-10-11 12:30:12');
+$date1 = date_create_from_format('Y-m-d H:i:s','2019-10-10 14:31:00');
+$date2 = date_create_from_format('Y-m-d H:i:s','2019-11-11 12:30:12');
+//var_dump($date1);
+$diff = date_diff($date1, $date2);
+//var_dump($diff);
+
 ?>
 
 

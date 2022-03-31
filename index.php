@@ -26,11 +26,20 @@ function get_dt_range(string $datalife) :array
     //return $diff;
     return 'string';
 }
-$date1 = date_create_from_format('Y-m-d H:i:s','2019-10-10 14:31:00');
-$date2 = date_create_from_format('Y-m-d H:i:s','2019-11-11 12:30:12');
-//var_dump($date1);
-$diff = date_diff($date1, $date2);
-//var_dump($diff);
+$date1 = '2019-10-10 14:31';
+$date2 ='2019-11-10 14:31';
+
+$diff = abs(strtotime($date2) - strtotime($date1));
+$years   = floor($diff / (365*60*60*24));
+$months  = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+$days    = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+$hours   = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24)/ (60*60));
+$minuts  = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24 - $hours*60*60)/ 60);
+$hours   = floor(($diff)/ (60*60));
+//echo $years;
+echo $hours . '<br>';
+echo $minuts;
+$dateRange = ['hour' => 0, 'minute' => 0];
 
 ?>
 

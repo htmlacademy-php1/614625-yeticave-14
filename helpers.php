@@ -162,12 +162,13 @@ function formatNumber(int $price) :string
  * @param string $datalife - дата истечения
  * @return array $dataRange с параметрами часы и минуты
  */
-function get_dt_range(string $datalife) :array
+function get_dt_range(string $datalife, string $currentTime) :array
 {
-    //текущая дата $date1/время  2019-10-10 14:30
-    $date1 = '2019-10-10 14:30';
-
-    $diff = abs(strtotime($datalife) - strtotime($date1));
+    $diff = strtotime($datalife) - strtotime($currentTime);
+    if($diff<0) {
+        $dateRange = ['hour' => 0, 'minute' => 0];
+        return $dateRange;
+    }
     $years   = floor($diff / (365*60*60*24));
     $months  = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
     $days    = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
@@ -175,6 +176,5 @@ function get_dt_range(string $datalife) :array
     $minuts  = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24 - $hours*60*60)/ 60);
     $hours   = floor(($diff)/ (60*60));
     $dateRange = ['hour' => $hours, 'minute' => $minuts];
-
     return $dateRange;
 }

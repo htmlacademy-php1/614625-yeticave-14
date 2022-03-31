@@ -161,6 +161,7 @@ function formatNumber(int $price) :string
 /**
  * функция возвращает отсавшееся время до даты истечения срока лота «ЧЧ: ММ», где первый элемент — целое количество часов до даты, а второй — остаток в минутах.
  * @param string $datalife - дата истечения
+ * @param string $currentTime - текущее время
  * @return array $dataRange с параметрами часы и минуты
  */
 function get_dt_range(string $datalife, string $currentTime) :array

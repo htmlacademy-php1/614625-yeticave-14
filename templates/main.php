@@ -29,7 +29,9 @@
                             <span class="lot__amount">Стартовая цена</span>
                             <span class="lot__cost"><?=formatNumber(htmlspecialchars($lot['price']) )?></span>
                         </div>
-                        <?php $dataRange = get_dt_range($lot['datalife']) ;?>
+                        <?php
+                        $dataRange = get_dt_range($lot['closingTime'],date('Y-m-d H:i:s'));
+                        ?>
                         <div class="lot__timer timer <?if ($dataRange['hour']<1){echo 'timer--finishing';}?>">
                             <?=$dataRange['hour']?>:<?=$dataRange['minute']?>
                         </div>

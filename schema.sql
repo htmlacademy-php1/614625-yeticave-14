@@ -12,7 +12,7 @@ create DATABASE yeticave CHARACTER SET utf8 COLLATE utf8_general_ci;
     символьный код.
 */
 CREATE TABLE yeticave.categories  (
-  id int(11) PRIMARY KEY AUTO_INCREMENT,
+  id int PRIMARY KEY AUTO_INCREMENT,
   name varchar(11) NOT NULL,
   characterCode varchar(11) NOT NULL
 );

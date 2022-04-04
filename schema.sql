@@ -42,8 +42,8 @@ CREATE TABLE lots (
    beginPrice int NOT NULL,
    dateCompletion date,
    bidStep int NOT NULL,
-   userAutor int NOT NULL REFERENCES users (id) ,
-   userWinner int NOT NULL REFERENCES users(id) ,
+   userAutor int REFERENCES users (id) ,
+   userWinner int REFERENCES users(id) ,
    categoryId int NOT NULL REFERENCES categories(id)
 );
 
@@ -96,11 +96,20 @@ VALUES ('Доски и лыжи','boards-and-skis'),
 ('Ботинки','boots'),
 ('Одежда','clothes'),
 ('Инструменты','tools'),
-('Разное','any')
+('Разное','any');
 
 /*придумайте пару пользователей*/
 INSERT INTO users (email,dateRegistration,PASSWORD,contact)
 VALUES ('user1@mail.ru','23-04-04','test','89123123'),
-('user2@mail.ru','23-04-04','test2','891231232')
+('user2@mail.ru','23-04-04','test2','891231232');
 
+/*существующий список объявлений;*/
+INSERT INTO lots (name,description,beginPrice,img,categoryId,datacreate,dateCompletion,bidStep)
+VALUES
+       ('2014 Rossignol District Snowboard','описание',10999,'img/lot-1.jpg',1,'22-03-30','22-03-31',200),
+       ('DC Ply Mens 2016/2017 Snowboard','описание',159999,'img/lot-2.jpg',1,'22-03-30','22-03-31',200),
+       ('Крепления Union Contact Pro 2015 года размер L/XL','описание',8000,'img/lot-3.jpg',2,'22-03-30','22-03-31',200),
+       ('Ботинки для сноуборда DC Mutiny Charocal','описание',10999,'img/lot-4.jpg',3,'22-03-30','22-03-31',200),
+       ('Куртка для сноуборда DC Mutiny Charocal','описание',7500,'img/lot-5.jpg',4,'22-03-30','22-03-31',200),
+       ('Маска Oakley Canopy','описание',5400,'img/lot-6.jpg',6,'22-03-30','22-03-31',200);
 

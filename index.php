@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . 'init.php';
-require_once __DIR__ . 'data.php';
+require_once __DIR__ . '/init.php';
+require_once __DIR__ . '/data.php';
 
 $page_content = include_template('main.php',['lots' => $lots,'categories' => $categories]);
 

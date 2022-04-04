@@ -35,6 +35,7 @@ CREATE TABLE categories  (
 */
 CREATE TABLE lots (
    id int PRIMARY KEY AUTO_INCREMENT,
+   name varchar (122) NOT NULL,
    dataCreate date NOT NULL,
    description varchar (255),
    img varchar (64),

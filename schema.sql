@@ -87,4 +87,20 @@ CREATE TABLE users (
 );
 
 
+/*Запросы к БД из задания 10*/
+
+/*существующий список категорий*/
+INSERT INTO categories (name,simbolCode)
+VALUES ('Доски и лыжи','boards-and-skis'),
+('Крепления','fasteners'),
+('Ботинки','boots'),
+('Одежда','clothes'),
+('Инструменты','tools'),
+('Разное','any')
+
+/*придумайте пару пользователей*/
+INSERT INTO users (email,dateRegistration,PASSWORD,contact)
+VALUES ('user1@mail.ru','23-04-04','test','89123123'),
+('user2@mail.ru','23-04-04','test2','891231232')
+
 

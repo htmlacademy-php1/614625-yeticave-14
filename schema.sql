@@ -1,4 +1,5 @@
-create DATABASE yeticave CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE yeticave CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE yeticave;
 
 /*
 сущности таблицы yeticave
@@ -11,10 +12,10 @@ create DATABASE yeticave CHARACTER SET utf8 COLLATE utf8_general_ci;
     название;
     символьный код.
 */
-CREATE TABLE yeticave.categories  (
+CREATE TABLE categories  (
   id int PRIMARY KEY AUTO_INCREMENT,
-  name varchar(11) NOT NULL,
-  characterCode varchar(11) NOT NULL
+  name varchar(64) NOT NULL,
+  simbolCode varchar(64) NOT NULL UNIQUE
 );
 
 /*
@@ -32,14 +33,17 @@ CREATE TABLE yeticave.categories  (
     победитель: пользователь, выигравший лот;
     категория: категория объявления.
 */
-CREATE TABLE yeticave.lots (
-   id int(11) PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE lots (
+   id int PRIMARY KEY AUTO_INCREMENT,
    dataCreate date NOT NULL,
-   description varchar (11),
-   img varchar (11),
-   beginPrice int(11),
+   description varchar (255),
+   img varchar (64),
+   beginPrice int NOT NULL,
    dateCompletion date,
-   bidStep int(11)
+   bidStep int NOT NULL,
+   userAutor int NOT NULL REFERENCES users (id) ,
+   userWinner int NOT NULL REFERENCES users(id) ,
+   categoryId int NOT NULL REFERENCES categories(id)
 );
 
 /*
@@ -51,10 +55,12 @@ CREATE TABLE yeticave.lots (
     пользователь;
     лот.
 */
-CREATE TABLE yeticave.bets (
+CREATE TABLE bets (
    id int(11) PRIMARY KEY AUTO_INCREMENT,
    date date NOT NULL,
-   price int(11)
+   price int(11) NOT NULL,
+   userId int REFERENCES users (id),
+   lotId int REFERENCES lots (id)
 );
 
 /*
@@ -66,17 +72,18 @@ CREATE TABLE yeticave.bets (
     пароль: хэшированный пароль пользователя;
     контакты: контактная информация для связи с пользователем.
   Связи:
-    созданные лоты;
+    созданные лоты ;
     ставки.
-    ставки
 */
-CREATE TABLE yeticave.users (
-  id int(11) PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE users (
+  id int PRIMARY KEY AUTO_INCREMENT,
   dateRegistration date NOT NULL,
-  email varchar(11),
-  password varchar(11),
-  contact varchar(11)
-)
+  email varchar(64) NOT NULL UNIQUE,
+  password varchar(64) NOT NULL UNIQUE,
+  contact varchar(122) NOT NULL,
+  idlot int REFERENCES lots (id),
+  userBetStep int REFERENCES lots (bidStep)
+);
 
 
 

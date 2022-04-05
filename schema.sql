@@ -36,14 +36,14 @@ CREATE TABLE categories  (
 CREATE TABLE lots (
    id int PRIMARY KEY AUTO_INCREMENT,
    name varchar (122) NOT NULL,
-   data_create date NOT NULL,
+   creation_time datetime NOT NULL,
    description varchar (255),
    img varchar (64),
    begin_price int NOT NULL,
    date_completion date,
    bid_step int NOT NULL,
    user_id int NOT NULL REFERENCES users (id) ,
-   winner_id int NOT NULL REFERENCES users(id) ,
+   winner_id int REFERENCES users(id) ,
    category_id int NOT NULL REFERENCES categories(id)
 );
 
@@ -78,7 +78,7 @@ CREATE TABLE bets (
 */
 CREATE TABLE users (
   id int PRIMARY KEY AUTO_INCREMENT,
-  date_registration date NOT NULL,
+  creation_time datetime NOT NULL,
   email varchar(64) NOT NULL UNIQUE,
   password varchar(64) NOT NULL,
   contact varchar(122) NOT NULL

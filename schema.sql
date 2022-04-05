@@ -57,9 +57,9 @@ CREATE TABLE lots (
     лот.
 */
 CREATE TABLE bets (
-   id int(11) PRIMARY KEY AUTO_INCREMENT,
+   id int PRIMARY KEY AUTO_INCREMENT,
    date date NOT NULL,
-   price int(11) NOT NULL,
+   price int NOT NULL,
    userId int REFERENCES users (id),
    lotId int REFERENCES lots (id)
 );

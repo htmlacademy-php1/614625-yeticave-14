@@ -113,3 +113,34 @@ VALUES
        ('Куртка для сноуборда DC Mutiny Charocal','описание',7500,'img/lot-5.jpg',4,'22-03-30','22-03-31',200),
        ('Маска Oakley Canopy','описание',5400,'img/lot-6.jpg',6,'22-03-30','22-03-31',200);
 
+/*добавьте пару ставок для любого объявления*/
+INSERT INTO bets (lotId,price,userId,date) VALUES
+ (1,11199,1,'05-05-22'),
+ (1,11399,1,'05-05-22')
+
+/*получить все категории;*/
+SELECT * FROM categories;
+
+/*получить самые новые, открытые лоты.
+Каждый лот должен включать название, стартовую цену, ссылку на изображение, цену, название категории;*/
+SELECT
+  lots.name,
+  lots.beginPrice,
+  lots.img,
+  categories.name as category,
+  bets.price
+FROM lots
+       left join categories on lots.categoryId = categories.id
+       left join bets on lots.id = bets.lotid
+order by dataCreate;
+
+/*показать лот по его ID. Получите также название категории, к которой принадлежит лот;*/
+SELECT * FROM `lots`
+  left join categories on lots.categoryId = categories.id
+WHERE lots.id=1;
+
+/*обновить название лота по его идентификатору;*/
+UPDATE lots SET name = '2015 Rossignol District Snowboard' WHERE id=1
+
+/*получить список ставок для лота по его идентификатору с сортировкой по дате.*/
+SELECT * FROM `bets` WHERE lotId=1 ORDER BY date;

@@ -27,7 +27,7 @@
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?=formatNumber(htmlspecialchars($lot['price']) )?></span>
+                            <span class="lot__cost"><?=formatPrice(htmlspecialchars($lot['price']) )?></span>
                         </div>
                         <?php
                         $dataRange = get_dt_range($lot['closingTime'],date('Y-m-d H:i:s'));

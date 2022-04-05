@@ -15,7 +15,7 @@ USE yeticave;
 CREATE TABLE categories  (
   id int PRIMARY KEY AUTO_INCREMENT,
   name varchar(64) NOT NULL,
-  simbolCode varchar(64) NOT NULL UNIQUE
+  code varchar(64) NOT NULL UNIQUE
 );
 
 /*
@@ -36,15 +36,15 @@ CREATE TABLE categories  (
 CREATE TABLE lots (
    id int PRIMARY KEY AUTO_INCREMENT,
    name varchar (122) NOT NULL,
-   dataCreate date NOT NULL,
+   data_create date NOT NULL,
    description varchar (255),
    img varchar (64),
-   beginPrice int NOT NULL,
-   dateCompletion date,
-   bidStep int NOT NULL,
-   userAutor int NOT NULL REFERENCES users (id) ,
-   userWinner int NOT NULL REFERENCES users(id) ,
-   categoryId int NOT NULL REFERENCES categories(id)
+   begin_price int NOT NULL,
+   date_completion date,
+   bid_step int NOT NULL,
+   user_id int NOT NULL REFERENCES users (id) ,
+   winner_id int NOT NULL REFERENCES users(id) ,
+   category_id int NOT NULL REFERENCES categories(id)
 );
 
 /*
@@ -58,10 +58,10 @@ CREATE TABLE lots (
 */
 CREATE TABLE bets (
    id int PRIMARY KEY AUTO_INCREMENT,
-   date date NOT NULL,
+   creation_time datetime NOT NULL,
    price int NOT NULL,
-   userId int REFERENCES users (id),
-   lotId int REFERENCES lots (id)
+   user_id int REFERENCES users (id),
+   lot_id int REFERENCES lots (id)
 );
 
 /*
@@ -78,12 +78,10 @@ CREATE TABLE bets (
 */
 CREATE TABLE users (
   id int PRIMARY KEY AUTO_INCREMENT,
-  dateRegistration date NOT NULL,
+  date_registration date NOT NULL,
   email varchar(64) NOT NULL UNIQUE,
-  password varchar(64) NOT NULL UNIQUE,
-  contact varchar(122) NOT NULL,
-  idlot int REFERENCES lots (id),
-  userBetStep int REFERENCES lots (bidStep)
+  password varchar(64) NOT NULL,
+  contact varchar(122) NOT NULL
 );
 
 

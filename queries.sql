@@ -40,12 +40,13 @@ SELECT
   lots.name,
   lots.begin_price,
   lots.img,
-  categories.name as category,
-  bets.price
+  MAX(price),
+  categories.name as category
 FROM lots
-       left join categories on lots.category_id = categories.id
        left join bets on lots.id = bets.lot_id
-order by lots.creation_time;
+       left join categories on lots.category_id = categories.id
+group by lots.name,lots.date_completion,lots.begin_price,lots.img,categories.name
+order by lots.date_completion;
 
 /*показать лот по его ID. Получите также название категории, к которой принадлежит лот;*/
 SELECT * FROM lots

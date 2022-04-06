@@ -38,7 +38,7 @@ CREATE TABLE lots (
    name varchar (122) NOT NULL,
    creation_time datetime NOT NULL,
    description varchar (255),
-   img varchar (64),
+   img varchar (255),
    begin_price int NOT NULL,
    date_completion date,
    bid_step int NOT NULL,
@@ -83,6 +83,5 @@ CREATE TABLE users (
   password varchar(64) NOT NULL,
   contact varchar(122) NOT NULL
 );
-
 
 

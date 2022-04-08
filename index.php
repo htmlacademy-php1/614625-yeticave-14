@@ -7,21 +7,8 @@ if (!$link) {
     $content = include_template('error.php',['error' => $error]);
 }
 else{
-    //запрос на показ категорий
-    $sql = 'SELECT `name`,`code` FROM categories';
-
-    $result = mysqli_query($link, $sql);
-
-    $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-    //получение лотов
-    $sql = 'SELECT lots.name,creation_time,img,begin_price,date_completion,categories.name as category FROM lots
-    LEFT JOIN categories on lots.category_id=categories.id';
-
-    $result = mysqli_query($link, $sql);
-
-    $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    
+    $categories = getCategories($link);
+    $lots = getLots($link);
 }
 $page_content = include_template('main.php',['lots' => $lots,'categories' => $categories]);
 

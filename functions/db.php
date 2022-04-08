@@ -52,3 +52,42 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
 
     return $stmt;
 }
+
+/**
+ * @param $host адрес сервера
+ * @param $username имя пользователя
+ * @param $password пароль
+ * @param $dbname имя базы данных
+ * @return object(mysqli)  возвращает объект подключения к бд
+ */
+function dbConnect(string $host,string $username,string $password,string $dbname):object
+{
+    $link = mysqli_connect($host, $username, $password, $dbname);
+    mysqli_set_charset($link, "utf8");
+    return $link;
+}
+
+/*
+ * функция возвращает массив с категориями
+ * @param $link объект подключения к бд
+ */
+function getCategories(object $link):array
+{
+    $sql = 'SELECT `name`,`code` FROM categories';
+    $result = mysqli_query($link, $sql);
+    $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $categories;
+}
+
+/*
+ * функция возвращает массив с лотами
+ * @param $link объект подключения к бд
+ */
+function getLots(object $link):array
+{
+    $sql = 'SELECT lots.name,creation_time,img,begin_price,date_completion,categories.name as category FROM lots
+    LEFT JOIN categories on lots.category_id=categories.id';
+    $result = mysqli_query($link, $sql);
+    $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $lots;
+}

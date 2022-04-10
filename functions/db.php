@@ -54,24 +54,23 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
 }
 
 /**
- * @param $host адрес сервера
- * @param $username имя пользователя
- * @param $password пароль
- * @param $dbname имя базы данных
- * @return object(mysqli)  возвращает объект подключения к бд
+ * функция подключения к бд
+ * @param $config параметры подключения к базам данных сервера
+ * @return mysqli возвращает объект подключения к бд
  */
-function dbConnect(string $host,string $username,string $password,string $dbname):object
+function dbConnect(array $config):mysqli
 {
-    $link = mysqli_connect($host, $username, $password, $dbname);
+    $link = mysqli_connect($config['db']['host'], $config['db']['user'], $config['db']['password'], $config['db']['database']);
     mysqli_set_charset($link, "utf8");
     return $link;
 }
 
 /*
  * функция возвращает массив с категориями
- * @param $link объект подключения к бд
+ * @param mysqli $link объект подключения к бд
+ * @return $categories массив с категориями
  */
-function getCategories(object $link):array
+function getCategories(mysqli $link):array
 {
     $sql = 'SELECT `name`,`code` FROM categories';
     $result = mysqli_query($link, $sql);
@@ -81,9 +80,10 @@ function getCategories(object $link):array
 
 /*
  * функция возвращает массив с лотами
- * @param $link объект подключения к бд
+ * @param mysqli $link объект подключения к бд
+ * * @return $categories массив с лотами
  */
-function getLots(object $link):array
+function getLots(mysqli $link):array
 {
     $sql = 'SELECT lots.name,creation_time,img,begin_price,date_completion,categories.name as category FROM lots
     LEFT JOIN categories on lots.category_id=categories.id';

@@ -4,8 +4,8 @@
     <ul class="promo__list">
         <!--заполните этот список из массива категорий-->
         <?php foreach ($categories as $category) :?>
-            <li class="promo__item promo__item--boards">
-                <a class="promo__link" href="pages/all-lots.html"><?=htmlspecialchars($category)?></a>
+            <li class="promo__item promo__item--boards <?=htmlspecialchars($category['code'])?>">
+                <a class="promo__link" href="pages/all-lots.html"><?=htmlspecialchars($category['name'])?></a>
             </li>
         <?php endforeach;?>
     </ul>
@@ -27,10 +27,10 @@
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?=formatPrice(htmlspecialchars($lot['price']) )?></span>
+                            <span class="lot__cost"><?=formatPrice(htmlspecialchars($lot['begin_price']) )?></span>
                         </div>
                         <?php
-                        $dataRange = get_dt_range($lot['closingTime'],date('Y-m-d H:i:s'));
+                        $dataRange = get_dt_range($lot['date_completion'],date('Y-m-d H:i:s'));
                         ?>
                         <div class="lot__timer timer <?if ($dataRange['hour']<1){echo 'timer--finishing';}?>">
                             <?=$dataRange['hour']?>:<?=$dataRange['minute']?>

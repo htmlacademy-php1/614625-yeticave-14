@@ -81,13 +81,31 @@ function getCategories(mysqli $link):array
 /*
  * функция возвращает массив с лотами
  * @param mysqli $link объект подключения к бд
- * * @return $categories массив с лотами
+ * @return $lots массив с лотами
  */
 function getLots(mysqli $link):array
 {
-    $sql = 'SELECT lots.name,creation_time,img,begin_price,date_completion,categories.name as category FROM lots
+    $sql = 'SELECT lots.id, lots.name,creation_time,img,begin_price,date_completion,categories.name as category FROM lots
     LEFT JOIN categories on lots.category_id=categories.id';
     $result = mysqli_query($link, $sql);
     $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $lots;
+}
+
+/*
+ * функция возращает массив с параметрами лота
+ * @param mysqli $link объект подключения к бд
+ * @param $id id лота
+ * @return $lot массив с лотами либо false, если лота не существует
+ */
+function getLot(mysqli $link,int $id):array|false
+{
+    $sql = 'SELECT lots.name, creation_time,img, description, begin_price, date_completion, categories.name as category FROM lots
+    LEFT JOIN categories on lots.category_id=categories.id WHERE lots.id=' . $id;
+    $result = mysqli_query($link, $sql);
+    if ( $result->num_rows===0 ){
+        return false;
+    }
+    $lot = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $lot;
 }

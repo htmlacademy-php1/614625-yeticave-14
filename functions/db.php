@@ -72,7 +72,7 @@ function dbConnect(array $config):mysqli
  */
 function getCategories(mysqli $link):array
 {
-    $sql = 'SELECT `name`,`code` FROM categories';
+    $sql = 'SELECT `name`,`code`,`id` FROM categories';
     $result = mysqli_query($link, $sql);
     $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $categories;

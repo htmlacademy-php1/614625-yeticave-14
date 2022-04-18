@@ -19,3 +19,23 @@ function is_date_valid(string $date) : bool {
 
     return $dateTimeObj !== false && array_sum(date_get_last_errors()) === 0;
 }
+
+/**
+ * функция проверяет нет ли null в значение полей
+ * @param array $lotFormData входной $_POST массив
+ * @return array $lotFormData отфильтрованные значения на null $_POST
+ */
+function getLotFormData(array $lotFormData):array
+{
+    $lotFormData['category'] = isset($_POST['category']) ? $_POST['category'] : null;
+    $lotFormData['message'] = isset($_POST['message']) ? $_POST['message'] : null;
+    $lotFormData['lot-rate'] = isset($_POST['lot-rate']) ? (int)$_POST['lot-rate'] : null;
+    $lotFormData['lot-step'] = isset($_POST['lot-step']) ? (int)$_POST['lot-step'] : null;
+    $lotFormData['lot-date'] = isset($_POST['lot-date']) ? $_POST['lot-date'] : null;
+
+    return $lotFormData;
+}
+
+function validateCategory(){
+
+}

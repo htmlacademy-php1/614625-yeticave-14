@@ -8,6 +8,10 @@ if (!$link) {
 }
 else{
     $categories = getCategories($link);
+//   print_r('<pre>');
+//    var_dump($categories);
+//    print_r('</pre>');
+//    exit();
 }
 
 $page_content = include_template('add.php',['categories' => $categories]);

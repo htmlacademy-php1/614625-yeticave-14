@@ -14,6 +14,7 @@
 Допустимые форматы файлов: jpg, jpeg, png;
 Для проверки сравнивать MIME-тип файла со значением «image/png», «image/jpeg»;
 Чтобы определить MIME-тип файла, использовать функцию mime_content_type.
+
 Проверка начальной цены
 
 Содержимое поля «начальная цена» должно быть числом больше нуля.
@@ -45,45 +46,32 @@
 
 Проверка шага ставки
 Содержимое поля «шаг ставки» должно быть целым числом больше ноля.-->
-<?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST'):
-    //проверяем на null значения
-    $lotFormData = getLotFormData($_POST);
-
-    //проверяем на заполнение обязательных полей
-
-
-    //проверяем значения на правильность данных
-    $error = [];
-    //var_dump($lotFormData);
-    //print_r($_FILES);
-    //exit();
-    //var_dump($lotFormData);
-    //exit();
-    ?>
-    <form class="form form--add-lot container form--invalid" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
+    <form class="form form--add-lot container <?php if(isset($errors)){echo 'form--invalid';}?>" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
         <h2>Добавление лота</h2>
         <div class="form__container-two">
-            <div class="form__item"> <!-- form__item--invalid -->
+            <div class="form__item <?php if (isset($errors['lot-name'])){if (!$errors['lot-name']){echo 'form__item--invalid';}}?>">
                 <label for="lot-name">Наименование <sup>*</sup></label>
                 <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота"
                        value="<?=$lotFormData['lot-name'];?>">
-                <!--span class="form__error">Введите наименование лота</span-->
+                <?php if (isset($errors['lot-name'])):
+                if (!$errors['lot-name']):?>
+                    <span class="form__error">Введите наименование лота</span>
+                <?endif;
+                    endif;?>
             </div>
-            <div class="form__item">
+            <div class="form__item <?php if (isset($errors['category'])){if (!$errors['category']){echo 'form__item--invalid';}}?>">
                 <label for="category">Категория <sup>*</sup></label>
                 <select id="category" name="category">
                     <option>Выберите категорию</option>
-                    <?php foreach ($categories as $category) : ?>
-                        <option value="<?=$category['id']?>" <?php if ($category['name'] === $lotFormData['category']) {echo 'selected';} ?>>
-                            <?= htmlspecialchars($category['name']) ?>
-                        </option>
-                    <?php endforeach; ?>
+                    <?php foreach ($categories as $category) :
+                    echo $lotFormData['category'];?>
+                        <option value="<?=$category['id']?>" <?php if ($category['id'] === $lotFormData['category']) {echo "selected";} ?>><?=htmlspecialchars($category['name'])?></option>
+                    <?php endforeach;?>
                 </select>
                 <span class="form__error">Выберите категорию</span>
             </div>
         </div>
-        <div class="form__item form__item--wide">
+        <div class="form__item form__item--wide <?php if (isset($errors['message'])){if (!$errors['message']){echo 'form__item--invalid';}}?>">
             <label for="message">Описание <sup>*</sup></label>
             <textarea id="message" name="message"
                       placeholder="Напишите описание лота"><?=$lotFormData['message'];?></textarea>
@@ -99,83 +87,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'):
             </div>
         </div>
         <div class="form__container-three">
-            <div class="form__item form__item--small">
+            <div class="form__item form__item--small <?php if (isset($errors['lot-rate'])){if (!$errors['lot-rate']){echo 'form__item--invalid';}}?>">
                 <label for="lot-rate">Начальная цена <sup>*</sup></label>
                 <input id="lot-rate" type="text" name="lot-rate" placeholder="0" value="<?=$lotFormData['lot-rate'];?>">
                 <span class="form__error">Введите начальную цену</span>
             </div>
-            <div class="form__item form__item--small">
+            <div class="form__item form__item--small <?php if (isset($errors['lot-step'])){if (!$errors['lot-step']){echo 'form__item--invalid';}}?>">
                 <label for="lot-step">Шаг ставки <sup>*</sup></label>
                 <input id="lot-step" type="text" name="lot-step" placeholder="0" value="<?=$lotFormData['lot-step'];?>">
                 <span class="form__error">Введите шаг ставки</span>
             </div>
-            <div class="form__item">
+            <div class="form__item <?php if (isset($errors['lot-date'])){if (!$errors['lot-date']){echo 'form__item--invalid';}}?>">
                 <label for="lot-date">Дата окончания торгов <sup>*</sup></label>
                 <input class="form__input-date" id="lot-date" type="text" name="lot-date" placeholder="Введите дату в формате ГГГГ-ММ-ДД" value="<?=$lotFormData['lot-date'];?>">
                 <span class="form__error">Введите дату завершения торгов</span>
             </div>
         </div>
-        <!--span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span-->
+        <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
         <button type="submit" class="button">Добавить лот</button>
     </form>
-<?php endif;?>
-
-<?php
-if ($_SERVER['REQUEST_METHOD'] === 'GET'):
-?>
-    <form class="form form--add-lot container" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
-        <h2>Добавление лота</h2>
-        <div class="form__container-two">
-            <div class="form__item"> <!-- form__item--invalid -->
-                <label for="lot-name">Наименование <sup>*</sup></label>
-                <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота">
-                <span class="form__error">Введите наименование лота</span>
-            </div>
-            <div class="form__item">
-                <label for="category">Категория <sup>*</sup></label>
-                <select id="category" name="category">
-                    <option>Выберите категорию</option>
-                    <?php foreach ($categories as $category) :?>
-                        <option value="<?=$category['id']?>">
-                            <?=htmlspecialchars($category['name'])?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-                <span class="form__error">Выберите категорию</span>
-            </div>
-        </div>
-        <div class="form__item form__item--wide">
-            <label for="message">Описание <sup>*</sup></label>
-            <textarea id="message" name="message" placeholder="Напишите описание лота"></textarea>
-            <span class="form__error">Напишите описание лота</span>
-        </div>
-        <div class="form__item form__item--file">
-            <label>Изображение <sup>*</sup></label>
-            <div class="form__input-file">
-                <input name="lot-img" class="visually-hidden" type="file" id="lot-img" value="">
-                <label for="lot-img">
-                    Добавить
-                </label>
-            </div>
-        </div>
-        <div class="form__container-three">
-            <div class="form__item form__item--small">
-                <label for="lot-rate">Начальная цена <sup>*</sup></label>
-                <input id="lot-rate" type="text" name="lot-rate" placeholder="0">
-                <span class="form__error">Введите начальную цену</span>
-            </div>
-            <div class="form__item form__item--small">
-                <label for="lot-step">Шаг ставки <sup>*</sup></label>
-                <input id="lot-step" type="text" name="lot-step" placeholder="0">
-                <span class="form__error">Введите шаг ставки</span>
-            </div>
-            <div class="form__item">
-                <label for="lot-date">Дата окончания торгов <sup>*</sup></label>
-                <input class="form__input-date" id="lot-date" type="text" name="lot-date" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
-                <span class="form__error">Введите дату завершения торгов</span>
-            </div>
-        </div>
-        <!--span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span-->
-        <button type="submit" class="button">Добавить лот</button>
-    </form>
-<?php endif;?>

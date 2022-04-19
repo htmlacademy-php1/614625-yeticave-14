@@ -65,5 +65,18 @@ function validateLotNumber(int $valueInput){
 
 //если валидация успешена, то возвращает true, иначе false
 function validateFile($file){
+    //Обязательно проверять MIME-тип загруженного файла;
+    //Допустимые форматы файлов: jpg, jpeg, png;
 
+    // images
+    //'png' => 'image/png',
+    //'jpeg' => 'image/jpeg',
+    //'jpg' => 'image/jpeg',
+
+    //Для проверки сравнивать MIME-тип файла со значением «image/png», «image/jpeg»;
+    //Чтобы определить MIME-тип файла, использовать функцию mime_content_type.
+    var_dump(mime_content_type($file['lot-img']['tmp_name']) . "\n" ) ;
+    echo '<br>';
+    var_dump($file['lot-img']);
+    exit();
 }

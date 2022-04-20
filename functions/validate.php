@@ -26,8 +26,8 @@ function is_date_valid(string $date) : bool {
  */
 function getLotFormData(array $lotFormData):array
 {
-    $lotFormData['lot-name'] = isset($_POST['lot-name']) ? $_POST['lot-name'] : null;
-    $lotFormData['category'] = isset($_POST['category']) ? $_POST['category'] : null;
+    $lotFormData['lot-name'] = ($_POST['lot-name']) ?? null;
+    $lotFormData['category'] = isset($_POST['category']) ? (int)$_POST['category'] : null;
     $lotFormData['message']  = isset($_POST['message']) ? $_POST['message'] : null;
     $lotFormData['lot-rate'] = isset($_POST['lot-rate']) ? (int)$_POST['lot-rate'] : null;
     $lotFormData['lot-step'] = isset($_POST['lot-step']) ? (int)$_POST['lot-step'] : null;
@@ -75,8 +75,8 @@ function validateFile($file){
 
     //Для проверки сравнивать MIME-тип файла со значением «image/png», «image/jpeg»;
     //Чтобы определить MIME-тип файла, использовать функцию mime_content_type.
-    var_dump(mime_content_type($file['lot-img']['tmp_name']) . "\n" ) ;
-    echo '<br>';
-    var_dump($file['lot-img']);
-    exit();
+    //var_dump(mime_content_type($file['lot-img']['tmp_name']) . "\n" ) ;
+    //echo '<br>';
+    //var_dump($file['lot-img']);
+    //exit();
 }

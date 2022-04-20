@@ -19,6 +19,10 @@ function is_date_valid(string $date) : null|string {
     if (!$dateTimeObj){
         return 'Введите дату в указаном формате ГГГГ-ММ-ДД';
     }
+    var_dump($dateTimeObj);
+    echo '<br>';
+    var_dump(date('Y-m-d'));
+    exit();
     return null;
     //return $dateTimeObj !== false && array_sum(date_get_last_errors()) === 0;
 }
@@ -59,7 +63,7 @@ function getErrorForm(array $lotFormData,array $categories,array $file):array
 //если валидация успешена возвращает null, иначе текст ошибки
 //минимум 3 символа максимум 122
 function validateLengthLot($valueInput){
-    if ( strlen($valueInput)>3 && strlen($valueInput)<122 ){
+    if ( strlen($valueInput)>=3 && strlen($valueInput)<=122 ){
         return null;
     }
     return 'введите значение от 3 до 122 символов';

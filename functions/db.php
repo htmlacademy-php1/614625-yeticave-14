@@ -72,7 +72,7 @@ function dbConnect(array $config):mysqli
  */
 function getCategories(mysqli $link):array
 {
-    $sql = 'SELECT `name`,`code`,`id` FROM categories';
+    $sql = 'SELECT id, name, code FROM categories';
     $result = mysqli_query($link, $sql);
     $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $categories;
@@ -108,4 +108,11 @@ function getLot(mysqli $link,int $id):array|false
     }
     $lot = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $lot;
+}
+
+function loadLot(mysqli $link,array $lotFormData,array $file){
+    //запрос
+    $sql = '';
+    $result = mysqli_query($link, $sql);
+    //mysqli_insert_id(mysqli $mysql) Возвращает значение, созданное для столбца AUTO_INCREMENT последним запросом
 }

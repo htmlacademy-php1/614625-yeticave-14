@@ -8,21 +8,21 @@ if (!$link) {
 }
 else{
     $categories = getCategories($link);
-
 }
 //проверяем на null значения
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $lotFormData = getLotFormData($_POST);
     $errors = array_filter(getErrorForm($lotFormData,$categories,$_FILES));
 
-//    print_r('<pre>');
-//    var_dump($errors);
-//    print_r('</pre>');
-
     if (count($errors) > 0){
         $page_content = include_template('add.php',['categories' => $categories, 'errors' => $errors, 'lotFormData' => $lotFormData]);
     }
     else{
+        //переложить файл по новому пути, далее записать в бд
+        $filename = $_FILES['img'];
+        var_dump($_FILES['img']);
+        exit();
+        loadLot($link, $lotFormData, $_FILES);
         echo 'запись в бд';
     }
 }

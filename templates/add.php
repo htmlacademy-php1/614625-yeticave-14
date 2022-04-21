@@ -22,7 +22,7 @@
             <select id="category" name="category">
                 <option>Выберите категорию</option>
                 <?php foreach ($categories as $category) :?>
-                    <option value="<?=$category['id']?>" <?php if ($category['id'] == $lotFormData['category']) {
+                    <option value="<?=$category['id']?>" <?php if ($category['id'] === $lotFormData['category']) {
                         echo "selected";
                     } ?>><?= htmlspecialchars($category['name']) ?></option>
                 <?php endforeach; ?>
@@ -81,7 +81,7 @@
         } ?>">
             <label for="date_completion">Дата окончания торгов <sup>*</sup></label>
             <input class="form__input-date" id="date_completion" type="text" name="date_completion" placeholder="Введите дату в формате ГГГГ-ММ-ДД" value="<?=$lotFormData['date_completion'];?>">
-            <span class="form__error"><?=$errors['begin_price']?></span>
+            <span class="form__error"><?=$errors['date_completion']?></span>
         </div>
     </div>
     <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>

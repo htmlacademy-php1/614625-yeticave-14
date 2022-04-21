@@ -62,6 +62,7 @@ function dbConnect(array $config):mysqli
 {
     $link = mysqli_connect($config['db']['host'], $config['db']['user'], $config['db']['password'], $config['db']['database']);
     mysqli_set_charset($link, "utf8");
+    mysqli_options($link, MYSQLI_OPT_INT_AND_FLOAT_NATIVE, $config);
     return $link;
 }
 
@@ -110,9 +111,11 @@ function getLot(mysqli $link,int $id):array|false
     return $lot;
 }
 
-function loadLot(mysqli $link,array $lotFormData,array $file){
-    //запрос
-    $sql = '';
+function loadLot(mysqli $link,array $lotFormData){
+
+    $sql = "INSERT INTO lots (name, creation_time, description, img, begin_price, date_completion, bid_step, user_id, category_id)
+    VALUES ('{$lotFormData['name']}', '{$lotFormData['creation_time']}', '{$lotFormData['description']}', '{$lotFormData['img']}', '{$lotFormData['begin_price']}', '{$lotFormData['date_completion']}',
+    {$lotFormData['bid_step']}, 1, {$lotFormData['category']})";
     $result = mysqli_query($link, $sql);
-    //mysqli_insert_id(mysqli $mysql) Возвращает значение, созданное для столбца AUTO_INCREMENT последним запросом
+    return mysqli_insert_id( $link);
 }

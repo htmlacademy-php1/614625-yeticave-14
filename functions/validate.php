@@ -19,11 +19,11 @@ function is_date_valid(string $date) : null|string {
     if (!$dateTimeObj){
         return 'Введите дату в указаном формате ГГГГ-ММ-ДД';
     }
-    var_dump($dateTimeObj);
-    echo '<br>';
-    var_dump(date('Y-m-d'));
-    exit();
-    return null;
+    $rangeTime = get_dt_range($date,date('Y-m-d'));
+    if($rangeTime['hour']>0 || $rangeTime['minute']>0){
+        return null;
+    }
+    return 'Дата окончания торгов должна быть больше текущей даты';
     //return $dateTimeObj !== false && array_sum(date_get_last_errors()) === 0;
 }
 

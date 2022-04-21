@@ -18,12 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         $page_content = include_template('add.php',['categories' => $categories, 'errors' => $errors, 'lotFormData' => $lotFormData]);
     }
     else{
-        //переложить файл по новому пути, далее записать в бд
-        $filename = $_FILES['img'];
-        var_dump($_FILES['img']);
-        exit();
-        loadLot($link, $lotFormData, $_FILES);
-        echo 'запись в бд';
+        //переложить файл по новому пути, далее записать в бд файл, перекладываем до записи в БД.
+        $img = uploadFile($_FILES);
+        $lotFormData['img'] =  $img;
+        $lotFormData['creation_time'] = date('Y-m-d');
+        $lotId = loadLot($link, $lotFormData);
+        header("Location:/lot.php?id=" . $lotId);
     }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){

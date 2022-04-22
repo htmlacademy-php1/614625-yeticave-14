@@ -100,3 +100,8 @@ function validateFile($file){
     }
     return null;
 }
+
+function validateFileName($imgFile, $link){
+    // поиск файла searchFileName();
+    return;
+}

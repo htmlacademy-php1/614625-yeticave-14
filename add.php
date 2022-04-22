@@ -9,7 +9,6 @@ if (!$link) {
 else{
     $categories = getCategories($link);
 }
-//проверяем на null значения
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $lotFormData = getLotFormData($_POST);
     $errors = array_filter(getErrorForm($lotFormData,$categories,$_FILES));
@@ -18,7 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         $page_content = include_template('add.php',['categories' => $categories, 'errors' => $errors, 'lotFormData' => $lotFormData]);
     }
     else{
-        //переложить файл по новому пути, далее записать в бд файл, перекладываем до записи в БД.
+        $imgFile = $_FILES;
+        validateFileName($imgFile, $link);
         $img = uploadFile($_FILES);
         $lotFormData['img'] =  $img;
         $lotFormData['creation_time'] = date('Y-m-d');

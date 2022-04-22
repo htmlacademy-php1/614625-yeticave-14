@@ -1,14 +1,10 @@
 <?php
 function uploadFile(array $file){
-    print_r('<pre>');
-    var_dump($file['img']['name']);
-    print_r('</pre>');
-    $filename = $file['img']['name'];
-    validateFileName($filename);
-    exit();
     $destination = 'img/' . $file['img']['name'];
-    $moveResult = move_uploaded_file($file['img']['tmp_name'], $destination );
-    //var_dump($moveResult);
-    //exit();
+    while(file_exists($destination)){
+        $destination = 'img/' . '1' . $file['img']['name'];
+        $file['img']['name'] = '1' . $file['img']['name'];
+    };
+    move_uploaded_file($file['img']['tmp_name'], $destination );
     return $destination;
 }

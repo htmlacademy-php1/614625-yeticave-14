@@ -18,8 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
     else{
         $imgFile = $_FILES;
-        validateFileName($imgFile, $link);
-        $img = uploadFile($_FILES);
+        $img = uploadFile($imgFile);
         $lotFormData['img'] =  $img;
         $lotFormData['creation_time'] = date('Y-m-d');
         $lotId = loadLot($link, $lotFormData);

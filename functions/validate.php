@@ -101,7 +101,10 @@ function validateFile($file){
     return null;
 }
 
-function validateFileName($imgFile, $link){
-    // поиск файла searchFileName();
-    return;
-}
+//function validateFileName($link, $imgFile){
+//    if ( searchFileName($link, $imgFile['img']['name']) ){
+//        echo 'true';
+//        exit();
+//    }
+//    return false;
+//}

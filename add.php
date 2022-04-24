@@ -11,24 +11,23 @@ else{
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $lotFormData = getLotFormData($_POST);
-    $errors = array_filter(getErrorForm($lotFormData,$categories,$_FILES));
+    $errors = validateLotForm($lotFormData,$categories,$_FILES);
 
-    if (count($errors) > 0){
-        $page_content = include_template('add.php',['categories' => $categories, 'errors' => $errors, 'lotFormData' => $lotFormData]);
-    }
-    else{
-        $imgFile = $_FILES;
-        $img = uploadFile($imgFile);
+    if (count($errors) === 0)
+    {
+        $img = uploadFile($_FILES);
         $lotFormData['img'] =  $img;
         $lotFormData['creation_time'] = date('Y-m-d');
-        $lotId = loadLot($link, $lotFormData);
+        $lotId = createLot($link, $lotFormData);
         header("Location:/lot.php?id=" . $lotId);
     }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     $lotFormData = getLotFormData([]);
-    $page_content = include_template('add.php',['categories' => $categories, 'lotFormData' => $lotFormData]);
+    $errors = [];
 }
+
+$page_content = include_template('add.php',['categories' => $categories, 'errors' => $errors, 'lotFormData' => $lotFormData]);
 
 $layout_content = include_template('layout.php',[
     'is_auth'    => $is_auth,

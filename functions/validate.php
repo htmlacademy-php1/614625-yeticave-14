@@ -45,7 +45,7 @@ function getLotFormData(array $lotFormData):array
 }
 
 
-function getErrorForm(array $lotFormData,array $categories,array $file):array
+function validateLotForm(array $lotFormData,array $categories,array $file):array
 {
     $errors = [
         'name' => validateLengthLot($lotFormData['name']),
@@ -56,7 +56,7 @@ function getErrorForm(array $lotFormData,array $categories,array $file):array
         'date_completion' => is_date_valid($lotFormData['date_completion']),
         'img'     => validateFile($_FILES)
     ];
-
+    $errors = array_filter($errors);
     return $errors;
 }
 

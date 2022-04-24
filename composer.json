@@ -4,5 +4,8 @@
     },
     "scripts": {
       "test": "./vendor/bin/phpunit tests --colors --bootstrap=init.php"
+    },
+    "require": {
+      "ext-mysqli": "*"
     }
 }

@@ -84,6 +84,6 @@
             <span class="form__error"><?=$errors['date_completion']?></span>
         </div>
     </div>
-    <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
+    <span class="form__error <?php if (count($errors)>0){echo 'form__error--bottom';}?>">Пожалуйста, исправьте ошибки в форме.</span>
     <button type="submit" class="button">Добавить лот</button>
 </form>

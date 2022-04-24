@@ -111,19 +111,12 @@ function getLot(mysqli $link,int $id):array|false
     return $lot;
 }
 
-function loadLot(mysqli $link,array $lotFormData){
-    $sql = "INSERT INTO lots (name, creation_time, description, img, begin_price, date_completion, bid_step, user_id, category_id)
-    VALUES ('{$lotFormData['name']}', '{$lotFormData['creation_time']}', '{$lotFormData['description']}', '{$lotFormData['img']}', '{$lotFormData['begin_price']}', '{$lotFormData['date_completion']}',
-    {$lotFormData['bid_step']}, 1, {$lotFormData['category']})";
-    $result = mysqli_query($link, $sql);
+function createLot(mysqli $link,array $lotFormData){
+    $sql = 'INSERT INTO lots (name, creation_time, description, img, begin_price, date_completion, bid_step, user_id, category_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    $data = [$lotFormData['name'], $lotFormData['creation_time'], $lotFormData['description'], $lotFormData['img'], $lotFormData['begin_price'], $lotFormData['date_completion'],
+    $lotFormData['bid_step'], 1, $lotFormData['category']];
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
     return mysqli_insert_id($link);
 }
-
-//function searchFileName($link, $imgName){
-//    $sql = "SELECT img FROM lots WHERE img like '%" . $imgName . "'";
-//    $result = mysqli_query($link, $sql);
-//    if ( $result->num_rows===0 ){
-//        return false;
-//    }
-//    return true;
-//}

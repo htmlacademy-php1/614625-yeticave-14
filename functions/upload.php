@@ -13,6 +13,8 @@ function uploadFile(array $file) :string
         $destination = 'img/' . '1' . $file['img']['name'];
         $file['img']['name'] = '1' . $file['img']['name'];
     };
-    move_uploaded_file($file['img']['tmp_name'], $destination );
-    return $destination;
+    if(move_uploaded_file($file['img']['tmp_name'], $destination )){
+        return $destination;
+    };
+    exit("Ошибка при загрузке файла");
 }

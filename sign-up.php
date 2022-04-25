@@ -9,9 +9,10 @@ if (!$link) {
 else{
     $categories = getCategories($link);
 }
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $userFormData = getUserFormData($_POST);
-    //$errors = validateLotForm($lotFormData,$categories,$_FILES);
+    $errors = validateSignUpForm($link, $userFormData);
 
 //    if (count($errors) === 0)
 //    {
@@ -24,10 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 }
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     $userFormData = getUserFormData([]);
-    //$errors = [];
+    $errors = [];
 }
-var_dump($userFormData);
-exit();
+//var_dump($userFormData);
+//exit();
 //$page_content = include_template('add.php',['categories' => $categories, 'errors' => $errors, 'lotFormData' => $lotFormData]);
 $page_content = include_template('sign-up.php',['categories' => $categories, 'userFormData' => $userFormData]);
 

@@ -138,3 +138,27 @@ function getUserFormData(array $userFormData) :array
 
     return $userFormData;
 }
+
+/*
+ *
+ */
+function validateSignUpForm($link, $userFormData){
+    $errors = [
+        'email' => validateEmail($link, $userFormData['email']),
+        'password' => validateLengthLot($userFormData['password']),
+        'name' => validateLengthLot($userFormData['name']),
+        'contact' => validateLengthLot($userFormData['contact'])
+    ];
+
+    $errors = array_filter($errors);
+    return $errors;
+
+}
+
+function validateEmail($link, $email){
+    //Возвращает отфильтрованные данные или false, если фильтрация завершилась неудачей.
+    $emailfilter = filter_var('mail@mail.ru',FILTER_VALIDATE_EMAIL);
+    var_dump($emailfilter);
+    exit();
+}
+

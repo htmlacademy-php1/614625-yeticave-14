@@ -1,6 +1,6 @@
 <?php
 /**
- * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
+ * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД' так же проверяет дату на то, что она больше текущей
  *
  * Примеры использования:
  * is_date_valid('2019-01-01'); // true
@@ -11,9 +11,10 @@
  *
  * @param string $date Дата в виде строки
  *
- * @return bool true при совпадении с форматом 'ГГГГ-ММ-ДД', иначе false
+ * @return null в случае успешной проверки, иначе false
  */
-function is_date_valid(string $date) : null|string {
+function is_date_valid(string $date) : ?string
+{
     $format_to_check = 'Y-m-d';
     $dateTimeObj = date_create_from_format($format_to_check, $date);
     if (!$dateTimeObj){
@@ -24,7 +25,6 @@ function is_date_valid(string $date) : null|string {
         return null;
     }
     return 'Дата окончания торгов должна быть больше текущей даты';
-    //return $dateTimeObj !== false && array_sum(date_get_last_errors()) === 0;
 }
 
 /**
@@ -32,7 +32,7 @@ function is_date_valid(string $date) : null|string {
  * @param array $lotFormData входной $_POST массив
  * @return array $lotFormData отфильтрованные значения на null $_POST
  */
-function getLotFormData(array $lotFormData):array
+function getLotFormData(array $lotFormData) : array
 {
     $lotFormData['name'] = ($lotFormData['name']) ?? null;
     $lotFormData['category'] =isset($lotFormData['category']) ? (int)$lotFormData['category'] : null;
@@ -44,8 +44,14 @@ function getLotFormData(array $lotFormData):array
     return $lotFormData;
 }
 
-
-function validateLotForm(array $lotFormData,array $categories,array $file):array
+/**
+ *  функция проверяет ошибки заполнения полей формы
+ * @param array $lotFormData входной массив данных с формы
+ * @param array $categories массив с категориями
+ * @param array $file массив с даннными о файле
+ * @return array $errors массив с ошибками
+ */
+function validateLotForm(array $lotFormData,array $categories,array $file) : array
 {
     $errors = [
         'name' => validateLengthLot($lotFormData['name']),
@@ -60,18 +66,27 @@ function validateLotForm(array $lotFormData,array $categories,array $file):array
     return $errors;
 }
 
-//если валидация успешена возвращает null, иначе текст ошибки
-//минимум 3 символа максимум 122
-function validateLengthLot($valueInput){
+/**
+ * функция проверяет длину введенной строки, строка должна находиться в пределах от 3 до 122 символов
+ * @param $valueInput string
+ * @return null в случае правильной длины, иначе strint текст ошибки
+ */
+function validateLengthLot(string $valueInput) : null | string
+{
     if ( strlen($valueInput)>=3 && strlen($valueInput)<=122 ){
         return null;
     }
     return 'введите значение от 3 до 122 символов';
 }
 
-//если валидация успешена возвращает null, иначе текст ошибки
-function validateCategory($idCategory,$categories){
-    //если id с такой категорией существует вернуть true, если не существует, то false
+/**
+ * функция проверяет существует ли выбранная категория в массиве категорий, полученных из бд
+ * @param $idCategory id выбранной категории
+ * @param $categories array с категориями
+ * return null в случае, если категория существует, иначе string - текст с ошибкой
+ */
+function validateCategory(int $idCategory,array $categories) :null | string
+{
     foreach ($categories as $category){
         if($category['id'] == $idCategory){
             return null;
@@ -80,16 +95,26 @@ function validateCategory($idCategory,$categories){
     return 'Выбранной категории не существует';
 }
 
-//если валидация успешена возвращает null, иначе текст ошибки
-function validateLotNumber(int $valueInput){
+/**
+ *  функция проверяет больше 0 входящее число
+ * @param int $valueInput число входящее
+ * @return null в случае успешной проверки, иначе string текст ошибки
+ */
+function validateLotNumber(int $valueInput) : null | string
+{
     if ($valueInput >0){
         return null;
     }
     return 'Введите число, значение числа должно быть больше 0';
 }
 
-//если валидация успешена возвращает null, иначе текст ошибки
-function validateFile($file){
+/**
+ * функция проверяет файл на его формат.Допустимые форматы файлов: jpg, jpeg, png
+ * @param $file array входящий массив с файлом
+ * @return null в случае успешной проверки, иначе string текст ошибки
+ */
+function validateFile(array $file) : null | string
+{
     if ($file['img']['error']===4){
         return 'Загрузите файл. Допустимые форматы файлов: jpg, jpeg, png';
     }
@@ -100,11 +125,3 @@ function validateFile($file){
     }
     return null;
 }
-
-//function validateFileName($link, $imgFile){
-//    if ( searchFileName($link, $imgFile['img']['name']) ){
-//        echo 'true';
-//        exit();
-//    }
-//    return false;
-//}

@@ -1,5 +1,13 @@
 <?php
-function uploadFile(array $file){
+/**
+ * функция перемещает файл из временной папки загрузки на сервере, в папку с проектом и проверяет файл
+ * на совпадение имени в перемещаемой директории, если имя совпадает, добавляется 1 в начало имени, пока имя не
+ * перестанет совпадать
+ * @param array $file входящий массив с файлом
+ * @return string путь к файлу
+ */
+function uploadFile(array $file) :string
+{
     $destination = 'img/' . $file['img']['name'];
     while(file_exists($destination)){
         $destination = 'img/' . '1' . $file['img']['name'];

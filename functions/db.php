@@ -62,6 +62,7 @@ function dbConnect(array $config):mysqli
 {
     $link = mysqli_connect($config['db']['host'], $config['db']['user'], $config['db']['password'], $config['db']['database']);
     mysqli_set_charset($link, "utf8");
+    mysqli_options($link, MYSQLI_OPT_INT_AND_FLOAT_NATIVE, $config);
     return $link;
 }
 
@@ -72,7 +73,7 @@ function dbConnect(array $config):mysqli
  */
 function getCategories(mysqli $link):array
 {
-    $sql = 'SELECT `name`,`code` FROM categories';
+    $sql = 'SELECT id, name, code FROM categories';
     $result = mysqli_query($link, $sql);
     $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $categories;
@@ -108,4 +109,14 @@ function getLot(mysqli $link,int $id):array|false
     }
     $lot = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $lot;
+}
+
+function createLot(mysqli $link,array $lotFormData){
+    $sql = 'INSERT INTO lots (name, creation_time, description, img, begin_price, date_completion, bid_step, user_id, category_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    $data = [$lotFormData['name'], $lotFormData['creation_time'], $lotFormData['description'], $lotFormData['img'], $lotFormData['begin_price'], $lotFormData['date_completion'],
+    $lotFormData['bid_step'], 1, $lotFormData['category']];
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    return mysqli_insert_id($link);
 }

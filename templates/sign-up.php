@@ -22,11 +22,11 @@
         <span class="form__error">Введите имя</span>
     </div>
     <div class="form__item">
-        <label for="message">Контактные данные <sup>*</sup></label>
-        <textarea id="message" name="message" placeholder="Напишите как с вами связаться"></textarea>
+        <label for="contact">Контактные данные <sup>*</sup></label>
+        <textarea id="contact" name="contact" placeholder="Напишите как с вами связаться"></textarea>
         <span class="form__error">Напишите как с вами связаться</span>
     </div>
-    <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
+    <!--span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span-->
     <button type="submit" class="button">Зарегистрироваться</button>
     <a class="text-link" href="#">Уже есть аккаунт</a>
 </form>

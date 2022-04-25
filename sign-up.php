@@ -10,7 +10,7 @@ else{
     $categories = getCategories($link);
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-    //$lotFormData = getLotFormData($_POST);
+    $userFormData = getUserFormData($_POST);
     //$errors = validateLotForm($lotFormData,$categories,$_FILES);
 
 //    if (count($errors) === 0)
@@ -23,12 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 //    }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
-    //$lotFormData = getLotFormData([]);
+    $userFormData = getUserFormData([]);
     //$errors = [];
 }
-
+var_dump($userFormData);
+exit();
 //$page_content = include_template('add.php',['categories' => $categories, 'errors' => $errors, 'lotFormData' => $lotFormData]);
-$page_content = include_template('sign-up.php',['categories' => $categories,]);
+$page_content = include_template('sign-up.php',['categories' => $categories, 'userFormData' => $userFormData]);
 
 $layout_content = include_template('layout.php',[
     'is_auth'    => $is_auth,

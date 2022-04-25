@@ -28,7 +28,7 @@ function is_date_valid(string $date) : ?string
 }
 
 /**
- * функция проверяет нет ли null в значение полей
+ * функция проверяет нет ли null в значение полей формы лота
  * @param array $lotFormData входной $_POST массив
  * @return array $lotFormData отфильтрованные значения на null $_POST
  */
@@ -124,4 +124,17 @@ function validateFile(array $file) : null | string
         return 'Неверный формат файла. Допустимые форматы файлов: jpg, jpeg, png';
     }
     return null;
+}
+
+/*
+ * функция проверяет нет ли null в значение полей формы регистрации пользователя
+ */
+function getUserFormData(array $userFormData) :array
+{
+    $userFormData['email'] = ($userFormData['email']) ?? null;
+    $userFormData['password'] = ($userFormData['password']) ?? null;
+    $userFormData['name']  = $userFormData['name'] ?? null;
+    $userFormData['contact'] = $userFormData['contact'] ?? null;
+
+    return $userFormData;
 }

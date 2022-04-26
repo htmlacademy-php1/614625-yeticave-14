@@ -99,7 +99,7 @@ function getLots(mysqli $link):array
  * @param $id id лота
  * @return $lot массив с лотами либо false, если лота не существует
  */
-function getLot(mysqli $link,int $id):array|false
+function getLot(mysqli $link,int $id) : array | false
 {
     $sql = 'SELECT lots.name, creation_time,img, description, begin_price, date_completion, categories.name as category FROM lots
     LEFT JOIN categories on lots.category_id=categories.id WHERE lots.id=' . $id;
@@ -111,7 +111,14 @@ function getLot(mysqli $link,int $id):array|false
     return $lot;
 }
 
-function createLot(mysqli $link,array $lotFormData){
+/*
+ * функция создает лот
+ * @param mysqli $link
+ * @param $lotFormData массив с данными лота
+ * @return id созданного лота
+ */
+function createLot(mysqli $link,array $lotFormData) : int
+{
     $sql = 'INSERT INTO lots (name, creation_time, description, img, begin_price, date_completion, bid_step, user_id, category_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     $data = [$lotFormData['name'], $lotFormData['creation_time'], $lotFormData['description'], $lotFormData['img'], $lotFormData['begin_price'], $lotFormData['date_completion'],
@@ -119,4 +126,20 @@ function createLot(mysqli $link,array $lotFormData){
     $stmt = db_get_prepare_stmt($link, $sql, $data);
     $result = mysqli_stmt_execute($stmt);
     return mysqli_insert_id($link);
+}
+
+/*
+ * функция ищет email введенный пользователем в форму в базе данных
+ * @param mysqli $link
+ * @param $email string
+ * return bool
+ */
+function searchUserEmail(mysqli $link, string $email) : bool
+{
+    $sql = "SELECT email FROM users WHERE email =" . "'" . $email . "'";
+    $result = mysqli_query($link, $sql);
+    if ( $result->num_rows===0 ){
+        return false;
+    }
+    return true;
 }

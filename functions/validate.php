@@ -54,9 +54,9 @@ function getLotFormData(array $lotFormData) : array
 function validateLotForm(array $lotFormData,array $categories,array $file) : array
 {
     $errors = [
-        'name' => validateLengthLot($lotFormData['name']),
+        'name' => validateLengthForm($lotFormData['name'], 3, 122),
         'category' => validateCategory($lotFormData['category'],$categories),
-        'description'  => validateLengthLot($lotFormData['description']),
+        'description'  => validateLengthForm($lotFormData['description'],3,122),
         'begin_price' => validateLotNumber($lotFormData['begin_price']),
         'bid_step' => validateLotNumber($lotFormData['bid_step']),
         'date_completion' => is_date_valid($lotFormData['date_completion']),
@@ -69,14 +69,16 @@ function validateLotForm(array $lotFormData,array $categories,array $file) : arr
 /**
  * функция проверяет длину введенной строки, строка должна находиться в пределах от 3 до 122 символов
  * @param $valueInput string
+ * @param int $minValue минимальное-допустимое значение строки
+ * @param int $maxValue максимально-допустимое значение строки
  * @return null в случае правильной длины, иначе strint текст ошибки
  */
-function validateLengthLot(string $valueInput) : null | string
+function validateLengthForm(string $valueInput,int $minValue,int $maxValue) : null | string
 {
-    if ( strlen($valueInput)>=3 && strlen($valueInput)<=122 ){
+    if ( strlen($valueInput)>=$minValue && strlen($valueInput)<=$maxValue ){
         return null;
     }
-    return 'введите значение от 3 до 122 символов';
+    return 'введите значение от ' . $minValue . ' до ' . $maxValue . ' символов';
 }
 
 /**
@@ -145,20 +147,21 @@ function getUserFormData(array $userFormData) :array
 function validateSignUpForm($link, $userFormData){
     $errors = [
         'email' => validateEmail($link, $userFormData['email']),
-        'password' => validateLengthLot($userFormData['password']),
-        'name' => validateLengthLot($userFormData['name']),
-        'contact' => validateLengthLot($userFormData['contact'])
+        'password' => validateLengthForm($userFormData['password'],5,20),//от 5 до 20 символов
+        'name' => validateLengthForm($userFormData['name'], 3, 122),
+        'contact' => validateLengthForm($userFormData['contact'],3,122)
     ];
-
     $errors = array_filter($errors);
     return $errors;
-
 }
 
 function validateEmail($link, $email){
-    //Возвращает отфильтрованные данные или false, если фильтрация завершилась неудачей.
-    $emailfilter = filter_var('mail@mail.ru',FILTER_VALIDATE_EMAIL);
-    var_dump($emailfilter);
-    exit();
+    if (filter_var($email,FILTER_VALIDATE_EMAIL) === false){
+        return 'Некорректный адрес электонной почты.';
+    }
+    if( searchUserEmail($link, $email) ){
+        return $email . ' занят другим пользователем';
+    }
+    return null;
 }
 

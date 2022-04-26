@@ -14,15 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $userFormData = getUserFormData($_POST);
     $errors = validateSignUpForm($link, $userFormData);
 
-//Для хранения пароля в БД, его предварительно нужно обработать встроенной функцией password_hash.
-//    if (count($errors) === 0)
-//    {
-//        $img = uploadFile($_FILES);
-//        $lotFormData['img'] =  $img;
-//        $lotFormData['creation_time'] = date('Y-m-d');
-//        $lotId = createLot($link, $lotFormData);
-//        header("Location:/lot.php?id=" . $lotId);
-//    }
+    if (count($errors) === 0)
+    {
+        $userFormData['password'] = password_hash($userFormData['password'], null, $options = []);
+        addUser($link, $userFormData);
+        header("Location:/login.php");
+    }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     $userFormData = getUserFormData([]);

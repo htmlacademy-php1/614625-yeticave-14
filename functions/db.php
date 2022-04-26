@@ -143,3 +143,17 @@ function searchUserEmail(mysqli $link, string $email) : bool
     }
     return true;
 }
+
+/*
+ * функция создает нового пользователя в бд
+ * @param mysqli $link
+ * @param $userFormData array с данными пользователя
+ * return
+ */
+function addUser(mysqli $link, array $userFormData){
+    $sql = 'INSERT INTO users (creation_time, name, email, password, contact) VALUES (?, ?, ?, ?, ?)';
+    $data = [ date('Y-m-d'), $userFormData['name'], $userFormData['email'], $userFormData['password'], $userFormData['contact']];
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    return;
+}

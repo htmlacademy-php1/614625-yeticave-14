@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $userFormData = getUserFormData($_POST);
     $errors = validateSignUpForm($link, $userFormData);
 
+//Для хранения пароля в БД, его предварительно нужно обработать встроенной функцией password_hash.
 //    if (count($errors) === 0)
 //    {
 //        $img = uploadFile($_FILES);
@@ -27,10 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     $userFormData = getUserFormData([]);
     $errors = [];
 }
-//var_dump($userFormData);
-//exit();
-//$page_content = include_template('add.php',['categories' => $categories, 'errors' => $errors, 'lotFormData' => $lotFormData]);
-$page_content = include_template('sign-up.php',['categories' => $categories, 'userFormData' => $userFormData]);
+
+$page_content = include_template('sign-up.php',['categories' => $categories, 'userFormData' => $userFormData, 'errors' => $errors]);
 
 $layout_content = include_template('layout.php',[
     'is_auth'    => $is_auth,

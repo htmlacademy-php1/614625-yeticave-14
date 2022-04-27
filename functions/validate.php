@@ -165,3 +165,6 @@ function validateEmail($link, $email){
     return null;
 }
 
+function getUserLoginData($userLoginData){
+
+}

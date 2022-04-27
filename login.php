@@ -10,9 +10,10 @@ else{
     $categories = getCategories($link);
 }
 
-//if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-//    $userFormData = getUserFormData($_POST);
-//    $errors = validateSignUpForm($link, $userFormData);
+if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $userFormData = getUserLoginData($_POST);
+    $errors = [];
+//  $errors = validateSignUpForm($link, $userFormData);
 //
 //    if (count($errors) === 0)
 //    {
@@ -20,13 +21,13 @@ else{
 //        addUser($link, $userFormData);
 //        header("Location:/login.php");
 //    }
-//}
-//if ($_SERVER['REQUEST_METHOD'] === 'GET'){
-//    $userFormData = getUserFormData([]);
-//    $errors = [];
-//}
+}
+if ($_SERVER['REQUEST_METHOD'] === 'GET'){
+    $userFormData = getUserLoginData([]);
+    $errors = [];
+}
 
-$page_content = include_template('login.php',['categories' => $categories]);
+$page_content = include_template('login.php',['categories' => $categories, 'errors' => $errors, 'userFormData' => $userFormData]);
 
 $layout_content = include_template('layout.php',[
     'is_auth'    => $is_auth,

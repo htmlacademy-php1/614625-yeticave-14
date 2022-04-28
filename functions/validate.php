@@ -128,10 +128,12 @@ function validateFile(array $file) : null | string
     return null;
 }
 
-/*
+/**
  * функция проверяет нет ли null в значение полей формы регистрации пользователя
+ * @param array $userFormData массив с данными с формы
+ * @return array $userFormData массив с отфильтрованными на null значениями
  */
-function getUserFormData(array $userFormData) :array
+function getUserFormData(array $userFormData) : array
 {
     $userFormData['email'] = ($userFormData['email']) ?? null;
     $userFormData['password'] = ($userFormData['password']) ?? null;
@@ -141,10 +143,14 @@ function getUserFormData(array $userFormData) :array
     return $userFormData;
 }
 
-/*
- *
+/**
+ * функция валидирует значения в форме регистрации
+ * @param mysqli $link
+ * @param array $userFormData значения с полей формы
+ * @return array $errors массив ошибок
  */
-function validateSignUpForm($link, $userFormData){
+function validateSignUpForm(mysqli $link, array $userFormData) : array
+{
     $errors = [
         'email' => validateEmail($link, $userFormData['email']),
         'password' => validateLengthForm($userFormData['password'],5,20),//от 5 до 20 символов
@@ -155,7 +161,14 @@ function validateSignUpForm($link, $userFormData){
     return $errors;
 }
 
-function validateEmail($link, $email){
+/**
+ * функция проверяет на корректность введенного email и на уникальность email
+ * @param mysqli $link
+ * @param string $email
+ * @return string | null либо текст ошибки, либо null
+ */
+function validateEmail(mysqli $link, string $email) : string | null
+{
     if (filter_var($email,FILTER_VALIDATE_EMAIL) === false){
         return 'Некорректный адрес электонной почты.';
     }

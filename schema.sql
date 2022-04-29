@@ -79,6 +79,7 @@ CREATE TABLE bets (
 CREATE TABLE users (
   id int PRIMARY KEY AUTO_INCREMENT,
   creation_time datetime NOT NULL,
+  name varchar(122) NOT NULL,
   email varchar(64) NOT NULL UNIQUE,
   password varchar(64) NOT NULL,
   contact varchar(122) NOT NULL

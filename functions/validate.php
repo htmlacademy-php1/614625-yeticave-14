@@ -28,7 +28,7 @@ function is_date_valid(string $date) : ?string
 }
 
 /**
- * функция проверяет нет ли null в значение полей
+ * функция проверяет нет ли null в значение полей формы лота
  * @param array $lotFormData входной $_POST массив
  * @return array $lotFormData отфильтрованные значения на null $_POST
  */
@@ -54,9 +54,9 @@ function getLotFormData(array $lotFormData) : array
 function validateLotForm(array $lotFormData,array $categories,array $file) : array
 {
     $errors = [
-        'name' => validateLengthLot($lotFormData['name']),
+        'name' => validateLengthForm($lotFormData['name'], 3, 122),
         'category' => validateCategory($lotFormData['category'],$categories),
-        'description'  => validateLengthLot($lotFormData['description']),
+        'description'  => validateLengthForm($lotFormData['description'],3,122),
         'begin_price' => validateLotNumber($lotFormData['begin_price']),
         'bid_step' => validateLotNumber($lotFormData['bid_step']),
         'date_completion' => is_date_valid($lotFormData['date_completion']),
@@ -69,14 +69,16 @@ function validateLotForm(array $lotFormData,array $categories,array $file) : arr
 /**
  * функция проверяет длину введенной строки, строка должна находиться в пределах от 3 до 122 символов
  * @param $valueInput string
+ * @param int $minValue минимальное-допустимое значение строки
+ * @param int $maxValue максимально-допустимое значение строки
  * @return null в случае правильной длины, иначе strint текст ошибки
  */
-function validateLengthLot(string $valueInput) : null | string
+function validateLengthForm(string $valueInput,int $minValue,int $maxValue) : null | string
 {
-    if ( strlen($valueInput)>=3 && strlen($valueInput)<=122 ){
+    if ( strlen($valueInput)>=$minValue && strlen($valueInput)<=$maxValue ){
         return null;
     }
-    return 'введите значение от 3 до 122 символов';
+    return 'введите значение от ' . $minValue . ' до ' . $maxValue . ' символов';
 }
 
 /**
@@ -125,3 +127,54 @@ function validateFile(array $file) : null | string
     }
     return null;
 }
+
+/**
+ * функция проверяет нет ли null в значение полей формы регистрации пользователя
+ * @param array $userFormData массив с данными с формы
+ * @return array $userFormData массив с отфильтрованными на null значениями
+ */
+function getUserFormData(array $userFormData) : array
+{
+    $userFormData['email'] = ($userFormData['email']) ?? null;
+    $userFormData['password'] = ($userFormData['password']) ?? null;
+    $userFormData['name']  = $userFormData['name'] ?? null;
+    $userFormData['contact'] = $userFormData['contact'] ?? null;
+
+    return $userFormData;
+}
+
+/**
+ * функция валидирует значения в форме регистрации
+ * @param mysqli $link
+ * @param array $userFormData значения с полей формы
+ * @return array $errors массив ошибок
+ */
+function validateSignUpForm(mysqli $link, array $userFormData) : array
+{
+    $errors = [
+        'email' => validateEmail($link, $userFormData['email']),
+        'password' => validateLengthForm($userFormData['password'],5,20),//от 5 до 20 символов
+        'name' => validateLengthForm($userFormData['name'], 3, 122),
+        'contact' => validateLengthForm($userFormData['contact'],3,122)
+    ];
+    $errors = array_filter($errors);
+    return $errors;
+}
+
+/**
+ * функция проверяет на корректность введенного email и на уникальность email
+ * @param mysqli $link
+ * @param string $email
+ * @return string | null либо текст ошибки, либо null
+ */
+function validateEmail(mysqli $link, string $email) : string | null
+{
+    if (filter_var($email,FILTER_VALIDATE_EMAIL) === false){
+        return 'Некорректный адрес электонной почты.';
+    }
+    if( searchUserEmail($link, $email) ){
+        return $email . ' занят другим пользователем';
+    }
+    return null;
+}
+

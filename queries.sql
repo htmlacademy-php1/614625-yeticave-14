@@ -11,9 +11,9 @@ VALUES ('Доски и лыжи','boards-and-skis'),
        ('Разное','any');
 
 /*придумайте пару пользователей*/
-INSERT INTO users (email,creation_time,password,contact)
-VALUES ('user1@mail.ru','23-04-04','test','89123123'),
-       ('user2@mail.ru','23-04-04','test2','891231232');
+INSERT INTO users (email, name,creation_time,password,contact)
+VALUES ('user1@mail.ru', 'артем','23-04-04','test','89123123'),
+       ('user2@mail.ru', 'антон','23-04-04','test2','891231232');
 
 /*существующий список объявлений;*/
 INSERT INTO lots (name,user_id,description,begin_price,img,category_id,creation_time,date_completion,bid_step)

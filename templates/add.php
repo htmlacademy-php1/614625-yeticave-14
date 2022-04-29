@@ -1,6 +1,6 @@
 <form class="form form--add-lot container <?php if (isset($errors)) {
     echo 'form--invalid';
-} ?>" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
+} ?>" action="add.php" method="post" enctype="multipart/form-data">
     <h2>Добавление лота</h2>
     <div class="form__container-two">
         <div class="form__item <?php if (isset($errors['name'])) {if ($errors['name']) {echo 'form__item--invalid';}} ?>">

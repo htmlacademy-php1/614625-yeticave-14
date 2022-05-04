@@ -166,5 +166,12 @@ function validateEmail($link, $email){
 }
 
 function getUserLoginData($userLoginData){
+    $userFormData['email'] = ($userFormData['email']) ?? null;
+    $userFormData['password'] = ($userFormData['password']) ?? null;
 
+    return $userLoginData;
+}
+
+function validateLoginForm(){
+    
 }

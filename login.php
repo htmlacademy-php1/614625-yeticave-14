@@ -12,8 +12,8 @@ else{
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $userFormData = getUserLoginData($_POST);
-    $errors = [];
-//  $errors = validateSignUpForm($link, $userFormData);
+    //var_dump($userFormData);
+    $errors = validateLoginForm($link, $userFormData);
 //
 //    if (count($errors) === 0)
 //    {

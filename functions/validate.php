@@ -178,6 +178,7 @@ function validateEmail(mysqli $link, string $email) : string | null
     return null;
 }
 
+<<<<<<< HEAD
 function getUserLoginData(array $userLoginData) :array
 {
     $userLoginData['email'] = ($userLoginData['email']) ?? null;
@@ -208,6 +209,8 @@ function checkEmail($link, $email){
     }
     //var_dump($email);
     return null;
+=======  
+>>>>>>> 1710a95f7f8578407d424e1c0294d1f7a4734745
 }
 
 function checkPassword($link, $password, $email){

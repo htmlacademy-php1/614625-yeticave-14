@@ -11,10 +11,13 @@ else{
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+<<<<<<< HEAD
     $userLoginData = getUserLoginData($_POST);
     $errors = validateLoginForm($link, $userLoginData);
     var_dump($errors);
     exit();
+=======
+>>>>>>> 1710a95f7f8578407d424e1c0294d1f7a4734745
 //
 //    if (count($errors) === 0)
 //    {

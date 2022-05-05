@@ -218,7 +218,7 @@ function checkPassword($link, $password, $email){
     //следующая проверка правильности пароля, если запрос ничего не возвращает, то нужно вывести неверный пароль
     $valueValidateLength = validateLengthForm($password, 5, 20);
 
-    if ( $valueValidateLength !== null){ы
+    if ( $valueValidateLength !== null){
         return $valueValidateLength;
     }
     searchPassword($link, $password, $email);

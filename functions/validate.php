@@ -178,6 +178,46 @@ function validateEmail(mysqli $link, string $email) : string | null
     return null;
 }
 
-function getUserLoginData($userLoginData){
+function getUserLoginData(array $userLoginData) :array
+{
+    $userLoginData['email'] = ($userLoginData['email']) ?? null;
+    $userLoginData['password'] = ($userLoginData['password']) ?? null;
 
+    return $userLoginData;
+}
+
+function validateLoginForm($link, $userLoginData)
+{
+    $errors = [
+        'email' => checkEmail($link, $userLoginData['email']),
+        'password' => checkPassword($link, $userLoginData['password'], $userLoginData['email'])
+    ];
+
+    $errors = array_filter($errors);
+    return $errors;
+}
+
+function checkEmail($link, $email){
+    //email проверить на то что ввели email(Некорректный адрес электонной почты.)
+    // email проверить на существование(Такой пользователь не найден)
+    if (filter_var($email,FILTER_VALIDATE_EMAIL) === false){
+        return 'Некорректный адрес электонной почты.';
+    }
+    if( !searchUserEmail($link, $email) ){
+        return 'Такой пользователь не найден';
+    }
+    //var_dump($email);
+    return null;
+}
+
+function checkPassword($link, $password, $email){
+    //пароль должен быть от 5 до 20 символов
+    //следующая проверка правильности пароля, если запрос ничего не возвращает, то нужно вывести неверный пароль
+    $valueValidateLength = validateLengthForm($password, 5, 20);
+
+    if ( $valueValidateLength !== null){ы
+        return $valueValidateLength;
+    }
+    searchPassword($link, $password, $email);
+    return null;
 }

@@ -11,9 +11,10 @@ else{
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $userFormData = getUserLoginData($_POST);
-    $errors = [];
-//  $errors = validateSignUpForm($link, $userFormData);
+    $userLoginData = getUserLoginData($_POST);
+    $errors = validateLoginForm($link, $userLoginData);
+    var_dump($errors);
+    exit();
 //
 //    if (count($errors) === 0)
 //    {
@@ -23,11 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 //    }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
-    $userFormData = getUserLoginData([]);
+    $userLoginData = getUserLoginData([]);
     $errors = [];
 }
 
-$page_content = include_template('login.php',['categories' => $categories, 'errors' => $errors, 'userFormData' => $userFormData]);
+$page_content = include_template('login.php',['categories' => $categories, 'errors' => $errors, 'userLoginData' => $userLoginData]);
 
 $layout_content = include_template('layout.php',[
     'is_auth'    => $is_auth,

@@ -157,3 +157,10 @@ function addUser(mysqli $link, array $userFormData){
     $result = mysqli_stmt_execute($stmt);
     return mysqli_insert_id($link);
 }
+
+function searchPassword($link, $password, $email){
+    //найти пароль
+    //если пароль найден у данного пользователя, то проверить его и вернуть верный он или нет
+
+    return null;
+}

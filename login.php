@@ -16,6 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     if (count($errors) === 0)
     {
+        session_start();
+        echo session_id();
 //        $userFormData['password'] = password_hash($userFormData['password'], null, $options = []);
 //        addUser($link, $userFormData);
 //        header("Location:/login.php");

@@ -13,15 +13,13 @@ else{
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $userLoginData = getUserLoginData($_POST);
     $errors = validateLoginForm($link, $userLoginData);
-    var_dump($errors);
-    exit();
-//
-//    if (count($errors) === 0)
-//    {
+
+    if (count($errors) === 0)
+    {
 //        $userFormData['password'] = password_hash($userFormData['password'], null, $options = []);
 //        addUser($link, $userFormData);
 //        header("Location:/login.php");
-//    }
+    }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     $userLoginData = getUserLoginData([]);

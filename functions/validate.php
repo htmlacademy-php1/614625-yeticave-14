@@ -218,6 +218,12 @@ function checkPassword($link, $password, $email){
     if ( $valueValidateLength !== null){
         return $valueValidateLength;
     }
-    searchPassword($link, $password, $email);
+    $passwordFromBd = searchPassword($link, $password, $email);
+    if($passwordFromBd === false){
+        return 'пароль не найден для данного пользователя';
+    }
+    if (!password_verify($password, $passwordFromBd)){
+        return 'неверный пароль';
+    }; 
     return null;
 }

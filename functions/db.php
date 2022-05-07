@@ -161,6 +161,12 @@ function addUser(mysqli $link, array $userFormData){
 function searchPassword($link, $password, $email){
     //найти пароль
     //если пароль найден у данного пользователя, то проверить его и вернуть верный он или нет
-
-    return null;
+    $sql = "SELECT password FROM users WHERE email =" . "'" . $email . "'";
+    $result = mysqli_query($link, $sql);
+    if ( $result->num_rows===0 ){
+        return false;
+    }
+    $passwordFromBd = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    
+    return $passwordFromBd[0]['password'];
 }

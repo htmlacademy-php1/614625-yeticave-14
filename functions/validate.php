@@ -178,7 +178,6 @@ function validateEmail(mysqli $link, string $email) : string | null
     return null;
 }
 
-<<<<<<< HEAD
 function getUserLoginData(array $userLoginData) :array
 {
     $userLoginData['email'] = ($userLoginData['email']) ?? null;
@@ -209,8 +208,6 @@ function checkEmail($link, $email){
     }
     //var_dump($email);
     return null;
-=======  
->>>>>>> 1710a95f7f8578407d424e1c0294d1f7a4734745
 }
 
 function checkPassword($link, $password, $email){
@@ -221,6 +218,12 @@ function checkPassword($link, $password, $email){
     if ( $valueValidateLength !== null){
         return $valueValidateLength;
     }
-    searchPassword($link, $password, $email);
+    $passwordFromBd = searchPassword($link, $password, $email);
+    if($passwordFromBd === false){
+        return 'пароль не найден для данного пользователя';
+    }
+    if (!password_verify($password, $passwordFromBd)){
+        return 'неверный пароль';
+    }; 
     return null;
 }

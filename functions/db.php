@@ -170,3 +170,13 @@ function searchPassword($link, $password, $email){
     
     return $passwordFromBd[0]['password'];
 }
+
+function searchUser($link, $email){
+
+    $sql = "SELECT id, name FROM users WHERE email =" . "'" . $email . "'";
+    $result = mysqli_query($link, $sql);
+
+    $userData = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    
+    return $userData;    
+}

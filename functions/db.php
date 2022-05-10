@@ -66,7 +66,7 @@ function dbConnect(array $config):mysqli
     return $link;
 }
 
-/*
+/**
  * функция возвращает массив с категориями
  * @param mysqli $link объект подключения к бд
  * @return $categories массив с категориями
@@ -79,7 +79,7 @@ function getCategories(mysqli $link):array
     return $categories;
 }
 
-/*
+/**
  * функция возвращает массив с лотами
  * @param mysqli $link объект подключения к бд
  * @return $lots массив с лотами
@@ -93,7 +93,7 @@ function getLots(mysqli $link):array
     return $lots;
 }
 
-/*
+/**
  * функция возращает массив с параметрами лота
  * @param mysqli $link объект подключения к бд
  * @param $id id лота
@@ -111,7 +111,7 @@ function getLot(mysqli $link,int $id) : array | false
     return $lot;
 }
 
-/*
+/**
  * функция создает лот
  * @param mysqli $link
  * @param $lotFormData массив с данными лота
@@ -129,11 +129,11 @@ function createLot(mysqli $link,array $lotFormData,int $user_id) : int
     return mysqli_insert_id($link);
 }
 
-/*
+/**
  * функция ищет email введенный пользователем в форму в базе данных
  * @param mysqli $link
  * @param $email string
- * return bool
+ * @return bool
  */
 function searchUserEmail(mysqli $link, string $email) : bool
 {
@@ -145,11 +145,11 @@ function searchUserEmail(mysqli $link, string $email) : bool
     return true;
 }
 
-/*
+/**
  * функция создает нового пользователя в бд
  * @param mysqli $link
  * @param $userFormData array с данными пользователя
- * return id добавленной записи в бд
+ * @return id добавленной записи в бд
  */
 function addUser(mysqli $link, array $userFormData){
     $sql = 'INSERT INTO users (creation_time, name, email, password, contact) VALUES (?, ?, ?, ?, ?)';
@@ -159,9 +159,14 @@ function addUser(mysqli $link, array $userFormData){
     return mysqli_insert_id($link);
 }
 
-function searchPassword($link, $password, $email){
-    //найти пароль
-    //если пароль найден у данного пользователя, то проверить его и вернуть верный он или нет
+/**
+ * функция ищет пароль в базе данных
+ * @param mysqli $link
+ * @param $email
+ * @return false | string
+*/
+function searchPassword(mysqli $link, string $email) : false | string
+{
     $sql = "SELECT password FROM users WHERE email =" . "'" . $email . "'";
     $result = mysqli_query($link, $sql);
     if ( $result->num_rows===0 ){
@@ -172,7 +177,14 @@ function searchPassword($link, $password, $email){
     return $passwordFromBd[0]['password'];
 }
 
-function searchUser($link, $email){
+/** 
+ * функция ищет данные пользователя в базе данных
+ * @param mysqli $link
+ * @param $email
+ * @return массив с данными пользователя
+*/
+function searchUser(mysqli $link, string $email) : array
+{
 
     $sql = "SELECT id, name FROM users WHERE email =" . "'" . $email . "'";
     $result = mysqli_query($link, $sql);

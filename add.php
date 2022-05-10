@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         $img = uploadFile($_FILES);
         $lotFormData['img'] =  $img;
         $lotFormData['creation_time'] = date('Y-m-d');
-        $lotId = createLot($link, $lotFormData);
+        $lotId = createLot($link, $lotFormData, $_SESSION['user_id']);
         header("Location:/lot.php?id=" . $lotId);
     }
 }

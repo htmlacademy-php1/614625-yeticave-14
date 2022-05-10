@@ -115,14 +115,15 @@ function getLot(mysqli $link,int $id) : array | false
  * функция создает лот
  * @param mysqli $link
  * @param $lotFormData массив с данными лота
+ * @param $user_id id пользователя
  * @return id созданного лота
  */
-function createLot(mysqli $link,array $lotFormData) : int
+function createLot(mysqli $link,array $lotFormData,int $user_id) : int
 {
     $sql = 'INSERT INTO lots (name, creation_time, description, img, begin_price, date_completion, bid_step, user_id, category_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     $data = [$lotFormData['name'], $lotFormData['creation_time'], $lotFormData['description'], $lotFormData['img'], $lotFormData['begin_price'], $lotFormData['date_completion'],
-    $lotFormData['bid_step'], 1, $lotFormData['category']];
+    $lotFormData['bid_step'], $user_id, $lotFormData['category']];
     $stmt = db_get_prepare_stmt($link, $sql, $data);
     $result = mysqli_stmt_execute($stmt);
     return mysqli_insert_id($link);

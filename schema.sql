@@ -85,4 +85,5 @@ CREATE TABLE users (
   contact varchar(122) NOT NULL
 );
 
-
+/*создание полнотекстового поиска для таблицы лотов*/ 
+CREATE FULLTEXT INDEX lots_search ON lots(name, description)

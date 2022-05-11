@@ -60,3 +60,7 @@ UPDATE lots SET name = '2015 Rossignol District Snowboard' WHERE id=1;
 SELECT *
 FROM bets
 WHERE lot_id=1 ORDER BY creation_time;
+
+/*поиск по слову через полнотекстовый поиск*/
+SELECT * FROM lots
+WHERE MATCH(name, description) AGAINST('описание')

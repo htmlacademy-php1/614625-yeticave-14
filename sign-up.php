@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     if(isset($_SESSION['user_id'])){
         header("Location:/403.php");
+        exit();
     }
     $userFormData = getUserFormData([]);
     $errors = [];

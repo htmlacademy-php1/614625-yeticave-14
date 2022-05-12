@@ -66,7 +66,7 @@ function dbConnect(array $config):mysqli
     return $link;
 }
 
-/*
+/**
  * функция возвращает массив с категориями
  * @param mysqli $link объект подключения к бд
  * @return $categories массив с категориями
@@ -79,7 +79,7 @@ function getCategories(mysqli $link):array
     return $categories;
 }
 
-/*
+/**
  * функция возвращает массив с лотами
  * @param mysqli $link объект подключения к бд
  * @return $lots массив с лотами
@@ -93,7 +93,7 @@ function getLots(mysqli $link):array
     return $lots;
 }
 
-/*
+/**
  * функция возращает массив с параметрами лота
  * @param mysqli $link объект подключения к бд
  * @param $id id лота
@@ -111,28 +111,29 @@ function getLot(mysqli $link,int $id) : array | false
     return $lot;
 }
 
-/*
+/**
  * функция создает лот
  * @param mysqli $link
  * @param $lotFormData массив с данными лота
+ * @param $user_id id пользователя
  * @return id созданного лота
  */
-function createLot(mysqli $link,array $lotFormData) : int
+function createLot(mysqli $link,array $lotFormData,int $user_id) : int
 {
     $sql = 'INSERT INTO lots (name, creation_time, description, img, begin_price, date_completion, bid_step, user_id, category_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     $data = [$lotFormData['name'], $lotFormData['creation_time'], $lotFormData['description'], $lotFormData['img'], $lotFormData['begin_price'], $lotFormData['date_completion'],
-    $lotFormData['bid_step'], 1, $lotFormData['category']];
+    $lotFormData['bid_step'], $user_id, $lotFormData['category']];
     $stmt = db_get_prepare_stmt($link, $sql, $data);
     $result = mysqli_stmt_execute($stmt);
     return mysqli_insert_id($link);
 }
 
-/*
+/**
  * функция ищет email введенный пользователем в форму в базе данных
  * @param mysqli $link
  * @param $email string
- * return bool
+ * @return bool
  */
 function searchUserEmail(mysqli $link, string $email) : bool
 {
@@ -144,11 +145,11 @@ function searchUserEmail(mysqli $link, string $email) : bool
     return true;
 }
 
-/*
+/**
  * функция создает нового пользователя в бд
  * @param mysqli $link
  * @param $userFormData array с данными пользователя
- * return id добавленной записи в бд
+ * @return id добавленной записи в бд
  */
 function addUser(mysqli $link, array $userFormData){
     $sql = 'INSERT INTO users (creation_time, name, email, password, contact) VALUES (?, ?, ?, ?, ?)';
@@ -156,4 +157,39 @@ function addUser(mysqli $link, array $userFormData){
     $stmt = db_get_prepare_stmt($link, $sql, $data);
     $result = mysqli_stmt_execute($stmt);
     return mysqli_insert_id($link);
+}
+
+/**
+ * функция ищет пароль в базе данных
+ * @param mysqli $link
+ * @param $email
+ * @return false | string
+*/
+function searchPassword(mysqli $link, string $email) : false | string
+{
+    $sql = "SELECT password FROM users WHERE email =" . "'" . $email . "'";
+    $result = mysqli_query($link, $sql);
+    if ( $result->num_rows===0 ){
+        return false;
+    }
+    $passwordFromBd = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    
+    return $passwordFromBd[0]['password'];
+}
+
+/** 
+ * функция ищет данные пользователя в базе данных
+ * @param mysqli $link
+ * @param $email
+ * @return массив с данными пользователя
+*/
+function searchUser(mysqli $link, string $email) : array
+{
+
+    $sql = "SELECT id, name FROM users WHERE email =" . "'" . $email . "'";
+    $result = mysqli_query($link, $sql);
+
+    $userData = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    
+    return $userData;    
 }

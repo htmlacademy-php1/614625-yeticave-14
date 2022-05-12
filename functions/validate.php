@@ -178,3 +178,73 @@ function validateEmail(mysqli $link, string $email) : string | null
     return null;
 }
 
+/**
+ * функция проверяет нет ли null в значение полей формы login
+ * @param array $userLoginData массив с данными с формы
+ * @return массив с проверенными значениями
+ */
+function getUserLoginData(array $userLoginData) :array
+{
+    $userLoginData['email'] = ($userLoginData['email']) ?? null;
+    $userLoginData['password'] = ($userLoginData['password']) ?? null;
+
+    return $userLoginData;
+}
+
+/**
+ * функция валидирует значения в форме login
+ * @param mysqli $link
+ * @param $userLoginData array с данными с формы
+ * @return массив с ошибками
+ */
+function validateLoginForm(mysqli $link, array $userLoginData) : array
+{
+    $errors = [
+        'email' => checkEmail($link, $userLoginData['email']),
+        'password' => checkPassword($link, $userLoginData['password'], $userLoginData['email'])
+    ];
+
+    $errors = array_filter($errors);
+    return $errors;
+}
+
+/**
+ * функция проверяет емаил на валидность значения и на существование
+ * @param mysqli $link
+ * @param $email
+ * @return string ошибки или null
+ */
+function checkEmail(mysqli $link, string $email) : string | null
+{
+    if (filter_var($email,FILTER_VALIDATE_EMAIL) === false){
+        return 'Некорректный адрес электонной почты.';
+    }
+    if( !searchUserEmail($link, $email) ){
+        return 'Такой пользователь не найден';
+    }
+    return null;
+}
+
+/**
+ * функция проверяет пароль на валидность значения, на то что он существует для данного пользователя и на правильность
+ * @param mysqli $link
+ * @param $password 
+ * @param $email email
+ * @return string ошибки или null
+ */
+function checkPassword(mysqli $link, string $password, string $email) : string | null
+{
+    $valueValidateLength = validateLengthForm($password, 5, 20);
+
+    if ( $valueValidateLength !== null){
+        return $valueValidateLength;
+    }
+    $passwordFromBd = searchPassword($link, $email);
+    if($passwordFromBd === false){
+        return 'пароль не найден для данного пользователя';
+    }
+    if (!password_verify($password, $passwordFromBd)){
+        return 'неверный пароль';
+    }; 
+    return null;
+}

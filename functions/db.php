@@ -193,3 +193,13 @@ function searchUser(mysqli $link, string $email) : array
     
     return $userData;    
 }
+
+function searchLots(){
+    $sql = "SELECT * FROM lots
+    WHERE MATCH(name, description) AGAINST('маска')";
+        $result = mysqli_query($link, $sql);
+
+        $userData = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        
+        return $userData;   
+}

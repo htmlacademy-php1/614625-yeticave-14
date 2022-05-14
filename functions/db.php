@@ -195,11 +195,13 @@ function searchUser(mysqli $link, string $email) : array
 }
 
 function searchLots($link, $countLot, $searchWord){
-    $sql = "SELECT * FROM lots
-    WHERE MATCH(name, description) AGAINST('маска')";
-        $result = mysqli_query($link, $sql);
+    $sql = "SELECT lots.id, lots.name,creation_time,img,begin_price,date_completion,categories.name as category
+    FROM lots 
+    LEFT JOIN categories on lots.category_id=categories.id
+    WHERE MATCH(lots.name, lots.description) AGAINST('маска')";
+    $result = mysqli_query($link, $sql);
 
-        $searchData = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $searchData = mysqli_fetch_all($result, MYSQLI_ASSOC);
         
-        return $searchData;   
+    return $searchData;   
 }

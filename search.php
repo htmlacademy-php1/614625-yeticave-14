@@ -7,7 +7,9 @@ if (!$link) {
 }
 else{
     $categories = getCategories($link);
-    $lots = getLots($link);
+    $lots = searchLots($link, 9, $_GET['search']);
+    //var_dump($lots[0]);
+    //exit();
 }
 
 $page_content = include_template('search.php',['lots' => $lots,'categories' => $categories]);

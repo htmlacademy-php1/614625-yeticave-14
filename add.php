@@ -3,6 +3,7 @@ require_once __DIR__ . '/init.php';
 
 if(!isset($_SESSION['user_id'])){
     header("Location:/403.php");
+    exit();
 }
 
 if (!$link) {

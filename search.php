@@ -7,12 +7,13 @@ if (!$link) {
 }
 else{
     $categories = getCategories($link);
-    $lots = searchLots($link, 9, $_GET['search']);
-    //var_dump($lots[0]);
-    //exit();
+    $page = $_GET['page'] ?? 1;
+    $countPage = getCountSearchPage($link, $config['lotPerPage'], $_GET['search']);
+    
+    $lots = searchLots($link, $config['lotPerPage'], $_GET['search'], $page);
 }
 
-$page_content = include_template('search.php',['lots' => $lots,'categories' => $categories]);
+$page_content = include_template('search.php',['lots' => $lots,'categories' => $categories,'countPage' => $countPage, 'page' => $page]);
 
 $layout_content = include_template('layout.php',[
     'categories' => $categories,

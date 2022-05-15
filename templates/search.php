@@ -39,13 +39,20 @@
         <?php endforeach;?>
         </ul>
       </section>
+      <?php if($countPage>1):?>
       <ul class="pagination-list">
-        <li class="pagination-item pagination-item-prev"><a>Назад</a></li>
-        <li class="pagination-item pagination-item-active"><a>1</a></li>
-        <li class="pagination-item"><a href="#">2</a></li>
-        <li class="pagination-item"><a href="#">3</a></li>
-        <li class="pagination-item"><a href="#">4</a></li>
-        <li class="pagination-item pagination-item-next"><a href="#">Вперед</a></li>
+        <?php if ($page>1):?>
+        <li class="pagination-item pagination-item-prev"><a href="?search=<?=$_GET['search']?>&find=Найти&page=<?=$page-1;?>">Назад</a></li>
+        <?endif;?>
+
+        <?php for ($i = 1; $i<=$countPage; $i++):?>
+          <li class="pagination-item <?php if($i == $page){echo 'pagination-item-active';}?>"><a href="?search=<?=$_GET['search']?>&find=Найти&page=<?=$i?>"><?=$i?></a></li>
+        <?php endfor;?>
+        
+        <?php if ( $page != $countPage ) :?>
+        <li class="pagination-item pagination-item-next"><a href="?search=<?=$_GET['search']?>&find=Найти&page=<?=$page+1;?>">Вперед</a></li>
+        <?php endif;?>
       </ul>
+      <?php endif;?>
     </div>
   </main>

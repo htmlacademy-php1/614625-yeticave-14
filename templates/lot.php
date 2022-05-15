@@ -11,7 +11,11 @@
         <div class="lot-item__right">
             <?php if(isset($_SESSION['user_id'])):?>
             <div class="lot-item__state">
-                <?php $dataRange = get_dt_range($lot['date_completion'],date('Y-m-d H:i:s'));?>
+                <?php $dataRange = get_dt_range($lot['date_completion'],date('Y-m-d H:i:s'));
+                //вывести минимальную ставку
+                //проверить на время
+                //получить текущую цену
+                var_dump($dataRange);?>
                 <div class="lot-item__timer timer <?php if ($dataRange['hour']<1){echo 'timer--finishing';}?>">
                     <?=$dataRange['hour']?>:<?=$dataRange['minute']?>
                 </div>

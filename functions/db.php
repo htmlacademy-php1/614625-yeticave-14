@@ -185,7 +185,6 @@ function searchPassword(mysqli $link, string $email) : false | string
 */
 function searchUser(mysqli $link, string $email) : array
 {
-
     $sql = "SELECT id, name FROM users WHERE email =" . "'" . $email . "'";
     $result = mysqli_query($link, $sql);
 
@@ -239,3 +238,42 @@ function getCountSearchPage(mysqli $link, int $countLot, string $searchWord) : i
 
     return $countPage;
 }
+
+function getNameCategory($link, $id){
+    $sql = "SELECT name FROM categories WHERE id =" . "'" . $id . "'";
+    $result = mysqli_query($link, $sql);
+
+    $nameCategory = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $nameCategory = $nameCategory[0]['name'];
+    
+    return $nameCategory;   
+}
+
+function getCountCategoryPage(mysqli $link, int $countLot, int $id) : int
+{
+   
+    $sql ="SELECT count(id) as count 
+    FROM lots 
+    WHERE category_id=" .$id;
+    $result = mysqli_query($link, $sql);
+
+    $countPage = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $countPage = $countPage[0]['count'];
+    $countPage = ceil($countPage / $countLot);
+
+    return $countPage;
+}
+
+function categoryLots(mysqli $link, int $countLot, int $id, int $page){
+    $page -= 1;
+    $sql = "SELECT lots.id, lots.name,creation_time,img,begin_price,date_completion,categories.name as category
+    FROM lots 
+    LEFT JOIN categories on lots.category_id=categories.id
+    WHERE category_id=" .$id . " LIMIT " . $countLot . " OFFSET " . $page;
+    $result = mysqli_query($link, $sql);
+
+    $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        
+    return $lots; 
+}
+  

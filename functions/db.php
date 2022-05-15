@@ -194,7 +194,16 @@ function searchUser(mysqli $link, string $email) : array
     return $userData;    
 }
 
-function searchLots($link, $countLot, $searchWord, $page){
+/**
+ * функция ищет лоты по гет запросу поисковой фразы
+ * @param mysqli $link
+ * @param $countLot количество лотов
+ * @param $searchWord искомое слово
+ * @param $page номер страницы
+ * @return массив с лотами либо строка, если ничего не найдено
+ */
+function searchLots(mysqli $link, int $countLot, string $searchWord, int $page) : array | string
+{
     $page -= 1;
     $sql = "SELECT lots.id, lots.name,creation_time,img,begin_price,date_completion,categories.name as category
     FROM lots 
@@ -209,7 +218,15 @@ function searchLots($link, $countLot, $searchWord, $page){
     return $searchData;   
 }
 
-function getCountSearchPage($link, $countLot, $searchWord){
+/**
+ * функция получает количесвто страниц лотов по гет запросу поисковой фразы
+ * @param mysqli $link
+ * @param $countLot количество лотов
+ * @param $searchWord искомое слово
+ * @return количество страниц
+ */
+function getCountSearchPage(mysqli $link, int $countLot, string $searchWord) : int
+{
    
     $sql ="SELECT count(id) as count 
     FROM lots 

@@ -6,6 +6,7 @@ if (!$link) {
     $content = include_template('error.php',['error' => $error]);
 }
 else{
+    $_GET['search'] = trim($_GET['search']);
     $categories = getCategories($link);
     $page = $_GET['page'] ?? 1;
     $countPage = getCountSearchPage($link, $config['lotPerPage'], $_GET['search']);

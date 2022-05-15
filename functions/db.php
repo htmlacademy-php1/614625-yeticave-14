@@ -201,7 +201,9 @@ function searchLots($link, $countLot, $searchWord, $page){
     LEFT JOIN categories on lots.category_id=categories.id
     WHERE MATCH(lots.name, lots.description) AGAINST('" . $searchWord . "') LIMIT " . $countLot . " OFFSET " . $page;
     $result = mysqli_query($link, $sql);
-
+    if ( $result->num_rows===0 ){
+        return 'Ничего не найдено по вашему запросу';
+    }
     $searchData = mysqli_fetch_all($result, MYSQLI_ASSOC);
         
     return $searchData;   

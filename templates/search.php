@@ -11,6 +11,9 @@
     <div class="container">
       <section class="lots">
         <h2>Результаты поиска по запросу «<span><?=$_GET['search']?></span>»</h2>
+        <?php if ($lots === 'Ничего не найдено по вашему запросу'):?>
+        <h3>«Ничего не найдено по вашему запросу»</h3>
+        <?php else:?>
         <ul class="lots__list">
         <?php foreach ($lots as $lot) :?>
             <li class="lots__item lot">
@@ -38,6 +41,7 @@
             </li>
         <?php endforeach;?>
         </ul>
+      <?php endif;?>
       </section>
       <?php if($countPage>1):?>
       <ul class="pagination-list">
@@ -48,7 +52,7 @@
         <?php for ($i = 1; $i<=$countPage; $i++):?>
           <li class="pagination-item <?php if($i == $page){echo 'pagination-item-active';}?>"><a href="?search=<?=$_GET['search']?>&find=Найти&page=<?=$i?>"><?=$i?></a></li>
         <?php endfor;?>
-        
+
         <?php if ( $page != $countPage ) :?>
         <li class="pagination-item pagination-item-next"><a href="?search=<?=$_GET['search']?>&find=Найти&page=<?=$page+1;?>">Вперед</a></li>
         <?php endif;?>

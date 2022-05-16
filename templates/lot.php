@@ -11,11 +11,13 @@
         <div class="lot-item__right">
             <?php $dataRange = get_dt_range($lot['date_completion'],date('Y-m-d H:i:s'));
             if($dataRange['hour'] !==0 && $dataRange['minute'] !==0):
-                if(isset($_SESSION['user_id'])):?>
+                if(isset($_SESSION['user_id'])):
+                    if($_SESSION['user_id'] !== $lot['user_id']):?>
             <div class="lot-item__state">
                 <div class="lot-item__timer timer <?php if ($dataRange['hour']<1){echo 'timer--finishing';}?>">
                     <?=$dataRange['hour']?>:<?=$dataRange['minute']?>
                 </div>
+
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
                         <span class="lot-item__amount">Текущая цена</span>
@@ -25,6 +27,7 @@
                         Мин. ставка <span>12 000 р</span>
                     </div>
                 </div>
+
                 <form class="lot-item__form" action="" method="post" autocomplete="off">
                     <p class="lot-item__form-item form__item form__item--invalid">
                         <label for="cost">Ваша ставка</label>
@@ -33,9 +36,11 @@
                     </p>
                     <button type="submit" class="button">Сделать ставку</button>
                 </form>
+                
             </div>
             <?php endif;
-            endif;?>
+            endif;
+        endif;?>
             <div class="history">
                 <h3>История ставок (<span>10</span>)</h3>
                 <table class="history__list">

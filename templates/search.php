@@ -11,7 +11,7 @@
     <div class="container">
       <section class="lots">
         <h2>Результаты поиска по запросу «<span><?=$_GET['search']?></span>»</h2>
-        <?php if ($lots === 'Ничего не найдено по вашему запросу'):?>
+        <?php if (count($lots) === 0):?>
         <h3>«Ничего не найдено по вашему запросу»</h3>
         <?php else:?>
         <ul class="lots__list">

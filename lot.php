@@ -26,6 +26,14 @@ else{
 }
 //var_dump($_GET['id']);
 //var_dump($_SESSION);
+//var_dump($lot);
+//проверку что последний добавленная ставка не текущего пользователя
+
+//текущая ставка это ставка последнего пользователя или цена
+$bet = getBet($link, $_GET['id']);
+
+//минимальная ставка это ставка последнего + шаг, либо цена + шаг
+
 $page_content = include_template('lot.php',['lot' => $lot[0]]);
 
 $layout_content = include_template('layout.php',[

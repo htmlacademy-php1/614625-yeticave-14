@@ -58,9 +58,12 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
  * @param $config параметры подключения к базам данных сервера
  * @return mysqli возвращает объект подключения к бд
  */
-function dbConnect(array $config):mysqli
+function dbConnect(array $config) : mysqli
 {
     $link = mysqli_connect($config['db']['host'], $config['db']['user'], $config['db']['password'], $config['db']['database']);
+    if(!$link){
+        error(mysqli_connect_error());
+    }
     mysqli_set_charset($link, "utf8");
     mysqli_options($link, MYSQLI_OPT_INT_AND_FLOAT_NATIVE, $config);
     return $link;
@@ -101,7 +104,7 @@ function getLots(mysqli $link):array
  */
 function getLot(mysqli $link,int $id) : array | false
 {
-    $sql = 'SELECT lots.name, creation_time,img, description, begin_price, date_completion, categories.name as category FROM lots
+    $sql = 'SELECT lots.name, creation_time,img, description, begin_price, date_completion, categories.name as category,user_id FROM lots
     LEFT JOIN categories on lots.category_id=categories.id WHERE lots.id=' . $id;
     $result = mysqli_query($link, $sql);
     if ( $result->num_rows===0 ){
@@ -203,6 +206,8 @@ function searchUser(mysqli $link, string $email) : array
  */
 function searchLots(mysqli $link, int $countLot, string $searchWord, int $page) : array | string
 {
+    //TODO использовать подготовленное выражение
+    $searchWord =  mysqli_real_escape_string($link, $searchWord);
     $page -= 1;
     $sql = "SELECT lots.id, lots.name,creation_time,img,begin_price,date_completion,categories.name as category
     FROM lots 
@@ -210,7 +215,8 @@ function searchLots(mysqli $link, int $countLot, string $searchWord, int $page) 
     WHERE MATCH(lots.name, lots.description) AGAINST('" . $searchWord . "') LIMIT " . $countLot . " OFFSET " . $page;
     $result = mysqli_query($link, $sql);
     if ( $result->num_rows===0 ){
-        return 'Ничего не найдено по вашему запросу';
+        $searchData = [];
+        return $searchData;
     }
     $searchData = mysqli_fetch_all($result, MYSQLI_ASSOC);
         
@@ -226,7 +232,7 @@ function searchLots(mysqli $link, int $countLot, string $searchWord, int $page) 
  */
 function getCountSearchPage(mysqli $link, int $countLot, string $searchWord) : int
 {
-   
+   //TODO использовать подготовленное выражение
     $sql ="SELECT count(id) as count 
     FROM lots 
     WHERE MATCH(name, description) AGAINST('" . $searchWord . "')";
@@ -239,6 +245,9 @@ function getCountSearchPage(mysqli $link, int $countLot, string $searchWord) : i
     return $countPage;
 }
 
+/**
+ * 
+ */
 function getNameCategory($link, $id){
     $sql = "SELECT name FROM categories WHERE id =" . "'" . $id . "'";
     $result = mysqli_query($link, $sql);
@@ -277,3 +286,7 @@ function categoryLots(mysqli $link, int $countLot, int $id, int $page){
     return $lots; 
 }
   
+function getBet($link, int $id){
+    //$sql = "SELECT TOP(1) price FROM `bets` WHERE lot_id=1 order by creation_time DESC;";
+
+}

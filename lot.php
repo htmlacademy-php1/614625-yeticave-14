@@ -24,7 +24,8 @@ else{
         exit();
     }
 }
-
+//var_dump($_GET['id']);
+//var_dump($_SESSION);
 $page_content = include_template('lot.php',['lot' => $lot[0]]);
 
 $layout_content = include_template('layout.php',[

@@ -21,22 +21,22 @@
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
                         <span class="lot-item__amount">Текущая цена</span>
-                        <span class="lot-item__cost">10 999</span>
+                        <span class="lot-item__cost"><?=$bet?></span>
                     </div>
                     <div class="lot-item__min-cost">
-                        Мин. ставка <span>12 000 р</span>
+                        Мин. ставка <span><?=formatPrice($bidStep)?></span>
                     </div>
                 </div>
 
                 <form class="lot-item__form" action="" method="post" autocomplete="off">
                     <p class="lot-item__form-item form__item form__item--invalid">
-                        <label for="cost">Ваша ставка</label>
-                        <input id="cost" type="text" name="cost" placeholder="12 000">
+                        <label for="price">Ваша ставка</label>
+                        <input id="price" type="text" name="price" placeholder="<?=$bidStep?>">
                         <span class="form__error">Введите наименование лота</span>
                     </p>
                     <button type="submit" class="button">Сделать ставку</button>
                 </form>
-                
+
             </div>
             <?php endif;
             endif;

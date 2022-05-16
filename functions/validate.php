@@ -248,3 +248,20 @@ function checkPassword(mysqli $link, string $password, string $email) : string |
     }; 
     return null;
 }
+
+function validateBet($price, $user_id, $bidStep){
+    if($_SESSION['user_id'] === $user_id){
+        return 'Вы создали лот, ставку сделать Вы не можете';
+    }
+    
+    if(empty($price)){
+        //$price = 0;
+        return 'Введите ставку';
+    }
+    //проверить, что последняя ставка не этого же пользоавтаеля
+
+    //проверить значение что не меньше мин ставки
+    if($price<$bidStep){
+        return 'Минимальная ставка ' . $bidStep;
+    }
+}

@@ -31,10 +31,33 @@ else{
 
 //текущая ставка это ставка последнего пользователя или цена
 $bet = getBet($link, $_GET['id']);
+//проверка если пустое значение
+if(empty($bet)){
+    $bet = $lot[0]['begin_price'];
+}
+$bidStep = $bet + $lot[0]['bid_step'];
+$error = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+    //проверить что пользователь другой, не тот который создал лот
+    $price = $_POST['price'];
+    $error = validateBet($price, $lot[0]['user_id'], $bidStep);
+    var_dump($error);
+    //exit();
+    
+    //записать значение
+    //if (empty($error)){
 
-//минимальная ставка это ставка последнего + шаг, либо цена + шаг
+//    }
 
-$page_content = include_template('lot.php',['lot' => $lot[0]]);
+}
+
+
+$page_content = include_template('lot.php',[
+    'lot' => $lot[0],
+    'bet' => $bet,
+    'bidStep' => $bidStep,
+    'error' => $error
+]);
 
 $layout_content = include_template('layout.php',[
     'categories' => $categories,

@@ -19,11 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         $userFormData['password'] = password_hash($userFormData['password'], null, $options = []);
         addUser($link, $userFormData);
         header("Location:/login.php");
+        exit();
     }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     if(isset($_SESSION['user_id'])){
         header("Location:/403.php");
+        exit();
     }
     $userFormData = getUserFormData([]);
     $errors = [];

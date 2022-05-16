@@ -11,14 +11,17 @@ else{
     if( !isset($_GET['id']) )
     {
         header( "Location:/404.php", true,302 );
+        exit();
     }
     if ( empty($_GET['id']) )
     {
         header( "Location:/404.php", true,302 );
+        exit();
     }
     $lot = getLot($link, $_GET['id']);
     if(!$lot){
         header( "Location:/404.php", true,302 );
+        exit();
     }
 }
 

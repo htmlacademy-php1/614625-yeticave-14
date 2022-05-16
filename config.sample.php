@@ -5,5 +5,6 @@ return [
         'user' => '',
         'password' => '',
         'database' => ''
-    ]
+    ],
+    'lotPerPage' => 9,
 ];

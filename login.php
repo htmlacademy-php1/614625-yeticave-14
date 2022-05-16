@@ -21,11 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         $_SESSION['user_id'] = $userData[0]['id'];
 
         header("Location:/");
+        exit();
     }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     if(isset($_SESSION['user_id'])){
         header("Location:/403.php");
+        exit();
     }
     $userLoginData = getUserLoginData([]);
     $errors = [];

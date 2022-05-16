@@ -193,3 +193,49 @@ function searchUser(mysqli $link, string $email) : array
     
     return $userData;    
 }
+
+/**
+ * функция ищет лоты по гет запросу поисковой фразы
+ * @param mysqli $link
+ * @param $countLot количество лотов
+ * @param $searchWord искомое слово
+ * @param $page номер страницы
+ * @return массив с лотами либо строка, если ничего не найдено
+ */
+function searchLots(mysqli $link, int $countLot, string $searchWord, int $page) : array | string
+{
+    $page -= 1;
+    $sql = "SELECT lots.id, lots.name,creation_time,img,begin_price,date_completion,categories.name as category
+    FROM lots 
+    LEFT JOIN categories on lots.category_id=categories.id
+    WHERE MATCH(lots.name, lots.description) AGAINST('" . $searchWord . "') LIMIT " . $countLot . " OFFSET " . $page;
+    $result = mysqli_query($link, $sql);
+    if ( $result->num_rows===0 ){
+        return 'Ничего не найдено по вашему запросу';
+    }
+    $searchData = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        
+    return $searchData;   
+}
+
+/**
+ * функция получает количесвто страниц лотов по гет запросу поисковой фразы
+ * @param mysqli $link
+ * @param $countLot количество лотов
+ * @param $searchWord искомое слово
+ * @return количество страниц
+ */
+function getCountSearchPage(mysqli $link, int $countLot, string $searchWord) : int
+{
+   
+    $sql ="SELECT count(id) as count 
+    FROM lots 
+    WHERE MATCH(name, description) AGAINST('" . $searchWord . "')";
+    $result = mysqli_query($link, $sql);
+
+    $countPage = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $countPage = $countPage[0]['count'];
+    $countPage = ceil($countPage / $countLot);
+
+    return $countPage;
+}

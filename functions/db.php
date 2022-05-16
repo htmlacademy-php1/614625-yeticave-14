@@ -295,3 +295,7 @@ function getBet($link, int $id){
     $bet = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $bet[0]['price'];
 }
+
+function getBetByUser($link, int $id, $user_id){
+    
+}

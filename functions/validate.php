@@ -259,6 +259,7 @@ function validateBet($price, $user_id, $bidStep){
         return 'Введите ставку';
     }
     //проверить, что последняя ставка не этого же пользоавтаеля
+    getBetByUser();
 
     //проверить значение что не меньше мин ставки
     if($price<$bidStep){

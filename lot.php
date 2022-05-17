@@ -34,9 +34,9 @@ $bidStep = $bet + $lot[0]['bid_step'];
 $error = '';
 
 $historyBet = getHistoryBet($link, $_GET['id']);
-print_r('<pre>');
-var_dump($historyBet);
-print_r('</pre>');
+// print_r('<pre>');
+// var_dump($historyBet);
+// print_r('</pre>');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     
@@ -56,7 +56,8 @@ $page_content = include_template('lot.php',[
     'lot' => $lot[0],
     'bet' => $bet,
     'bidStep' => $bidStep,
-    'error' => $error
+    'error' => $error,
+    'historyBet' => $historyBet
 ]);
 
 $layout_content = include_template('layout.php',[

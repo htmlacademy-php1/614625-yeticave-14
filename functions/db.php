@@ -287,7 +287,7 @@ function categoryLots(mysqli $link, int $countLot, int $id, int $page){
 }
   
 function getBet($link, int $id){
-    $sql = "SELECT price FROM `bets` WHERE lot_id=" . $id . " order by creation_time DESC LIMIT 1";
+    $sql = "SELECT price FROM bets WHERE lot_id=" . $id . " order by creation_time DESC LIMIT 1";
     $result = mysqli_query($link, $sql);
     if ( $result->num_rows===0 ){
         return '';
@@ -304,4 +304,13 @@ function getBetByUser($link, $lotId){
     }
     $lastBet = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $lastBet[0]['user_id'];
+}
+
+function createBet($link, $price, $userId, $lotId){
+    $sql = 'INSERT INTO bets (creation_time,price, user_id, lot_id) VALUES (?, ?, ?, ?)';
+    $data = [date('Y-m-d h:i:s') ,$price, $userId, $lotId];
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    var_dump($result);
+    return mysqli_insert_id($link);
 }

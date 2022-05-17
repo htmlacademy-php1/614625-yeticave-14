@@ -24,30 +24,24 @@ else{
         exit();
     }
 }
-//var_dump($_GET['id']);
-//var_dump($_SESSION);
-//var_dump($lot);
-//проверку что последний добавленная ставка не текущего пользователя
 
-//текущая ставка это ставка последнего пользователя или цена
 $bet = getBet($link, $_GET['id']);
-//проверка если пустое значение
+
 if(empty($bet)){
     $bet = $lot[0]['begin_price'];
 }
 $bidStep = $bet + $lot[0]['bid_step'];
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-    //проверить что пользователь другой, не тот который создал лот
+    
     $price = $_POST['price'];
     $error = validateBet($price, $lot, $bidStep, $link);
-    //var_dump($error);
-    //exit();
-    
-    //записать значение
-    //if (empty($error)){
 
-//    }
+    if (empty($error)){
+        createBet($link, $price, $_SESSION['user_id'], $lot[0]['id']);
+        header("Location:/lot.php?id=" . $_GET['id']);
+        exit();
+    }
 
 }
 

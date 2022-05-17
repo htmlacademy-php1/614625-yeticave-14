@@ -29,10 +29,10 @@
                 </div>
 
                 <form class="lot-item__form" action="" method="post" autocomplete="off">
-                    <p class="lot-item__form-item form__item form__item--invalid">
+                    <p class="lot-item__form-item form__item <?php if ($error){echo 'form__item--invalid';}?>">
                         <label for="price">Ваша ставка</label>
                         <input id="price" type="text" name="price" placeholder="<?=$bidStep?>">
-                        <span class="form__error">Введите наименование лота</span>
+                        <span class="form__error"><?=$error?></span>
                     </p>
                     <button type="submit" class="button">Сделать ставку</button>
                 </form>

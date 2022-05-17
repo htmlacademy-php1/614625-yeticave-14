@@ -32,6 +32,12 @@ if(empty($bet)){
 }
 $bidStep = $bet + $lot[0]['bid_step'];
 $error = '';
+
+$historyBet = getHistoryBet($link, $_GET['id']);
+print_r('<pre>');
+var_dump($historyBet);
+print_r('</pre>');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     
     $price = $_POST['price'];

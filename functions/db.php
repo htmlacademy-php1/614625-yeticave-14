@@ -314,3 +314,19 @@ function createBet($link, $price, $userId, $lotId){
     var_dump($result);
     return mysqli_insert_id($link);
 }
+
+function getHistoryBet($link, $lotId){
+    $sql = "SELECT users.name as name, bets.creation_time, bets.price 
+    FROM bets
+    LEFT JOIN users on bets.user_id = users.id
+    WHERE lot_id=" . $lotId .  
+    " order by creation_time DESC";
+
+    $result = mysqli_query($link, $sql);
+    if ( $result->num_rows===0 ){
+        $historyBet = [];
+        return $historyBet;
+    }
+    $historyBet = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $historyBet;
+}

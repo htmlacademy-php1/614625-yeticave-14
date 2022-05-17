@@ -249,8 +249,10 @@ function checkPassword(mysqli $link, string $password, string $email) : string |
     return null;
 }
 
-function validateBet($price, $user_id, $bidStep){
-    if($_SESSION['user_id'] === $user_id){
+function validateBet($price, $lot, $bidStep, $link){
+    //var_dump($lot);
+    //exit;
+    if($_SESSION['user_id'] === $lot[0]['user_id']){
         return 'Вы создали лот, ставку сделать Вы не можете';
     }
     
@@ -259,10 +261,15 @@ function validateBet($price, $user_id, $bidStep){
         return 'Введите ставку';
     }
     //проверить, что последняя ставка не этого же пользоавтаеля
-    getBetByUser();
+    //надо найти последнюю ставку и проверить id
+    $lastBetLot = getBetByUser($link, $lot[0]['id']);
+    if($lastBetLot === $_SESSION['user_id']){
+        return 'Ваша ставка уже сделана';
+    }
 
     //проверить значение что не меньше мин ставки
     if($price<$bidStep){
         return 'Минимальная ставка ' . $bidStep;
     }
+    return null;
 }

@@ -40,7 +40,7 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     //проверить что пользователь другой, не тот который создал лот
     $price = $_POST['price'];
-    $error = validateBet($price, $lot[0]['user_id'], $bidStep);
+    $error = validateBet($price, $lot, $bidStep, $link);
     var_dump($error);
     //exit();
     

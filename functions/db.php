@@ -104,7 +104,7 @@ function getLots(mysqli $link):array
  */
 function getLot(mysqli $link,int $id) : array | false
 {
-    $sql = 'SELECT lots.name, creation_time,img, description, begin_price, date_completion, categories.name as category,user_id,bid_step FROM lots
+    $sql = 'SELECT lots.id, lots.name, creation_time,img, description, begin_price, date_completion, categories.name as category,user_id,bid_step FROM lots
     LEFT JOIN categories on lots.category_id=categories.id WHERE lots.id=' . $id;
     $result = mysqli_query($link, $sql);
     if ( $result->num_rows===0 ){
@@ -296,6 +296,12 @@ function getBet($link, int $id){
     return $bet[0]['price'];
 }
 
-function getBetByUser($link, int $id, $user_id){
-    
+function getBetByUser($link, $lotId){
+    $sql = "SELECT user_id FROM `bets` WHERE lot_id=" . $lotId . " order by creation_time DESC LIMIT 1";
+    $result = mysqli_query($link, $sql);
+    if ( $result->num_rows===0 ){
+        return null;
+    }
+    $lastBet = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $lastBet[0]['user_id'];
 }

@@ -3,7 +3,6 @@ require_once __DIR__ . '/init.php';
 
 $nameCategory = getNameCategory($link, $_GET['id']);
 $categories = getCategories($link);
-$lots = getLots($link);
 
 $page = $_GET['page'] ?? 1;
 $countPage = getCountCategoryPage($link, $config['lotPerPage'], $_GET['id']);

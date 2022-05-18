@@ -1,14 +1,7 @@
 <?php
 require_once __DIR__ . '/init.php';
-require_once __DIR__ . '/data.php';
 
-if (!$link) {
-    $error = mysqli_connect_error();
-    $content = include_template('error.php',['error' => $error]);
-}
-else{
-    $categories = getCategories($link);
-}
+$categories = getCategories($link);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $userFormData = getUserFormData($_POST);

@@ -6,14 +6,8 @@ if(!isset($_SESSION['user_id'])){
     exit();
 }
 
-if (!$link) {
-    $error = mysqli_connect_error();
-    $content = include_template('error.php',['error' => $error]);
-}
-else{
-    $categories = getCategories($link);
-    //$lots = getLots($link);
-}
+$categories = getCategories($link);
+//$lots = getLots($link);
 
 $page_content = include_template('my-bets.php',['categories' => $categories]);
 

@@ -250,8 +250,12 @@ function checkPassword(mysqli $link, string $password, string $email) : string |
 }
 
 function validateBet($price, $lot, $bidStep, $link){
-    //подумать нужна ли проверка по дате, даже если в шаблоне не показывается
-    //регистрации
+ 
+    $rangeTime = get_dt_range($lot[0]['date_completion'],date('Y-m-d h:i:s'));
+    if($rangeTime['hour']===0 || $rangeTime['minute']===0){
+        return 'Лот закрыт';
+    }
+
     if($_SESSION['user_id'] === $lot[0]['user_id']){
         return 'Вы создали лот, ставку сделать Вы не можете';
     }

@@ -1,29 +1,24 @@
 <?php
 require_once __DIR__ . '/init.php';
 
-if (!$link) {
-    $error = mysqli_connect_error();
-    $content = include_template('error.php',['error' => $error]);
-}
-else{
-    $categories = getCategories($link);
+$categories = getCategories($link);
 
-    if( !isset($_GET['id']) )
-    {
-        header( "Location:/404.php", true,302 );
-        exit();
-    }
-    if ( empty($_GET['id']) )
-    {
-        header( "Location:/404.php", true,302 );
-        exit();
-    }
-    $lot = getLot($link, $_GET['id']);
-    if(!$lot){
-        header( "Location:/404.php", true,302 );
-        exit();
-    }
+if( !isset($_GET['id']) )
+{
+    header( "Location:/404.php", true,302 );
+    exit();
 }
+if ( empty($_GET['id']) )
+{
+    header( "Location:/404.php", true,302 );
+    exit();
+}
+$lot = getLot($link, $_GET['id']);
+if(!$lot){
+    header( "Location:/404.php", true,302 );
+    exit();
+}
+
 
 $bet = getBet($link, $_GET['id']);
 
@@ -34,9 +29,6 @@ $bidStep = $bet + $lot[0]['bid_step'];
 $error = '';
 
 $historyBet = getHistoryBet($link, $_GET['id']);
-// print_r('<pre>');
-// var_dump($historyBet);
-// print_r('</pre>');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     

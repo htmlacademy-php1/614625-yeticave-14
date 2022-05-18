@@ -6,13 +6,8 @@ if(!isset($_SESSION['user_id'])){
     exit();
 }
 
-if (!$link) {
-    $error = mysqli_connect_error();
-    $content = include_template('error.php',['error' => $error]);
-}
-else{
-    $categories = getCategories($link);
-}
+$categories = getCategories($link);
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $lotFormData = getLotFormData($_POST);
     $errors = validateLotForm($lotFormData,$categories,$_FILES);

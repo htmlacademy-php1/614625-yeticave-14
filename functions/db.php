@@ -333,12 +333,14 @@ function getHistoryBet($link, $lotId){
 
 function getMyBets($link, $userId){
     $sql = "SELECT 
+        lots.id,
         lots.img,
         lots.name as lots_name,
         categories.name as category_name,
         lots.date_completion,
         bets.price,
-        bets.creation_time
+        bets.creation_time,
+        lots.winner_id
     FROM bets
     LEFT JOIN lots on bets.lot_id = lots.id
     LEFT JOIN categories on lots.category_id = categories.id

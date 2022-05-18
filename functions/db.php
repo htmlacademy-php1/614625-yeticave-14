@@ -330,3 +330,24 @@ function getHistoryBet($link, $lotId){
     $historyBet = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $historyBet;
 }
+
+function getMyBets($link, $userId){
+    $sql = "SELECT 
+        lots.img,
+        lots.name as lots_name,
+        categories.name as category_name,
+        lots.date_completion,
+        bets.price,
+        bets.creation_time
+    FROM bets
+    LEFT JOIN lots on bets.lot_id = lots.id
+    LEFT JOIN categories on lots.category_id = categories.id
+    WHERE bets.user_id = " . $userId . " ORDER BY bets.creation_time DESC";
+    $result = mysqli_query($link, $sql);
+    if ( $result->num_rows===0 ){
+        $myBets = [];
+        return $myBets;
+    }
+    $myBets = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $myBets;
+}

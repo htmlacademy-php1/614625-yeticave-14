@@ -2,7 +2,7 @@
 require_once __DIR__ . '/init.php';
 
 $categories = getCategories($link);
-$lots = getLots($link);
+$lots = getLots($link, $config['lotPerPage']);
 
 $page_content = include_template('main.php',['lots' => $lots,'categories' => $categories]);
 

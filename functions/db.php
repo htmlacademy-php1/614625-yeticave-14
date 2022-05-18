@@ -90,7 +90,7 @@ function getCategories(mysqli $link):array
 function getLots(mysqli $link, $countLot):array
 {
     $sql = 'SELECT lots.id, lots.name,creation_time,img,begin_price,date_completion,categories.name as category FROM lots
-    LEFT JOIN categories on lots.category_id=categories.id ORDER BY date_completion DESC LIMIT ' . $countLot;
+    LEFT JOIN categories on lots.category_id=categories.id WHERE NOW() < date_completion ORDER BY date_completion DESC LIMIT ' . $countLot;
     $result = mysqli_query($link, $sql);
     $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $lots;

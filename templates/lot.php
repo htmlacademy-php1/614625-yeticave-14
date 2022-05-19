@@ -10,7 +10,7 @@
         </div>
         <div class="lot-item__right">
             <?php $dataRange = get_dt_range($lot['date_completion'],date('Y-m-d H:i:s'));
-            if($dataRange['hour'] !==0 && $dataRange['minute'] !==0):
+            if($dataRange['hour'] !=='00' && $dataRange['minute'] !=='00'):
                 if(isset($_SESSION['user_id'])):
                     if($_SESSION['user_id'] !== $lot['user_id']):?>
             <div class="lot-item__state">
@@ -46,10 +46,12 @@
                 <h3>История ставок (<span><?=count($historyBet)?></span>)</h3>
                 <table class="history__list">
                     <?php foreach ($historyBet as $bet):?>
+                    <?php $publishDate = get_dt_range(date('Y-m-d'), $bet['creation_time']);
+                    $humanTime = humanTime($publishDate, $bet['creation_time']);?>
                     <tr class="history__item">
                         <td class="history__name"><?=$bet['name']?></td>
                         <td class="history__price"><?=formatPrice($bet['price'])?></td>
-                        <td class="history__time"><?=$bet['creation_time']?></td>
+                        <td class="history__time"><?=$humanTime;?></td>
                     </tr>
                     <?php endforeach;?>
                 </table>

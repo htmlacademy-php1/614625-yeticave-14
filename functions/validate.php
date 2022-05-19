@@ -252,7 +252,7 @@ function checkPassword(mysqli $link, string $password, string $email) : string |
 function validateBet($price, $lot, $bidStep, $link){
  
     $rangeTime = get_dt_range($lot[0]['date_completion'],date('Y-m-d h:i:s'));
-    if($rangeTime['hour']===0 || $rangeTime['minute']===0){
+    if($rangeTime['hour']==='00' || $rangeTime['minute']==='00'){
         return 'Лот закрыт';
     }
 

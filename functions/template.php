@@ -81,3 +81,23 @@ function get_noun_plural_form (int $number, string $one, string $two, string $ma
             return $many;
     }
 }
+
+function humanTime(array $publishDate, $creationTime){
+
+    if ($publishDate['hour']<1){
+        $formWord = get_noun_plural_form($publishDate['minute'], 'минута', 'минуты', 'минут');
+        return $publishDate['minute'] . " " . $formWord . ' назад';
+    }
+    if ($publishDate['hour']>1 && $publishDate['hour']<24){
+        $formWord = get_noun_plural_form(1, 'час', 'часа', 'часов');
+        return $publishDate['hour'] . " " . $formWord . ' назад'; 
+    }
+    if ($publishDate['hour']>24 && $publishDate['hour']<48) {
+        $date = date_create($creationTime); 
+        return 'Вчера, в ' . date_format($date, 'H:m');
+    }
+    if ($publishDate['hour']>48) {
+        $date = date_create($creationTime); 
+        return date_format($date, 'd.m.y') . ' в ' . date_format($date, 'H:m');
+    }
+}

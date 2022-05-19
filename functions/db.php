@@ -340,10 +340,12 @@ function getMyBets($link, $userId){
         lots.date_completion,
         bets.price,
         bets.creation_time,
-        lots.winner_id
+        lots.winner_id,
+        users.contact
     FROM bets
     LEFT JOIN lots on bets.lot_id = lots.id
     LEFT JOIN categories on lots.category_id = categories.id
+    LEFT JOIN users on bets.user_id = users.id
     WHERE bets.user_id = " . $userId . " ORDER BY bets.creation_time DESC";
     $result = mysqli_query($link, $sql);
     if ( $result->num_rows===0 ){

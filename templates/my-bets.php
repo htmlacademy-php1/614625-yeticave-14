@@ -18,7 +18,12 @@
             <div class="rates__img">
               <img src="<?=$bet['img']?>" width="54" height="40" alt="<?=$bet['lots_name']?>">
             </div>
+            <div>
             <h3 class="rates__title"><a href="/lot.php?id=<?=$bet['id']?>"><?=$bet['lots_name']?></a></h3>
+            <?php if ($bet['contact'] && $bet['winner_id'] === $_SESSION['user_id']):?>
+              <p><?=$bet['contact']?></p>
+            <?php endif;?>
+            </div>
           </td>
           
           <td class="rates__category"><?=$bet['category_name']?></td>
@@ -41,7 +46,46 @@
             <?=formatPrice($bet['price'])?>
           </td>
           <td class="rates__time">
-            <?=$bet['creation_time']?>
+            <?php 
+            //должна быть разница по времени всяко
+            $publishDate = get_dt_range(date('Y-m-d'), $bet['creation_time']);
+            // print_r('<pre>');
+            // var_dump($publishDate);
+            // print_r('</pre>');
+            ?>
+            <?//=$bet['creation_time']?>
+            <?php 
+            $formWord = get_noun_plural_form(57, 'минут', 'минуты', 'минут');
+            echo '3 ' . $formWord . ' назад';
+
+            echo '<br>';
+
+            $formWord = get_noun_plural_form(1, 'час', 'часа', 'часов');
+            echo '1 ' . $formWord . ' назад'; 
+            
+            echo '<br>';
+
+            echo 'Вчера, в ' . date('H:m');
+
+            echo '<br>';
+
+            echo date('d.m.Y') . ' в ' . date('H:m');
+
+            //var_dump($printDate);
+            if ($publishDate['hour']<1){
+                $printDate = get_noun_plural_form($publishDate['minute'], 'минута', 'минуты', 'минут');
+                //var_dump($printDate);
+            }
+            if ($publishDate['hour']>1 && $publishDate['hour']<24){
+
+            }
+            if ($publishDate['hour']>24 && $publishDate['hour']<48) {
+
+            }
+            if ($publishDate['hour']>48) {
+
+            }
+            ?>
           </td>
         </tr>
         <?endforeach;?>

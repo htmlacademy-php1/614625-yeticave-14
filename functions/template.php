@@ -82,7 +82,14 @@ function get_noun_plural_form (int $number, string $one, string $two, string $ma
     }
 }
 
-function humanTime(array $publishDate, $creationTime){
+/**
+ * функция вовзращает разницу даты текущего времени и даты, когда сделана ставка в человекочитаемом виде
+ * @param $publishDate массив времени
+ * @param строка с датой создания ставки
+ * @return string строку с человекочитаемым видом разницы дат 
+ */
+function humanTime(array $publishDate,string $creationTime) : string
+{
 
     if ($publishDate['hour']<1){
         $formWord = get_noun_plural_form($publishDate['minute'], 'минута', 'минуты', 'минут');

@@ -249,8 +249,16 @@ function checkPassword(mysqli $link, string $password, string $email) : string |
     return null;
 }
 
-function validateBet($price, $lot, $bidStep, $link){
- 
+/**
+ * функция валидирует ставку указанную в форме на странице лота
+ * @param $price цена лота
+ * @param $lot массив с данными лота
+ * @param $bidStep шаг ставки
+ * @param mysqli $link
+ * @return string ошибки или null
+ */
+function validateBet(int $price, array $lot, int $bidStep, mysqli $link) : string | null
+{
     $rangeTime = get_dt_range($lot[0]['date_completion'],date('Y-m-d h:i:s'));
     if($rangeTime['hour']==='00' || $rangeTime['minute']==='00'){
         return 'Лот закрыт';

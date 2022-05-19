@@ -83,11 +83,12 @@ function getCategories(mysqli $link):array
 }
 
 /**
- * функция возвращает массив с лотами
+ * функция возвращает массив с открытыми лотами
  * @param mysqli $link объект подключения к бд
+ * @param $countLot количество выводимых лотов
  * @return $lots массив с лотами
  */
-function getLots(mysqli $link, $countLot):array
+function getLots(mysqli $link, int $countLot):array
 {
     $sql = 'SELECT lots.id, lots.name,creation_time,img,begin_price,date_completion,categories.name as category FROM lots
     LEFT JOIN categories on lots.category_id=categories.id WHERE NOW() < date_completion ORDER BY date_completion DESC LIMIT ' . $countLot;
@@ -246,9 +247,13 @@ function getCountSearchPage(mysqli $link, int $countLot, string $searchWord) : i
 }
 
 /**
- * 
+ * функция получает название категории
+ * @param mysqli $link
+ * @param $id id категории
+ * @return строку с названием
  */
-function getNameCategory($link, $id){
+function getNameCategory(mysqli $link, int $id) : string
+{
     $sql = "SELECT name FROM categories WHERE id =" . "'" . $id . "'";
     $result = mysqli_query($link, $sql);
 
@@ -258,6 +263,13 @@ function getNameCategory($link, $id){
     return $nameCategory;   
 }
 
+/**
+ * функция получает количество страниц в категории
+ * @param mysqli $link
+ * @param $countLot количество лотов на странице
+ * @param $id id категории
+ * @return количество страниц 
+ */
 function getCountCategoryPage(mysqli $link, int $countLot, int $id) : int
 {
    
@@ -273,7 +285,16 @@ function getCountCategoryPage(mysqli $link, int $countLot, int $id) : int
     return $countPage;
 }
 
-function categoryLots(mysqli $link, int $countLot, int $id, int $page){
+/**
+ * функция получает лоты в категории
+ * @param mysqli $link
+ * @param $countLot количество лотов на одной странице
+ * @param $id id категории
+ * @param $page номер страницы
+ * @return массив с лотами
+ */
+function categoryLots(mysqli $link, int $countLot, int $id, int $page) : array
+{
     $page -= 1;
     $sql = "SELECT lots.id, lots.name,creation_time,img,begin_price,date_completion,categories.name as category
     FROM lots 
@@ -286,7 +307,14 @@ function categoryLots(mysqli $link, int $countLot, int $id, int $page){
     return $lots; 
 }
   
-function getBet($link, int $id){
+/**
+ * функция получает стоимость по ставке
+ * @param mysqli $link
+ * @param $id идентификатор лота
+ * @return пустую строку или цену по ставке
+ */
+function getBet(mysqli $link, int $id) : string | int
+{
     $sql = "SELECT price FROM bets WHERE lot_id=" . $id . " order by creation_time DESC LIMIT 1";
     $result = mysqli_query($link, $sql);
     if ( $result->num_rows===0 ){
@@ -296,7 +324,14 @@ function getBet($link, int $id){
     return $bet[0]['price'];
 }
 
-function getBetByUser($link, $lotId){
+/**
+ * функция получает пользователя по ставке
+ * @param mysqli $link
+ * @param $lotId идентификатор лота
+ * @return null в случае, если у лота нет ставки или идентификатор пользователя
+ */
+function getBetByUser(mysqli $link,int $lotId) : int | null
+{
     $sql = "SELECT user_id FROM `bets` WHERE lot_id=" . $lotId . " order by creation_time DESC LIMIT 1";
     $result = mysqli_query($link, $sql);
     if ( $result->num_rows===0 ){
@@ -306,16 +341,31 @@ function getBetByUser($link, $lotId){
     return $lastBet[0]['user_id'];
 }
 
-function createBet($link, $price, $userId, $lotId){
+/**
+ * функция создает ставку у лота
+ * @param mysqli $link
+ * @param $price цена
+ * @param $userId id пользователя
+ * @param $lotId id лота
+ * @return id вставленного значения в бд
+ */
+function createBet(mysqli $link, int $price, int $userId, int $lotId) : int
+{
     $sql = 'INSERT INTO bets (creation_time,price, user_id, lot_id) VALUES (?, ?, ?, ?)';
     $data = [date('Y-m-d h:i:s') ,$price, $userId, $lotId];
     $stmt = db_get_prepare_stmt($link, $sql, $data);
     $result = mysqli_stmt_execute($stmt);
-    var_dump($result);
     return mysqli_insert_id($link);
 }
 
-function getHistoryBet($link, $lotId){
+/**
+ * функция получает историю ставок у лота
+ * @param mysqli $link
+ * @param $lotId ид лота
+ * @return массив с историей ставок
+ */
+function getHistoryBet(mysqli $link, int $lotId) : array
+{
     $sql = "SELECT users.name as name, bets.creation_time, bets.price 
     FROM bets
     LEFT JOIN users on bets.user_id = users.id
@@ -331,7 +381,14 @@ function getHistoryBet($link, $lotId){
     return $historyBet;
 }
 
-function getMyBets($link, $userId){
+/**
+ * функция получает ставки пользователя для личного кабинета
+ * @param mysqli $link
+ * @param $userId идентификатор пользователя
+ * @return массив с ставками
+ */
+function getMyBets(mysqli $link, int $userId) : array
+{
     $sql = "SELECT 
         lots.id,
         lots.img,

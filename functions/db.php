@@ -332,7 +332,7 @@ function getBet(mysqli $link, int $id) : string | int
  */
 function getBetByUser(mysqli $link,int $lotId) : int | null
 {
-    $sql = "SELECT user_id FROM `bets` WHERE lot_id=" . $lotId . " order by creation_time DESC LIMIT 1";
+    $sql = "SELECT user_id, users.email FROM bets LEFT JOIN users on bets.user_id = users.id WHERE lot_id=" . $lotId . " order by bets.creation_time DESC LIMIT 1";
     $result = mysqli_query($link, $sql);
     if ( $result->num_rows===0 ){
         return null;
@@ -411,4 +411,21 @@ function getMyBets(mysqli $link, int $userId) : array
     }
     $myBets = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $myBets;
+}
+
+function getEndLots(mysqli $link)
+{   
+    //какие поля нужы
+    //id лота
+    $sql = "SELECT 
+	    id as lot_id
+    FROM lots
+    WHERE NOW() > date_completion AND completed IS NULL";
+    $result = mysqli_query($link, $sql);
+    if ( $result->num_rows===0 ){
+        $endLots = [];
+        return $endLots;
+    }
+    $endLots = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $endLots;
 }

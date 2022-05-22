@@ -46,7 +46,7 @@
                 <h3>История ставок (<span><?=count($historyBet)?></span>)</h3>
                 <table class="history__list">
                     <?php foreach ($historyBet as $bet):?>
-                    <?php $publishDate = get_dt_range(date('Y-m-d'), $bet['creation_time']);
+                    <?php $publishDate = get_dt_range(date('Y-m-d h:i:s'), $bet['creation_time']);
                     $humanTime = humanTime($publishDate, $bet['creation_time']);?>
                     <tr class="history__item">
                         <td class="history__name"><?=$bet['name']?></td>

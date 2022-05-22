@@ -269,7 +269,6 @@ function validateBet(int $price, array $lot, int $bidStep, mysqli $link) : strin
     }
     
     if(empty($price)){
-        //$price = 0;
         return 'Введите ставку';
     }
 

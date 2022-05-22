@@ -44,7 +44,8 @@ CREATE TABLE lots (
    bid_step int NOT NULL,
    user_id int NOT NULL REFERENCES users (id) ,
    winner_id int REFERENCES users(id) ,
-   category_id int NOT NULL REFERENCES categories(id)
+   category_id int NOT NULL REFERENCES categories(id),
+   completed int 
 );
 
 /*

@@ -47,7 +47,7 @@
           </td>
           <td class="rates__time">
             <?php 
-            $publishDate = get_dt_range(date('Y-m-d'), $bet['creation_time']);
+            $publishDate = get_dt_range(date('Y-m-d h:i:s'), $bet['creation_time']);
             $humanTime = humanTime($publishDate, $bet['creation_time']);
             echo $humanTime;?>
           </td>

@@ -328,9 +328,9 @@ function getBet(mysqli $link, int $id) : string | int
  * функция получает пользователя по ставке
  * @param mysqli $link
  * @param $lotId идентификатор лота
- * @return null в случае, если у лота нет ставки или идентификатор пользователя
+ * @return null в случае, если у лота нет ставки или массив с Id и почтой
  */
-function getBetByUser(mysqli $link,int $lotId) : int | null
+function getBetByUser(mysqli $link,int $lotId) : array | null
 {
     $sql = "SELECT user_id, users.email FROM bets LEFT JOIN users on bets.user_id = users.id WHERE lot_id=" . $lotId . " order by bets.creation_time DESC LIMIT 1";
     $result = mysqli_query($link, $sql);
@@ -338,7 +338,7 @@ function getBetByUser(mysqli $link,int $lotId) : int | null
         return null;
     }
     $lastBet = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    return $lastBet[0]['user_id'];
+    return $lastBet[0];
 }
 
 /**

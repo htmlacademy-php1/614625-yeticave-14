@@ -47,11 +47,12 @@
                 <table class="history__list">
                     <?php foreach ($historyBet as $bet):?>
                     <?php $publishDate = get_dt_range(date('Y-m-d h:i:s'), $bet['creation_time']);
+                    //var_dump($publishDate);
                     $humanTime = humanTime($publishDate, $bet['creation_time']);?>
                     <tr class="history__item">
                         <td class="history__name"><?=$bet['name']?></td>
                         <td class="history__price"><?=formatPrice($bet['price'])?></td>
-                        <td class="history__time"><?=$humanTime;?></td>
+                        <td class="history__time"><?//=$humanTime;?></td>
                     </tr>
                     <?php endforeach;?>
                 </table>

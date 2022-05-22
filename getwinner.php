@@ -10,7 +10,7 @@ $endLots = getEndLots($link);
 if($endLots){
     foreach ($endLots as $lot){
         $winneruser = getBetByUser($link, $lot['lot_id']);
-        // var_dump($winneruser);
+        var_dump($winneruser);
         echo "лот - " . $lot['lot_id'];
         echo '<br>';
         // exit();
@@ -18,8 +18,7 @@ if($endLots){
         if($winneruser){
             //если пользователь найден, то мы в таблицу лотов добавляем, что лот закончился completed = 1 и указываем winner_id
             //так же отправляем уведомление пользователю на почту
-            echo $winneruser;
-            echo '<br>';
+            //addWinnerLot();
         }
         else{
             //иначе добавляем completed = 1

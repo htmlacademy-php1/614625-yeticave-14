@@ -21,9 +21,9 @@ function get_dt_range(string $datalife, string $currentTime) :array
     $hours   = floor(($diff)/ (60*60));
     $dateRange = ['hour' => $hours, 'minute' => $minuts, 'seconds' => $seconds]; 
 
-    $dateRange['hour'] = sprintf("%02d", $dateRange['hour']);
-    $dateRange['minute'] = sprintf("%02d", $dateRange['minute']);
-    $dateRange['seconds'] = sprintf("%02d", $dateRange['seconds']);
+    // $dateRange['hour'] = sprintf("%02d", $dateRange['hour']);
+    // $dateRange['minute'] = sprintf("%02d", $dateRange['minute']);
+    // $dateRange['seconds'] = sprintf("%02d", $dateRange['seconds']);
 
     return $dateRange;
 }

@@ -38,7 +38,7 @@
             <?php else:?>
                 <td class="rates__timer">
                     <div class="timer <?if ($dataRange['hour']<1){echo 'timer--finishing';}?>">
-                        <?=$dataRange['hour']?>:<?=$dataRange['minute']?>:<?=$dataRange['seconds']?>
+                        <?=sprintf("%02d", $dataRange['hour'])?>:<?=sprintf("%02d", $dataRange['minute'])?>:<?=sprintf("%02d", $dataRange['seconds'])?>
                     </div>
                 </td>
             <?php endif;?>

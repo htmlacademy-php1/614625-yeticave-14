@@ -29,7 +29,7 @@
                         </div>
                         <?php $dataRange = get_dt_range($lot['date_completion'],date('Y-m-d H:i:s'));?>
                         <div class="lot__timer timer <?if ($dataRange['hour']<1){echo 'timer--finishing';}?>">
-                            <?=$dataRange['hour']?>:<?=$dataRange['minute']?>
+                            <?=sprintf("%02d", $dataRange['hour'])?>:<?= sprintf("%02d", $dataRange['minute'])?>
                         </div>
                     </div>
                 </div>

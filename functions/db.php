@@ -207,21 +207,26 @@ function searchUser(mysqli $link, string $email) : array
  */
 function searchLots(mysqli $link, int $countLot, string $searchWord, int $page) : array | string
 {
-    //TODO использовать подготовленное выражение
     $searchWord =  mysqli_real_escape_string($link, $searchWord);
     $page -= 1;
     $sql = "SELECT lots.id, lots.name,creation_time,img,begin_price,date_completion,categories.name as category
     FROM lots 
     LEFT JOIN categories on lots.category_id=categories.id
-    WHERE MATCH(lots.name, lots.description) AGAINST('" . $searchWord . "') LIMIT " . $countLot . " OFFSET " . $page;
-    $result = mysqli_query($link, $sql);
+    WHERE MATCH(lots.name, lots.description) AGAINST( ? ) LIMIT " . $countLot . " OFFSET " . $page;
+    $data = [$searchWord];
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    if (!mysqli_stmt_execute($stmt)) {
+        exit('Ошибка при выполнении запроса');
+    }
+    $result = mysqli_stmt_get_result($stmt);
     if ( $result->num_rows===0 ){
         $searchData = [];
         return $searchData;
     }
-    $searchData = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        
-    return $searchData;   
+    while ($row = mysqli_fetch_assoc($result)) {
+        $searchData[] = $row;
+    }
+    return $searchData; 
 }
 
 /**
@@ -233,22 +238,17 @@ function searchLots(mysqli $link, int $countLot, string $searchWord, int $page) 
  */
 function getCountSearchPage(mysqli $link, int $countLot, string $searchWord) : int
 {
-   //TODO использовать подготовленное выражение
-   //TODO
-    $sql ="SELECT count(id) as count 
-    FROM lots 
+    $sql ="SELECT count(id) as count
+    FROM lots
     WHERE MATCH(name, description) AGAINST( ? )";
     $data = [$searchWord];
     $stmt = db_get_prepare_stmt($link, $sql, $data);
-    $result = mysqli_stmt_execute($stmt);
-    echo mysqli_error($link);
-    exit;
+    if (!mysqli_stmt_execute($stmt)) {
+        exit('Ошибка при выполнении запроса');
+    }
+    $result = mysqli_stmt_get_result($stmt);
     $countPage = mysqli_fetch_assoc($result);
-    var_dump($countPage);
-    exit();
-    $countPage = $countPage[0]['count'];
-    $countPage = ceil($countPage / $countLot);
-
+    $countPage = ceil($countPage['count'] / $countLot);
     return $countPage;
 }
 

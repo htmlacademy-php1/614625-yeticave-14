@@ -234,12 +234,18 @@ function searchLots(mysqli $link, int $countLot, string $searchWord, int $page) 
 function getCountSearchPage(mysqli $link, int $countLot, string $searchWord) : int
 {
    //TODO использовать подготовленное выражение
+   //TODO
     $sql ="SELECT count(id) as count 
     FROM lots 
-    WHERE MATCH(name, description) AGAINST('" . $searchWord . "')";
-    $result = mysqli_query($link, $sql);
-
-    $countPage = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    WHERE MATCH(name, description) AGAINST( ? )";
+    $data = [$searchWord];
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    echo mysqli_error($link);
+    exit;
+    $countPage = mysqli_fetch_assoc($result);
+    var_dump($countPage);
+    exit();
     $countPage = $countPage[0]['count'];
     $countPage = ceil($countPage / $countLot);
 
@@ -272,7 +278,6 @@ function getNameCategory(mysqli $link, int $id) : string
  */
 function getCountCategoryPage(mysqli $link, int $countLot, int $id) : int
 {
-   
     $sql ="SELECT count(id) as count 
     FROM lots 
     WHERE category_id=" .$id;

@@ -52,7 +52,7 @@
             echo $humanTime;?>
           </td>
         </tr>
-        <?endforeach;?>
+        <?php endforeach;?>
       </table>
     </section>
   </main>

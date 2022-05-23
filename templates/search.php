@@ -45,7 +45,7 @@
       <ul class="pagination-list">
         <?php if ($page>1):?>
         <li class="pagination-item pagination-item-prev"><a href="?search=<?=$_GET['search']?>&find=Найти&page=<?=$page-1;?>">Назад</a></li>
-        <?endif;?>
+        <?php endif;?>
 
         <?php for ($i = 1; $i<=$countPage; $i++):?>
           <li class="pagination-item <?php if($i == $page){echo 'pagination-item-active';}?>"><a href="?search=<?=$_GET['search']?>&find=Найти&page=<?=$i?>"><?=$i?></a></li>

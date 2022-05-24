@@ -434,8 +434,16 @@ function getEndLots(mysqli $link)
 }
 
 function addWinnerLot($link, $winnerUser, $lotId){
-    $sql = 'INSERT INTO lots (winner_id, completed) VALUES (?, ?) WHERE id = ?';
+    $sql = "UPDATE lots set winner_id = ?, completed = ? WHERE id = ?";
     $data = [$winnerUser, 1, $lotId];
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    return mysqli_insert_id($link);
+}
+
+function addCompletedLot($link, $lotId){
+    $sql = "UPDATE lots set completed = ? WHERE id = ?";
+    $data = [1, $lotId];
     $stmt = db_get_prepare_stmt($link, $sql, $data);
     $result = mysqli_stmt_execute($stmt);
     return mysqli_insert_id($link);

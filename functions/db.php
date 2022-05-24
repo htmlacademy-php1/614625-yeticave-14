@@ -337,7 +337,7 @@ function getBet(mysqli $link, int $id) : string | int
  */
 function getBetByUser(mysqli $link,int $lotId) : array | null
 {
-    $sql = "SELECT user_id, users.email FROM bets LEFT JOIN users on bets.user_id = users.id WHERE lot_id=" . $lotId . " order by bets.creation_time DESC LIMIT 1";
+    $sql = "SELECT user_id, users.email, users.name FROM bets LEFT JOIN users on bets.user_id = users.id WHERE lot_id=" . $lotId . " order by bets.creation_time DESC LIMIT 1";
     $result = mysqli_query($link, $sql);
     if ( $result->num_rows===0 ){
         return null;
@@ -421,7 +421,8 @@ function getMyBets(mysqli $link, int $userId) : array
 function getEndLots(mysqli $link)
 {   
     $sql = "SELECT 
-	    id as lot_id
+	    id as lot_id,
+        name
     FROM lots
     WHERE NOW() > date_completion AND completed=0";
     $result = mysqli_query($link, $sql);

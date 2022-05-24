@@ -7,4 +7,8 @@ return [
         'database' => ''
     ],
     'lotPerPage' => 9,
+    'mail' => [
+        'login' => '',
+        'password' => ''
+    ]
 ];

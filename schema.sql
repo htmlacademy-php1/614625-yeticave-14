@@ -45,7 +45,7 @@ CREATE TABLE lots (
    user_id int NOT NULL REFERENCES users (id) ,
    winner_id int REFERENCES users(id) ,
    category_id int NOT NULL REFERENCES categories(id),
-   completed int 
+   completed tinyint DEFAULT 0
 );
 
 /*

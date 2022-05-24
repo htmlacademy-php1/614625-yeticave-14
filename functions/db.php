@@ -420,12 +420,10 @@ function getMyBets(mysqli $link, int $userId) : array
 
 function getEndLots(mysqli $link)
 {   
-    //какие поля нужы
-    //id лота
     $sql = "SELECT 
 	    id as lot_id
     FROM lots
-    WHERE NOW() > date_completion AND completed IS NULL";
+    WHERE NOW() > date_completion AND completed=0";
     $result = mysqli_query($link, $sql);
     if ( $result->num_rows===0 ){
         $endLots = [];
@@ -433,4 +431,12 @@ function getEndLots(mysqli $link)
     }
     $endLots = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $endLots;
+}
+
+function addWinnerLot($link, $winnerUser, $lotId){
+    $sql = 'INSERT INTO lots (winner_id, completed) VALUES (?, ?) WHERE id = ?';
+    $data = [$winnerUser, 1, $lotId];
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    return mysqli_insert_id($link);
 }

@@ -58,9 +58,12 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
  * @param $config параметры подключения к базам данных сервера
  * @return mysqli возвращает объект подключения к бд
  */
-function dbConnect(array $config):mysqli
+function dbConnect(array $config) : mysqli
 {
     $link = mysqli_connect($config['db']['host'], $config['db']['user'], $config['db']['password'], $config['db']['database']);
+    if(!$link){
+        error(mysqli_connect_error());
+    }
     mysqli_set_charset($link, "utf8");
     mysqli_options($link, MYSQLI_OPT_INT_AND_FLOAT_NATIVE, $config);
     return $link;
@@ -80,14 +83,15 @@ function getCategories(mysqli $link):array
 }
 
 /**
- * функция возвращает массив с лотами
+ * функция возвращает массив с открытыми лотами
  * @param mysqli $link объект подключения к бд
+ * @param $countLot количество выводимых лотов
  * @return $lots массив с лотами
  */
-function getLots(mysqli $link):array
+function getLots(mysqli $link, int $countLot):array
 {
     $sql = 'SELECT lots.id, lots.name,creation_time,img,begin_price,date_completion,categories.name as category FROM lots
-    LEFT JOIN categories on lots.category_id=categories.id';
+    LEFT JOIN categories on lots.category_id=categories.id WHERE NOW() < date_completion ORDER BY date_completion DESC LIMIT ' . $countLot;
     $result = mysqli_query($link, $sql);
     $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $lots;
@@ -101,7 +105,7 @@ function getLots(mysqli $link):array
  */
 function getLot(mysqli $link,int $id) : array | false
 {
-    $sql = 'SELECT lots.name, creation_time,img, description, begin_price, date_completion, categories.name as category FROM lots
+    $sql = 'SELECT lots.id, lots.name, creation_time,img, description, begin_price, date_completion, categories.name as category,user_id,bid_step FROM lots
     LEFT JOIN categories on lots.category_id=categories.id WHERE lots.id=' . $id;
     $result = mysqli_query($link, $sql);
     if ( $result->num_rows===0 ){
@@ -185,7 +189,6 @@ function searchPassword(mysqli $link, string $email) : false | string
 */
 function searchUser(mysqli $link, string $email) : array
 {
-
     $sql = "SELECT id, name FROM users WHERE email =" . "'" . $email . "'";
     $result = mysqli_query($link, $sql);
 
@@ -204,6 +207,8 @@ function searchUser(mysqli $link, string $email) : array
  */
 function searchLots(mysqli $link, int $countLot, string $searchWord, int $page) : array | string
 {
+    //TODO использовать подготовленное выражение
+    $searchWord =  mysqli_real_escape_string($link, $searchWord);
     $page -= 1;
     $sql = "SELECT lots.id, lots.name,creation_time,img,begin_price,date_completion,categories.name as category
     FROM lots 
@@ -211,7 +216,8 @@ function searchLots(mysqli $link, int $countLot, string $searchWord, int $page) 
     WHERE MATCH(lots.name, lots.description) AGAINST('" . $searchWord . "') LIMIT " . $countLot . " OFFSET " . $page;
     $result = mysqli_query($link, $sql);
     if ( $result->num_rows===0 ){
-        return 'Ничего не найдено по вашему запросу';
+        $searchData = [];
+        return $searchData;
     }
     $searchData = mysqli_fetch_all($result, MYSQLI_ASSOC);
         
@@ -227,7 +233,7 @@ function searchLots(mysqli $link, int $countLot, string $searchWord, int $page) 
  */
 function getCountSearchPage(mysqli $link, int $countLot, string $searchWord) : int
 {
-   
+   //TODO использовать подготовленное выражение
     $sql ="SELECT count(id) as count 
     FROM lots 
     WHERE MATCH(name, description) AGAINST('" . $searchWord . "')";
@@ -238,4 +244,171 @@ function getCountSearchPage(mysqli $link, int $countLot, string $searchWord) : i
     $countPage = ceil($countPage / $countLot);
 
     return $countPage;
+}
+
+/**
+ * функция получает название категории
+ * @param mysqli $link
+ * @param $id id категории
+ * @return строку с названием
+ */
+function getNameCategory(mysqli $link, int $id) : string
+{
+    $sql = "SELECT name FROM categories WHERE id =" . "'" . $id . "'";
+    $result = mysqli_query($link, $sql);
+
+    $nameCategory = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $nameCategory = $nameCategory[0]['name'];
+    
+    return $nameCategory;   
+}
+
+/**
+ * функция получает количество страниц в категории
+ * @param mysqli $link
+ * @param $countLot количество лотов на странице
+ * @param $id id категории
+ * @return количество страниц 
+ */
+function getCountCategoryPage(mysqli $link, int $countLot, int $id) : int
+{
+   
+    $sql ="SELECT count(id) as count 
+    FROM lots 
+    WHERE category_id=" .$id;
+    $result = mysqli_query($link, $sql);
+
+    $countPage = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $countPage = $countPage[0]['count'];
+    $countPage = ceil($countPage / $countLot);
+
+    return $countPage;
+}
+
+/**
+ * функция получает лоты в категории
+ * @param mysqli $link
+ * @param $countLot количество лотов на одной странице
+ * @param $id id категории
+ * @param $page номер страницы
+ * @return массив с лотами
+ */
+function categoryLots(mysqli $link, int $countLot, int $id, int $page) : array
+{
+    $page -= 1;
+    $sql = "SELECT lots.id, lots.name,creation_time,img,begin_price,date_completion,categories.name as category
+    FROM lots 
+    LEFT JOIN categories on lots.category_id=categories.id
+    WHERE category_id=" .$id . " LIMIT " . $countLot . " OFFSET " . $page;
+    $result = mysqli_query($link, $sql);
+
+    $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        
+    return $lots; 
+}
+  
+/**
+ * функция получает стоимость по ставке
+ * @param mysqli $link
+ * @param $id идентификатор лота
+ * @return пустую строку или цену по ставке
+ */
+function getBet(mysqli $link, int $id) : string | int
+{
+    $sql = "SELECT price FROM bets WHERE lot_id=" . $id . " order by creation_time DESC LIMIT 1";
+    $result = mysqli_query($link, $sql);
+    if ( $result->num_rows===0 ){
+        return '';
+    }
+    $bet = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $bet[0]['price'];
+}
+
+/**
+ * функция получает пользователя по ставке
+ * @param mysqli $link
+ * @param $lotId идентификатор лота
+ * @return null в случае, если у лота нет ставки или идентификатор пользователя
+ */
+function getBetByUser(mysqli $link,int $lotId) : int | null
+{
+    $sql = "SELECT user_id FROM `bets` WHERE lot_id=" . $lotId . " order by creation_time DESC LIMIT 1";
+    $result = mysqli_query($link, $sql);
+    if ( $result->num_rows===0 ){
+        return null;
+    }
+    $lastBet = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $lastBet[0]['user_id'];
+}
+
+/**
+ * функция создает ставку у лота
+ * @param mysqli $link
+ * @param $price цена
+ * @param $userId id пользователя
+ * @param $lotId id лота
+ * @return id вставленного значения в бд
+ */
+function createBet(mysqli $link, int $price, int $userId, int $lotId) : int
+{
+    $sql = 'INSERT INTO bets (creation_time,price, user_id, lot_id) VALUES (?, ?, ?, ?)';
+    $data = [date('Y-m-d h:i:s') ,$price, $userId, $lotId];
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    return mysqli_insert_id($link);
+}
+
+/**
+ * функция получает историю ставок у лота
+ * @param mysqli $link
+ * @param $lotId ид лота
+ * @return массив с историей ставок
+ */
+function getHistoryBet(mysqli $link, int $lotId) : array
+{
+    $sql = "SELECT users.name as name, bets.creation_time, bets.price 
+    FROM bets
+    LEFT JOIN users on bets.user_id = users.id
+    WHERE lot_id=" . $lotId .  
+    " order by creation_time DESC";
+
+    $result = mysqli_query($link, $sql);
+    if ( $result->num_rows===0 ){
+        $historyBet = [];
+        return $historyBet;
+    }
+    $historyBet = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $historyBet;
+}
+
+/**
+ * функция получает ставки пользователя для личного кабинета
+ * @param mysqli $link
+ * @param $userId идентификатор пользователя
+ * @return массив с ставками
+ */
+function getMyBets(mysqli $link, int $userId) : array
+{
+    $sql = "SELECT 
+        lots.id,
+        lots.img,
+        lots.name as lots_name,
+        categories.name as category_name,
+        lots.date_completion,
+        bets.price,
+        bets.creation_time,
+        lots.winner_id,
+        users.contact
+    FROM bets
+    LEFT JOIN lots on bets.lot_id = lots.id
+    LEFT JOIN categories on lots.category_id = categories.id
+    LEFT JOIN users on bets.user_id = users.id
+    WHERE bets.user_id = " . $userId . " ORDER BY bets.creation_time DESC";
+    $result = mysqli_query($link, $sql);
+    if ( $result->num_rows===0 ){
+        $myBets = [];
+        return $myBets;
+    }
+    $myBets = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $myBets;
 }

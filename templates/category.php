@@ -2,7 +2,7 @@
     <nav class="nav">
       <ul class="nav__list container">
         <?php foreach ($categories as $category) :?>
-            <li class="nav__item <?=htmlspecialchars($category['code'])?>">
+            <li class="nav__item <?php if($category['id']==$_GET['id']){echo 'nav__item--current';}?>">
                 <a href="/category.php?id=<?=$category['id']?>"><?=htmlspecialchars($category['name'])?></a>
             </li>
         <?php endforeach;?>
@@ -10,10 +10,7 @@
     </nav>
     <div class="container">
       <section class="lots">
-        <h2>Результаты поиска по запросу «<span><?=$_GET['search']?></span>»</h2>
-        <?php if (count($lots) === 0):?>
-        <h3>«Ничего не найдено по вашему запросу»</h3>
-        <?php else:?>
+        <h2>Все лоты в категории <span>«<?=$nameCategory?>»</span></h2>
         <ul class="lots__list">
         <?php foreach ($lots as $lot) :?>
             <li class="lots__item lot">
@@ -30,9 +27,7 @@
                             <span class="lot__amount">Стартовая цена</span>
                             <span class="lot__cost"><?=formatPrice(htmlspecialchars($lot['begin_price']) )?></span>
                         </div>
-                        <?php
-                        $dataRange = get_dt_range($lot['date_completion'],date('Y-m-d H:i:s'));
-                        ?>
+                        <?php $dataRange = get_dt_range($lot['date_completion'],date('Y-m-d H:i:s'));?>
                         <div class="lot__timer timer <?if ($dataRange['hour']<1){echo 'timer--finishing';}?>">
                             <?=$dataRange['hour']?>:<?=$dataRange['minute']?>
                         </div>
@@ -41,20 +36,19 @@
             </li>
         <?php endforeach;?>
         </ul>
-      <?php endif;?>
       </section>
       <?php if($countPage>1):?>
       <ul class="pagination-list">
         <?php if ($page>1):?>
-        <li class="pagination-item pagination-item-prev"><a href="?search=<?=$_GET['search']?>&find=Найти&page=<?=$page-1;?>">Назад</a></li>
+        <li class="pagination-item pagination-item-prev"><a href="?id=<?=$_GET['id']?>&page=<?=$page-1;?>">Назад</a></li>
         <?endif;?>
 
         <?php for ($i = 1; $i<=$countPage; $i++):?>
-          <li class="pagination-item <?php if($i == $page){echo 'pagination-item-active';}?>"><a href="?search=<?=$_GET['search']?>&find=Найти&page=<?=$i?>"><?=$i?></a></li>
+          <li class="pagination-item <?php if($i == $page){echo 'pagination-item-active';}?>"><a href="?id=<?=$_GET['id']?>&page=<?=$i?>"><?=$i?></a></li>
         <?php endfor;?>
 
         <?php if ( $page != $countPage ) :?>
-        <li class="pagination-item pagination-item-next"><a href="?search=<?=$_GET['search']?>&find=Найти&page=<?=$page+1;?>">Вперед</a></li>
+        <li class="pagination-item pagination-item-next"><a href="?id=<?=$_GET['id']?>&page=<?=$page+1;?>">Вперед</a></li>
         <?php endif;?>
       </ul>
       <?php endif;?>

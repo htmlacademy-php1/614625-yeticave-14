@@ -248,3 +248,38 @@ function checkPassword(mysqli $link, string $password, string $email) : string |
     }; 
     return null;
 }
+
+/**
+ * функция валидирует ставку указанную в форме на странице лота
+ * @param $price цена лота
+ * @param $lot массив с данными лота
+ * @param $bidStep шаг ставки
+ * @param mysqli $link
+ * @return string ошибки или null
+ */
+function validateBet(int $price, array $lot, int $bidStep, mysqli $link) : string | null
+{
+    $rangeTime = get_dt_range($lot[0]['date_completion'],date('Y-m-d h:i:s'));
+    if($rangeTime['hour']==='00' || $rangeTime['minute']==='00'){
+        return 'Лот закрыт';
+    }
+
+    if($_SESSION['user_id'] === $lot[0]['user_id']){
+        return 'Вы создали лот, ставку сделать Вы не можете';
+    }
+    
+    if(empty($price)){
+        //$price = 0;
+        return 'Введите ставку';
+    }
+
+    $lastBetLot = getBetByUser($link, $lot[0]['id']);
+    if($lastBetLot === $_SESSION['user_id']){
+        return 'Ваша ставка уже сделана';
+    }
+
+    if($price<$bidStep){
+        return 'Минимальная ставка ' . $bidStep;
+    }
+    return null;
+}

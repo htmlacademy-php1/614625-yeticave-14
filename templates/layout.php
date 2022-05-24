@@ -26,7 +26,7 @@
                 <?php if(isset($_SESSION['user_id'])):?>
                     <div class="user-menu__logged">
                         <p><?=$_SESSION['name']?></p>
-                        <a class="user-menu__bets" href="pages/my-bets.html">Мои ставки</a>
+                        <a class="user-menu__bets" href="/my-bets.php">Мои ставки</a>
                         <a class="user-menu__logout" href="/logout.php">Выход</a>
                     </div>
                 <?php else:?>
@@ -56,7 +56,7 @@
             <!--заполните этот список из массива категорий-->
             <?php foreach ($categories as $category) :?>
                 <li class="nav__item <?=htmlspecialchars($category['code'])?>">
-                    <a href="pages/all-lots.html"><?=htmlspecialchars($category['name'])?></a>
+                    <a href="/category.php?id=<?=$category['id']?>"><?=htmlspecialchars($category['name'])?></a>
                 </li>
             <?php endforeach;?>
         </ul>

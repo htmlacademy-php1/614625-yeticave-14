@@ -8,12 +8,12 @@ use Symfony\Component\Mime\Email;
 require 'vendor/autoload.php';
 
 if($endLots){
+    $dsn = 'smtp://' . $config['mail']['login'] .':' . $config['mail']['password'] . '@smtp.gmail.com:587';
+    $transport = Transport::fromDsn($dsn);
     foreach ($endLots as $lot){
         $winnerUser = getBetByUser($link, $lot['lot_id']);
         if($winnerUser){
             addWinnerLot($link, $winnerUser['user_id'], $lot['lot_id']);
-            $dsn = 'smtp://' . $config['mail']['login'] .':' . $config['mail']['password'] . '@smtp.gmail.com:587';
-            $transport = Transport::fromDsn($dsn);
             $message = new Email();
             $message->to($winnerUser['email']);
             $message->from("keks@phpdemo.ru");

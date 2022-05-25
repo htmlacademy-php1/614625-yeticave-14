@@ -2,7 +2,7 @@
     <nav class="nav">
       <ul class="nav__list container">
         <?php foreach ($categories as $category) :?>
-            <li class="nav__item <?php if($category['id']==$_GET['id']){echo 'nav__item--current';}?>">
+            <li class="nav__item <?php if(isset($_GET['id'])){if($category['id']==$_GET['id']){echo 'nav__item--current';}}?>">
                 <a href="/category.php?id=<?=$category['id']?>"><?=htmlspecialchars($category['name'])?></a>
             </li>
         <?php endforeach;?>

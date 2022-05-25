@@ -38,7 +38,7 @@
             <?php else:?>
                 <td class="rates__timer">
                     <div class="timer <?if ($dataRange['hour']<1){echo 'timer--finishing';}?>">
-                        <?=$dataRange['hour']?>:<?=$dataRange['minute']?>:<?=$dataRange['seconds']?>
+                        <?=sprintf("%02d", $dataRange['hour'])?>:<?=sprintf("%02d", $dataRange['minute'])?>:<?=sprintf("%02d", $dataRange['seconds'])?>
                     </div>
                 </td>
             <?php endif;?>
@@ -47,12 +47,12 @@
           </td>
           <td class="rates__time">
             <?php 
-            $publishDate = get_dt_range(date('Y-m-d'), $bet['creation_time']);
+            $publishDate = get_dt_range(date('Y-m-d h:i:s'), $bet['creation_time']);
             $humanTime = humanTime($publishDate, $bet['creation_time']);
             echo $humanTime;?>
           </td>
         </tr>
-        <?endforeach;?>
+        <?php endforeach;?>
       </table>
     </section>
   </main>

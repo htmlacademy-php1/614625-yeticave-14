@@ -2,7 +2,7 @@
     <nav class="nav">
       <ul class="nav__list container">
         <?php foreach ($categories as $category) :?>
-            <li class="nav__item <?php if($category['id']==$_GET['id']){echo 'nav__item--current';}?>">
+            <li class="nav__item <?php if(isset($_GET['id'])){if($category['id']==$_GET['id']){echo 'nav__item--current';}}?>">
                 <a href="/category.php?id=<?=$category['id']?>"><?=htmlspecialchars($category['name'])?></a>
             </li>
         <?php endforeach;?>
@@ -29,7 +29,7 @@
                         </div>
                         <?php $dataRange = get_dt_range($lot['date_completion'],date('Y-m-d H:i:s'));?>
                         <div class="lot__timer timer <?if ($dataRange['hour']<1){echo 'timer--finishing';}?>">
-                            <?=$dataRange['hour']?>:<?=$dataRange['minute']?>
+                            <?=sprintf("%02d", $dataRange['hour'])?>:<?= sprintf("%02d", $dataRange['minute'])?>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
       <ul class="pagination-list">
         <?php if ($page>1):?>
         <li class="pagination-item pagination-item-prev"><a href="?id=<?=$_GET['id']?>&page=<?=$page-1;?>">Назад</a></li>
-        <?endif;?>
+        <?php endif;?>
 
         <?php for ($i = 1; $i<=$countPage; $i++):?>
           <li class="pagination-item <?php if($i == $page){echo 'pagination-item-active';}?>"><a href="?id=<?=$_GET['id']?>&page=<?=$i?>"><?=$i?></a></li>

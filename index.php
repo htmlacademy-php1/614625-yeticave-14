@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/init.php';
 
+require_once __DIR__ . '/getwinner.php';
+
 $categories = getCategories($link);
 $lots = getLots($link, $config['lotPerPage']);
 

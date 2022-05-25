@@ -1,13 +1,19 @@
 <?php
 require_once __DIR__ . '/init.php';
 
-$nameCategory = getNameCategory($link, $_GET['id']);
 $categories = getCategories($link);
 
 $page = $_GET['page'] ?? 1;
-$countPage = getCountCategoryPage($link, $config['lotPerPage'], $_GET['id']);
-
-$lots = categoryLots($link, $config['lotPerPage'], $_GET['id'], $page);
+$nameCategory = '';
+$countPage = 0;
+$lots = [];
+if (isset($_GET['id'])){
+    if($_GET['id']){
+        $nameCategory = getNameCategory($link, $_GET['id']);
+        $countPage = getCountCategoryPage($link, $config['lotPerPage'], $_GET['id']);
+        $lots = categoryLots($link, $config['lotPerPage'], $_GET['id'], $page);
+    }
+}
 
 $page_content = include_template('category.php',['lots' => $lots,'categories' => $categories, 'nameCategory' => $nameCategory, 'page' => $page, 'countPage' => $countPage]);
 

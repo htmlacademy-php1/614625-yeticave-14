@@ -30,11 +30,9 @@
                             <span class="lot__amount">Стартовая цена</span>
                             <span class="lot__cost"><?=formatPrice(htmlspecialchars($lot['begin_price']) )?></span>
                         </div>
-                        <?php
-                        $dataRange = get_dt_range($lot['date_completion'],date('Y-m-d H:i:s'));
-                        ?>
+                        <?php $dataRange = get_dt_range($lot['date_completion'],date('Y-m-d H:i:s'));?>
                         <div class="lot__timer timer <?if ($dataRange['hour']<1){echo 'timer--finishing';}?>">
-                            <?=$dataRange['hour']?>:<?=$dataRange['minute']?>
+                            <?=sprintf("%02d",$dataRange['hour'])?>:<?=sprintf("%02d",$dataRange['minute'])?>
                         </div>
                     </div>
                 </div>
@@ -47,7 +45,7 @@
       <ul class="pagination-list">
         <?php if ($page>1):?>
         <li class="pagination-item pagination-item-prev"><a href="?search=<?=$_GET['search']?>&find=Найти&page=<?=$page-1;?>">Назад</a></li>
-        <?endif;?>
+        <?php endif;?>
 
         <?php for ($i = 1; $i<=$countPage; $i++):?>
           <li class="pagination-item <?php if($i == $page){echo 'pagination-item-active';}?>"><a href="?search=<?=$_GET['search']?>&find=Найти&page=<?=$i?>"><?=$i?></a></li>

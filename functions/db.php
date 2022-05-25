@@ -207,21 +207,26 @@ function searchUser(mysqli $link, string $email) : array
  */
 function searchLots(mysqli $link, int $countLot, string $searchWord, int $page) : array | string
 {
-    //TODO использовать подготовленное выражение
     $searchWord =  mysqli_real_escape_string($link, $searchWord);
     $page -= 1;
     $sql = "SELECT lots.id, lots.name,creation_time,img,begin_price,date_completion,categories.name as category
     FROM lots 
     LEFT JOIN categories on lots.category_id=categories.id
-    WHERE MATCH(lots.name, lots.description) AGAINST('" . $searchWord . "') LIMIT " . $countLot . " OFFSET " . $page;
-    $result = mysqli_query($link, $sql);
+    WHERE MATCH(lots.name, lots.description) AGAINST( ? ) LIMIT " . $countLot . " OFFSET " . $page;
+    $data = [$searchWord];
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    if (!mysqli_stmt_execute($stmt)) {
+        exit('Ошибка при выполнении запроса');
+    }
+    $result = mysqli_stmt_get_result($stmt);
     if ( $result->num_rows===0 ){
         $searchData = [];
         return $searchData;
     }
-    $searchData = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        
-    return $searchData;   
+    while ($row = mysqli_fetch_assoc($result)) {
+        $searchData[] = $row;
+    }
+    return $searchData; 
 }
 
 /**
@@ -233,16 +238,17 @@ function searchLots(mysqli $link, int $countLot, string $searchWord, int $page) 
  */
 function getCountSearchPage(mysqli $link, int $countLot, string $searchWord) : int
 {
-   //TODO использовать подготовленное выражение
-    $sql ="SELECT count(id) as count 
-    FROM lots 
-    WHERE MATCH(name, description) AGAINST('" . $searchWord . "')";
-    $result = mysqli_query($link, $sql);
-
-    $countPage = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    $countPage = $countPage[0]['count'];
-    $countPage = ceil($countPage / $countLot);
-
+    $sql ="SELECT count(id) as count
+    FROM lots
+    WHERE MATCH(name, description) AGAINST( ? )";
+    $data = [$searchWord];
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    if (!mysqli_stmt_execute($stmt)) {
+        exit('Ошибка при выполнении запроса');
+    }
+    $result = mysqli_stmt_get_result($stmt);
+    $countPage = mysqli_fetch_assoc($result);
+    $countPage = ceil($countPage['count'] / $countLot);
     return $countPage;
 }
 
@@ -272,7 +278,6 @@ function getNameCategory(mysqli $link, int $id) : string
  */
 function getCountCategoryPage(mysqli $link, int $countLot, int $id) : int
 {
-   
     $sql ="SELECT count(id) as count 
     FROM lots 
     WHERE category_id=" .$id;
@@ -328,17 +333,17 @@ function getBet(mysqli $link, int $id) : string | int
  * функция получает пользователя по ставке
  * @param mysqli $link
  * @param $lotId идентификатор лота
- * @return null в случае, если у лота нет ставки или идентификатор пользователя
+ * @return null в случае, если у лота нет ставки или массив с Id и почтой
  */
-function getBetByUser(mysqli $link,int $lotId) : int | null
+function getBetByUser(mysqli $link,int $lotId) : array | null
 {
-    $sql = "SELECT user_id FROM `bets` WHERE lot_id=" . $lotId . " order by creation_time DESC LIMIT 1";
+    $sql = "SELECT user_id, users.email, users.name FROM bets LEFT JOIN users on bets.user_id = users.id WHERE lot_id=" . $lotId . " order by bets.creation_time DESC LIMIT 1";
     $result = mysqli_query($link, $sql);
     if ( $result->num_rows===0 ){
         return null;
     }
     $lastBet = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    return $lastBet[0]['user_id'];
+    return $lastBet[0];
 }
 
 /**
@@ -411,4 +416,36 @@ function getMyBets(mysqli $link, int $userId) : array
     }
     $myBets = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $myBets;
+}
+
+function getEndLots(mysqli $link)
+{   
+    $sql = "SELECT 
+	    id as lot_id,
+        name
+    FROM lots
+    WHERE NOW() > date_completion AND completed=0";
+    $result = mysqli_query($link, $sql);
+    if ( $result->num_rows===0 ){
+        $endLots = [];
+        return $endLots;
+    }
+    $endLots = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $endLots;
+}
+
+function addWinnerLot($link, $winnerUser, $lotId){
+    $sql = "UPDATE lots set winner_id = ?, completed = ? WHERE id = ?";
+    $data = [$winnerUser, 1, $lotId];
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    return mysqli_insert_id($link);
+}
+
+function addCompletedLot($link, $lotId){
+    $sql = "UPDATE lots set completed = ? WHERE id = ?";
+    $data = [1, $lotId];
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    return mysqli_insert_id($link);
 }

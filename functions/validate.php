@@ -258,9 +258,9 @@ function checkPassword(mysqli $link, string $password, string $email) : string |
  * @return string ошибки или null
  */
 function validateBet(int $price, array $lot, int $bidStep, mysqli $link) : string | null
-{
+{   
     $rangeTime = get_dt_range($lot[0]['date_completion'],date('Y-m-d h:i:s'));
-    if($rangeTime['hour']==='00' || $rangeTime['minute']==='00'){
+    if($rangeTime['hour']===0 && $rangeTime['minute']===0){
         return 'Лот закрыт';
     }
 
@@ -269,12 +269,11 @@ function validateBet(int $price, array $lot, int $bidStep, mysqli $link) : strin
     }
     
     if(empty($price)){
-        //$price = 0;
         return 'Введите ставку';
     }
 
     $lastBetLot = getBetByUser($link, $lot[0]['id']);
-    if($lastBetLot === $_SESSION['user_id']){
+    if($lastBetLot['user_id'] === $_SESSION['user_id']){
         return 'Ваша ставка уже сделана';
     }
 

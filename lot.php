@@ -34,7 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     
     $price = $_POST['price'];
     $error = validateBet($price, $lot, $bidStep, $link);
-
     if (empty($error)){
         createBet($link, $price, $_SESSION['user_id'], $lot[0]['id']);
         header("Location:/lot.php?id=" . $_GET['id']);

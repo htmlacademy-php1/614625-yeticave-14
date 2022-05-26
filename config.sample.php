@@ -9,6 +9,8 @@ return [
     'lotPerPage' => 9,
     'mail' => [
         'login' => '',
-        'password' => ''
+        'password' => '',
+        'host' => '',
+        'port' => ''
     ]
 ];

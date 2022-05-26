@@ -4,7 +4,7 @@ require_once __DIR__ . '/init.php';
 require_once __DIR__ . '/getwinner.php';
 
 $categories = getCategories($link);
-$lots = getLots($link, $config['lotPerPage']);
+$lots = getLots($link, 9);
 
 $page_content = include_template('main.php',['lots' => $lots,'categories' => $categories]);
 

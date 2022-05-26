@@ -5,10 +5,10 @@ use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
 
-require 'vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 if($endLots){
-    $dsn = 'smtp://' . $config['mail']['login'] .':' . $config['mail']['password'] . '@smtp.gmail.com:587';
+    $dsn = 'smtp://' . $config['mail']['login'] .':' . $config['mail']['password'] .  $config['mail']['host'] .':' . $config['mail']['port'];
     $transport = Transport::fromDsn($dsn);
     foreach ($endLots as $lot){
         $winnerUser = getBetByUser($link, $lot['lot_id']);

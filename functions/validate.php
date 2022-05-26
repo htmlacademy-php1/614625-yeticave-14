@@ -263,7 +263,7 @@ function validateBet(int $price, array $lot, int $bidStep, mysqli $link) : strin
     if($rangeTime['hour']===0 && $rangeTime['minute']===0){
         return 'Лот закрыт';
     }
-
+    
     if($_SESSION['user_id'] === $lot[0]['user_id']){
         return 'Вы создали лот, ставку сделать Вы не можете';
     }
@@ -273,10 +273,12 @@ function validateBet(int $price, array $lot, int $bidStep, mysqli $link) : strin
     }
 
     $lastBetLot = getBetByUser($link, $lot[0]['id']);
-    if($lastBetLot['user_id'] === $_SESSION['user_id']){
-        return 'Ваша ставка уже сделана';
+    if($lastBetLot){
+        if($lastBetLot['user_id'] === $_SESSION['user_id']){
+            return 'Ваша ставка уже сделана';
+        }
     }
-
+    
     if($price<$bidStep){
         return 'Минимальная ставка ' . $bidStep;
     }

@@ -8,6 +8,10 @@ require_once __DIR__ . '/functions/template.php';
 require_once __DIR__ . '/functions/validate.php';
 require_once __DIR__ . '/functions/upload.php';
 
-$config = require 'config.php';
+if (!file_exists(__DIR__ . '/config.php')) {
+    exit ('Создайте файл config.php на основе файла config.sample.php и сконфигурируйте его');
+}
+
+$config = require __DIR__ . '/config.php';
 
 $link = dbConnect($config);

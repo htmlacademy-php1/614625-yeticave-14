@@ -3,12 +3,12 @@ use yeticave;
 
 /*существующий список категорий*/
 INSERT INTO categories (name,code)
-VALUES ('Доски и лыжи','boards-and-skis'),
-       ('Крепления','fasteners'),
+VALUES ('Доски и лыжи','boards'),
+       ('Крепления','attachment'),
        ('Ботинки','boots'),
-       ('Одежда','clothes'),
+       ('Одежда','clothing'),
        ('Инструменты','tools'),
-       ('Разное','any');
+       ('Разное','other');
 
 /*придумайте пару пользователей*/
 INSERT INTO users (email, name,creation_time,password,contact)

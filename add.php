@@ -28,8 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
 
 $page_content = include_template('add.php',[
     'categories' => $categories,
-     'errors' => $errors,
-      'lotFormData' => $lotFormData
+    'errors' => $errors,
+    'lotFormData' => $lotFormData
 ]);
 
 $layout_content = include_template('layout.php',[

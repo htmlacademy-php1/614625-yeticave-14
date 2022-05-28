@@ -15,7 +15,13 @@ if (isset($_GET['id'])){
     }
 }
 
-$page_content = include_template('category.php',['lots' => $lots,'categories' => $categories, 'nameCategory' => $nameCategory, 'page' => $page, 'countPage' => $countPage]);
+$page_content = include_template('category.php',[
+    'lots' => $lots,
+    'categories' => $categories,
+    'nameCategory' => $nameCategory,
+    'page' => $page,
+    'countPage' => $countPage
+]);
 
 $layout_content = include_template('layout.php',[
     'categories' => $categories,

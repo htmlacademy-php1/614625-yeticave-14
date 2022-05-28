@@ -45,7 +45,7 @@ function getLotFormData(array $lotFormData) : array
 }
 
 /**
- *  функция проверяет ошибки заполнения полей формы
+ * функция проверяет ошибки заполнения полей формы
  * @param array $lotFormData входной массив данных с формы
  * @param array $categories массив с категориями
  * @param array $file массив с даннными о файле
@@ -68,7 +68,7 @@ function validateLotForm(array $lotFormData,array $categories,array $file) : arr
 
 /**
  * функция проверяет длину введенной строки, строка должна находиться в пределах от 3 до 122 символов
- * @param $valueInput string
+ * @param string $valueInput 
  * @param int $minValue минимальное-допустимое значение строки
  * @param int $maxValue максимально-допустимое значение строки
  * @return null в случае правильной длины, иначе strint текст ошибки
@@ -85,7 +85,7 @@ function validateLengthForm(string $valueInput,int $minValue,int $maxValue) : nu
  * функция проверяет существует ли выбранная категория в массиве категорий, полученных из бд
  * @param $idCategory id выбранной категории
  * @param $categories array с категориями
- * return null в случае, если категория существует, иначе string - текст с ошибкой
+ * @return null в случае, если категория существует, иначе string - текст с ошибкой
  */
 function validateCategory(int $idCategory,array $categories) :null | string
 {
@@ -98,7 +98,7 @@ function validateCategory(int $idCategory,array $categories) :null | string
 }
 
 /**
- *  функция проверяет больше 0 входящее число
+ * функция проверяетв ходящее число больше ли 0 
  * @param int $valueInput число входящее
  * @return null в случае успешной проверки, иначе string текст ошибки
  */
@@ -112,7 +112,7 @@ function validateLotNumber(int $valueInput) : null | string
 
 /**
  * функция проверяет файл на его формат.Допустимые форматы файлов: jpg, jpeg, png
- * @param $file array входящий массив с файлом
+ * @param array $file входящий массив с файлом
  * @return null в случае успешной проверки, иначе string текст ошибки
  */
 function validateFile(array $file) : null | string
@@ -181,7 +181,7 @@ function validateEmail(mysqli $link, string $email) : string | null
 /**
  * функция проверяет нет ли null в значение полей формы login
  * @param array $userLoginData массив с данными с формы
- * @return массив с проверенными значениями
+ * @return array $userLoginData массив с проверенными значениями
  */
 function getUserLoginData(array $userLoginData) :array
 {
@@ -194,7 +194,7 @@ function getUserLoginData(array $userLoginData) :array
 /**
  * функция валидирует значения в форме login
  * @param mysqli $link
- * @param $userLoginData array с данными с формы
+ * @param array $userLoginData массив с данными с формы
  * @return массив с ошибками
  */
 function validateLoginForm(mysqli $link, array $userLoginData) : array
@@ -211,7 +211,7 @@ function validateLoginForm(mysqli $link, array $userLoginData) : array
 /**
  * функция проверяет емаил на валидность значения и на существование
  * @param mysqli $link
- * @param $email
+ * @param string $email
  * @return string ошибки или null
  */
 function checkEmail(mysqli $link, string $email) : string | null
@@ -228,8 +228,8 @@ function checkEmail(mysqli $link, string $email) : string | null
 /**
  * функция проверяет пароль на валидность значения, на то что он существует для данного пользователя и на правильность
  * @param mysqli $link
- * @param $password 
- * @param $email email
+ * @param string $password 
+ * @param string $email
  * @return string ошибки или null
  */
 function checkPassword(mysqli $link, string $password, string $email) : string | null
@@ -250,10 +250,10 @@ function checkPassword(mysqli $link, string $password, string $email) : string |
 }
 
 /**
- * функция валидирует ставку указанную в форме на странице лота
- * @param $price цена лота
- * @param $lot массив с данными лота
- * @param $bidStep шаг ставки
+ * функция валидирует ставку, указанную в форме на странице лота
+ * @param int $price цена лота
+ * @param array $lot массив с данными лота
+ * @param int $bidStep шаг ставки
  * @param mysqli $link
  * @return string ошибки или null
  */

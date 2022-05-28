@@ -9,7 +9,12 @@ $countPage = getCountSearchPage($link, $config['lotPerPage'], $search);
 
 $lots = searchLots($link, $config['lotPerPage'], $search, $page);
 
-$page_content = include_template('search.php',['lots' => $lots,'categories' => $categories,'countPage' => $countPage, 'page' => $page]);
+$page_content = include_template('search.php',[
+    'lots' => $lots,
+    'categories' => $categories,
+    'countPage' => $countPage,
+    'page' => $page
+]);
 
 $layout_content = include_template('layout.php',[
     'categories' => $categories,

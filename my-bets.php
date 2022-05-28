@@ -9,7 +9,10 @@ if(!isset($_SESSION['user_id'])){
 $categories = getCategories($link);
 $bets = getMyBets($link, $_SESSION['user_id']);
 
-$page_content = include_template('my-bets.php',['categories' => $categories,'bets' => $bets]);
+$page_content = include_template('my-bets.php',[
+    'categories' => $categories,
+    'bets' => $bets
+]);
 
 $layout_content = include_template('layout.php',[
     'categories' => $categories,

@@ -27,7 +27,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     $errors = [];
 }
 
-$page_content = include_template('login.php',['categories' => $categories, 'errors' => $errors, 'userLoginData' => $userLoginData]);
+$page_content = include_template('login.php',[
+    'categories' => $categories,
+    'errors' => $errors,
+    'userLoginData' => $userLoginData
+]);
 
 $layout_content = include_template('layout.php',[
     'categories' => $categories,

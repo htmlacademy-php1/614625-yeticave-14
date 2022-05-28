@@ -84,8 +84,8 @@ function get_noun_plural_form (int $number, string $one, string $two, string $ma
 
 /**
  * функция вовзращает разницу даты текущего времени и даты, когда сделана ставка в человекочитаемом виде
- * @param $publishDate массив времени
- * @param строка с датой создания ставки
+ * @param array $publishDate массив времени
+ * @param string строка с датой создания ставки
  * @return string строку с человекочитаемым видом разницы дат 
  */
 function humanTime(array $publishDate,string $creationTime) : string

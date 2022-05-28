@@ -24,7 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     $errors = [];
 }
 
-$page_content = include_template('sign-up.php',['categories' => $categories, 'userFormData' => $userFormData, 'errors' => $errors]);
+$page_content = include_template('sign-up.php',[
+    'categories' => $categories,
+    'userFormData' => $userFormData,
+    'errors' => $errors
+]);
 
 $layout_content = include_template('layout.php',[
     'categories' => $categories,

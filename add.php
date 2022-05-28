@@ -26,7 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     $errors = [];
 }
 
-$page_content = include_template('add.php',['categories' => $categories, 'errors' => $errors, 'lotFormData' => $lotFormData]);
+$page_content = include_template('add.php',[
+    'categories' => $categories,
+     'errors' => $errors,
+      'lotFormData' => $lotFormData
+]);
 
 $layout_content = include_template('layout.php',[
     'categories' => $categories,

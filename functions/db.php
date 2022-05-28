@@ -72,7 +72,7 @@ function dbConnect(array $config) : mysqli
 /**
  * функция возвращает массив с категориями
  * @param mysqli $link объект подключения к бд
- * @return $categories массив с категориями
+ * @return array $categories массив с категориями
  */
 function getCategories(mysqli $link):array
 {
@@ -85,8 +85,8 @@ function getCategories(mysqli $link):array
 /**
  * функция возвращает массив с открытыми лотами
  * @param mysqli $link объект подключения к бд
- * @param $countLot количество выводимых лотов
- * @return $lots массив с лотами
+ * @param int $countLot количество выводимых лотов
+ * @return array $lots массив с лотами
  */
 function getLots(mysqli $link, int $countLot):array
 {
@@ -100,7 +100,7 @@ function getLots(mysqli $link, int $countLot):array
 /**
  * функция возращает массив с параметрами лота
  * @param mysqli $link объект подключения к бд
- * @param $id id лота
+ * @param int $id id лота
  * @return $lot массив с лотами либо false, если лота не существует
  */
 function getLot(mysqli $link,int $id) : array | false
@@ -122,14 +122,17 @@ function getLot(mysqli $link,int $id) : array | false
  * @param $user_id id пользователя
  * @return id созданного лота
  */
-function createLot(mysqli $link,array $lotFormData,int $user_id) : int
+function createLot(mysqli $link, array $lotFormData, int $user_id) : int
 {
     $sql = 'INSERT INTO lots (name, creation_time, description, img, begin_price, date_completion, bid_step, user_id, category_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     $data = [$lotFormData['name'], $lotFormData['creation_time'], $lotFormData['description'], $lotFormData['img'], $lotFormData['begin_price'], $lotFormData['date_completion'],
     $lotFormData['bid_step'], $user_id, $lotFormData['category']];
     $stmt = db_get_prepare_stmt($link, $sql, $data);
-    $result = mysqli_stmt_execute($stmt);
+    if (!mysqli_stmt_execute($stmt)) {
+        exit('Ошибка при выполнении запроса');
+    }
+
     return mysqli_insert_id($link);
 }
 
@@ -159,7 +162,11 @@ function addUser(mysqli $link, array $userFormData){
     $sql = 'INSERT INTO users (creation_time, name, email, password, contact) VALUES (?, ?, ?, ?, ?)';
     $data = [ date('Y-m-d'), $userFormData['name'], $userFormData['email'], $userFormData['password'], $userFormData['contact']];
     $stmt = db_get_prepare_stmt($link, $sql, $data);
-    $result = mysqli_stmt_execute($stmt);
+    
+    if (!mysqli_stmt_execute($stmt)) {
+    exit('Ошибка при выполнении запроса');
+    }
+    
     return mysqli_insert_id($link);
 }
 
@@ -359,7 +366,9 @@ function createBet(mysqli $link, int $price, int $userId, int $lotId) : int
     $sql = 'INSERT INTO bets (creation_time,price, user_id, lot_id) VALUES (?, ?, ?, ?)';
     $data = [date('Y-m-d h:i:s') ,$price, $userId, $lotId];
     $stmt = db_get_prepare_stmt($link, $sql, $data);
-    $result = mysqli_stmt_execute($stmt);
+    if (!mysqli_stmt_execute($stmt)) {
+        exit('Ошибка при выполнении запроса');
+    }
     return mysqli_insert_id($link);
 }
 
@@ -438,7 +447,9 @@ function addWinnerLot($link, $winnerUser, $lotId){
     $sql = "UPDATE lots set winner_id = ?, completed = ? WHERE id = ?";
     $data = [$winnerUser, 1, $lotId];
     $stmt = db_get_prepare_stmt($link, $sql, $data);
-    $result = mysqli_stmt_execute($stmt);
+    if (!mysqli_stmt_execute($stmt)) {
+        exit('Ошибка при выполнении запроса');
+    }
     return mysqli_insert_id($link);
 }
 
@@ -446,6 +457,8 @@ function addCompletedLot($link, $lotId){
     $sql = "UPDATE lots set completed = ? WHERE id = ?";
     $data = [1, $lotId];
     $stmt = db_get_prepare_stmt($link, $sql, $data);
-    $result = mysqli_stmt_execute($stmt);
+    if (!mysqli_stmt_execute($stmt)) {
+        exit('Ошибка при выполнении запроса');
+    }
     return mysqli_insert_id($link);
 }

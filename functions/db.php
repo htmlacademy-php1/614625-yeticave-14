@@ -55,7 +55,7 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
 
 /**
  * функция подключения к бд
- * @param $config параметры подключения к базам данных сервера
+ * @param array $config параметры подключения к базам данных сервера
  * @return mysqli возвращает объект подключения к бд
  */
 function dbConnect(array $config) : mysqli
@@ -74,7 +74,7 @@ function dbConnect(array $config) : mysqli
  * @param mysqli $link объект подключения к бд
  * @return array $categories массив с категориями
  */
-function getCategories(mysqli $link):array
+function getCategories(mysqli $link) : array
 {
     $sql = 'SELECT id, name, code FROM categories';
     $result = mysqli_query($link, $sql);
@@ -118,8 +118,8 @@ function getLot(mysqli $link,int $id) : array | false
 /**
  * функция создает лот
  * @param mysqli $link
- * @param $lotFormData массив с данными лота
- * @param $user_id id пользователя
+ * @param array $lotFormData массив с данными лота
+ * @param int $user_id id пользователя
  * @return id созданного лота
  */
 function createLot(mysqli $link, array $lotFormData, int $user_id) : int
@@ -139,7 +139,7 @@ function createLot(mysqli $link, array $lotFormData, int $user_id) : int
 /**
  * функция ищет email введенный пользователем в форму в базе данных
  * @param mysqli $link
- * @param $email string
+ * @param string $email
  * @return bool
  */
 function searchUserEmail(mysqli $link, string $email) : bool
@@ -155,7 +155,7 @@ function searchUserEmail(mysqli $link, string $email) : bool
 /**
  * функция создает нового пользователя в бд
  * @param mysqli $link
- * @param $userFormData array с данными пользователя
+ * @param array $userFormData массив с данными пользователя
  * @return id добавленной записи в бд
  */
 function addUser(mysqli $link, array $userFormData){
@@ -173,7 +173,7 @@ function addUser(mysqli $link, array $userFormData){
 /**
  * функция ищет пароль в базе данных
  * @param mysqli $link
- * @param $email
+ * @param string $email
  * @return false | string
 */
 function searchPassword(mysqli $link, string $email) : false | string
@@ -191,8 +191,8 @@ function searchPassword(mysqli $link, string $email) : false | string
 /** 
  * функция ищет данные пользователя в базе данных
  * @param mysqli $link
- * @param $email
- * @return массив с данными пользователя
+ * @param string $email
+ * @return array $userData массив с данными пользователя
 */
 function searchUser(mysqli $link, string $email) : array
 {
@@ -205,11 +205,11 @@ function searchUser(mysqli $link, string $email) : array
 }
 
 /**
- * функция ищет лоты по гет запросу поисковой фразы
+ * функция ищет лоты по гет запросу строки поисковой фразы
  * @param mysqli $link
- * @param $countLot количество лотов
- * @param $searchWord искомое слово
- * @param $page номер страницы
+ * @param int $countLot количество лотов
+ * @param string $searchWord искомое слово
+ * @param int $page номер страницы
  * @return массив с лотами либо строка, если ничего не найдено
  */
 function searchLots(mysqli $link, int $countLot, string $searchWord, int $page) : array | string
@@ -239,8 +239,8 @@ function searchLots(mysqli $link, int $countLot, string $searchWord, int $page) 
 /**
  * функция получает количесвто страниц лотов по гет запросу поисковой фразы
  * @param mysqli $link
- * @param $countLot количество лотов
- * @param $searchWord искомое слово
+ * @param int $countLot количество лотов
+ * @param string $searchWord искомое слово
  * @return количество страниц
  */
 function getCountSearchPage(mysqli $link, int $countLot, string $searchWord) : int
@@ -262,8 +262,8 @@ function getCountSearchPage(mysqli $link, int $countLot, string $searchWord) : i
 /**
  * функция получает название категории
  * @param mysqli $link
- * @param $id id категории
- * @return строку с названием
+ * @param int $id id категории
+ * @return string $nameCategory строку с названием
  */
 function getNameCategory(mysqli $link, int $id) : string
 {
@@ -279,9 +279,9 @@ function getNameCategory(mysqli $link, int $id) : string
 /**
  * функция получает количество страниц в категории
  * @param mysqli $link
- * @param $countLot количество лотов на странице
- * @param $id id категории
- * @return количество страниц 
+ * @param int $countLot количество лотов на странице
+ * @param int $id id категории
+ * @return int $countPage количество страниц 
  */
 function getCountCategoryPage(mysqli $link, int $countLot, int $id) : int
 {
@@ -300,10 +300,10 @@ function getCountCategoryPage(mysqli $link, int $countLot, int $id) : int
 /**
  * функция получает лоты в категории
  * @param mysqli $link
- * @param $countLot количество лотов на одной странице
- * @param $id id категории
- * @param $page номер страницы
- * @return массив с лотами
+ * @param int $countLot количество лотов на одной странице
+ * @param int $id id категории
+ * @param int $page номер страницы
+ * @return array $lots массив с лотами
  */
 function categoryLots(mysqli $link, int $countLot, int $id, int $page) : array
 {
@@ -322,7 +322,7 @@ function categoryLots(mysqli $link, int $countLot, int $id, int $page) : array
 /**
  * функция получает стоимость по ставке
  * @param mysqli $link
- * @param $id идентификатор лота
+ * @param int $id идентификатор лота
  * @return пустую строку или цену по ставке
  */
 function getBet(mysqli $link, int $id) : string | int
@@ -339,7 +339,7 @@ function getBet(mysqli $link, int $id) : string | int
 /**
  * функция получает пользователя по ставке
  * @param mysqli $link
- * @param $lotId идентификатор лота
+ * @param int $lotId идентификатор лота
  * @return null в случае, если у лота нет ставки или массив с Id и почтой
  */
 function getBetByUser(mysqli $link,int $lotId) : array | null
@@ -356,10 +356,10 @@ function getBetByUser(mysqli $link,int $lotId) : array | null
 /**
  * функция создает ставку у лота
  * @param mysqli $link
- * @param $price цена
- * @param $userId id пользователя
- * @param $lotId id лота
- * @return id вставленного значения в бд
+ * @param int $price цена
+ * @param int $userId id пользователя
+ * @param int $lotId id лота
+ * @return int id вставленного значения в бд
  */
 function createBet(mysqli $link, int $price, int $userId, int $lotId) : int
 {
@@ -375,8 +375,8 @@ function createBet(mysqli $link, int $price, int $userId, int $lotId) : int
 /**
  * функция получает историю ставок у лота
  * @param mysqli $link
- * @param $lotId ид лота
- * @return массив с историей ставок
+ * @param int $lotId ид лота
+ * @return array $historyBet массив с историей ставок
  */
 function getHistoryBet(mysqli $link, int $lotId) : array
 {
@@ -398,8 +398,8 @@ function getHistoryBet(mysqli $link, int $lotId) : array
 /**
  * функция получает ставки пользователя для личного кабинета
  * @param mysqli $link
- * @param $userId идентификатор пользователя
- * @return массив с ставками
+ * @param int $userId идентификатор пользователя
+ * @return array $myBets массив с ставками
  */
 function getMyBets(mysqli $link, int $userId) : array
 {
@@ -427,7 +427,12 @@ function getMyBets(mysqli $link, int $userId) : array
     return $myBets;
 }
 
-function getEndLots(mysqli $link)
+/**
+ * функция получает массив с лотами, которые закончили по сроку свои торги
+ * @param mysqli $link
+ * @return array $endLots массив с лотами
+ */
+function getEndLots(mysqli $link) : array
 {   
     $sql = "SELECT 
 	    id as lot_id,
@@ -443,7 +448,15 @@ function getEndLots(mysqli $link)
     return $endLots;
 }
 
-function addWinnerLot($link, $winnerUser, $lotId){
+/**
+ * Функция добавляет победителя к лоту и добавляет параметр, что торги по лоту завершены
+ * @param mysqli $link
+ * @param int $winnerUser id пользователя
+ * @param int $lotId id лота
+ * @return int id вставленного значения в бд
+ */
+function addWinnerLot(mysqli $link, int $winnerUser, int $lotId) : int
+{
     $sql = "UPDATE lots set winner_id = ?, completed = ? WHERE id = ?";
     $data = [$winnerUser, 1, $lotId];
     $stmt = db_get_prepare_stmt($link, $sql, $data);
@@ -453,7 +466,14 @@ function addWinnerLot($link, $winnerUser, $lotId){
     return mysqli_insert_id($link);
 }
 
-function addCompletedLot($link, $lotId){
+/**
+ * Функция добавляет к лоту параметр, что торги по лоту завершены
+ * @param mysqli $link
+ * @param int $lotId id лота
+ * @return int id вставленного значения в бд
+ */
+function addCompletedLot(mysqli $link,int $lotId) : int
+{
     $sql = "UPDATE lots set completed = ? WHERE id = ?";
     $data = [1, $lotId];
     $stmt = db_get_prepare_stmt($link, $sql, $data);
